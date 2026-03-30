@@ -125,9 +125,9 @@ namespace RocketsRanks
     {
         public bool ShowRankInLabel = true;
         public bool ShowRankBadge = true;
-        public float BadgeSize = 64f;
-        public float BadgeOffsetX = 32f;
-        public float BadgeOffsetY = 32f;
+        public float BadgeSize = 46f;
+        public float BadgeOffsetX = 4f;
+        public float BadgeOffsetY = 4f;
         public bool ShowRankOnMap = true;
         public float MapIconSize = 16f;
         public float MapIconOffsetX = 0f;
@@ -144,9 +144,9 @@ namespace RocketsRanks
             base.ExposeData();
             Scribe_Values.Look(ref ShowRankInLabel, "ShowRankInLabel", true);
             Scribe_Values.Look(ref ShowRankBadge, "ShowRankBadge", true);
-            Scribe_Values.Look(ref BadgeSize, "BadgeSize", 64f);
-            Scribe_Values.Look(ref BadgeOffsetX, "BadgeOffsetX", 32f);
-            Scribe_Values.Look(ref BadgeOffsetY, "BadgeOffsetY", 32f);
+            Scribe_Values.Look(ref BadgeSize, "BadgeSize", 46f);
+            Scribe_Values.Look(ref BadgeOffsetX, "BadgeOffsetX", 4f);
+            Scribe_Values.Look(ref BadgeOffsetY, "BadgeOffsetY", 4f);
             Scribe_Values.Look(ref ShowRankOnMap, "ShowRankOnMap", true);
             Scribe_Values.Look(ref MapIconSize, "MapIconSize", 16f);
             Scribe_Values.Look(ref MapIconOffsetX, "MapIconOffsetX", 0f);
@@ -171,8 +171,8 @@ namespace RocketsRanks
             {
                 if (BadgeOffsetX == 0f && BadgeOffsetY == 0f)
                 {
-                    BadgeOffsetX = 32f;
-                    BadgeOffsetY = 32f;
+                    BadgeOffsetX = 4f;
+                    BadgeOffsetY = 4f;
                 }
                 migrated = true;
             }
