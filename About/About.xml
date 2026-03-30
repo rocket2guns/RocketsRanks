@@ -2,9 +2,8 @@
 <ModMetaData>
   <name>Rocket's Ranks</name>
   <author>Rocket</author>
-  <packageId>rocket.ranks</packageId>
+  <packageId>rockets.ranks</packageId>
   <supportedVersions>
-    <li>1.5</li>
     <li>1.6</li>
   </supportedVersions>
   <description>Adds a rank system for colonists. Promote pawns to ranks like Private, Corporal, Sergeant, and more. Rank-restricted apparel (like rank slides) will only be worn by pawns who hold the correct rank, working seamlessly with outfit policies.</description>
