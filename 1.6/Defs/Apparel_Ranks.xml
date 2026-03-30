@@ -7,6 +7,7 @@
 	</ApparelLayerDef>
 	
 	<ThingDef ParentName="ApparelMakeableBase" Name="ROCKET_Ranks" Abstract="True">
+		<thingClass>RocketsRanks.RocketRank</thingClass>
 		<thingCategories>
 			<li>ROCKET_Apparel_Ranks</li>
 		</thingCategories>
@@ -17,7 +18,7 @@
 						<bodyType>Male</bodyType>
 						<northOffsetX>-0.00115</northOffsetX>
 						<northOffsetZ>0.1722</northOffsetZ>
-						<northScale>1.5556</northScale>
+						<northScale>1.32</northScale>
 						<eastOffsetX>-0.0614</eastOffsetX>
 						<eastOffsetZ>0.1579</eastOffsetZ>
 						<eastScale>0.8701</eastScale>
@@ -71,11 +72,6 @@
 			<ArmorRating_Blunt>0.1</ArmorRating_Blunt>
 			<EquipDelay>1.5</EquipDelay>
 		</statBases>
-		<equippedStatOffsets>
-			<SuppressionPower MayRequire="Ludeon.RimWorld.Ideology">0.15</SuppressionPower>
-			<SlaveSuppressionOffset MayRequire="Ludeon.RimWorld.Ideology">-0.15</SlaveSuppressionOffset>
-			<MentalBreakThreshold>-0.15</MentalBreakThreshold>
-		</equippedStatOffsets>
 		<costStuffCount>10</costStuffCount>
 		<costList>
 			<Gold>1</Gold>
@@ -103,10 +99,26 @@
 			</defaultOutfitTags>
 		</apparel>
 	</ThingDef>
+	
+	<ThingDef ParentName="ROCKET_Ranks" Name="ROCKET_Ranks_Enlisted" Abstract="True">
+		<equippedStatOffsets>
+			<SuppressionPower MayRequire="Ludeon.RimWorld.Ideology">0.05</SuppressionPower>
+			<SlaveSuppressionOffset MayRequire="Ludeon.RimWorld.Ideology">-0.05</SlaveSuppressionOffset>
+			<MentalBreakThreshold>-0.05</MentalBreakThreshold>
+		</equippedStatOffsets>		
+	</ThingDef>
+	
+	<ThingDef ParentName="ROCKET_Ranks" Name="ROCKET_Ranks_Officer" Abstract="True">
+		<equippedStatOffsets>
+			<SuppressionPower MayRequire="Ludeon.RimWorld.Ideology">0.15</SuppressionPower>
+			<SlaveSuppressionOffset MayRequire="Ludeon.RimWorld.Ideology">-0.15</SlaveSuppressionOffset>
+			<MentalBreakThreshold>-0.15</MentalBreakThreshold>
+		</equippedStatOffsets>
+	</ThingDef>
   
 	<!-- Enlisted -->
 
-	<ThingDef ParentName="ROCKET_Ranks">
+	<ThingDef ParentName="ROCKET_Ranks_Enlisted">
 		<defName>ROCKET_Ranks_Pvt</defName>
 		<label>private rank</label>
 		<description>A pair of ornamantal shoulder pieces for privates.</description>
@@ -123,7 +135,7 @@
 		</modExtensions>
 	</ThingDef>
 
-	<ThingDef ParentName="ROCKET_Ranks">
+	<ThingDef ParentName="ROCKET_Ranks_Enlisted">
 		<defName>ROCKET_Ranks_Pfc</defName>
 		<label>private first class rank</label>
 		<description>A pair of ornamantal shoulder pieces for private first class.</description>
@@ -140,7 +152,7 @@
 		</modExtensions>
 	</ThingDef>
 
-	<ThingDef ParentName="ROCKET_Ranks">
+	<ThingDef ParentName="ROCKET_Ranks_Enlisted">
 		<defName>ROCKET_Ranks_Cpl</defName>
 		<label>corporal rank</label>
 		<description>A pair of ornamantal shoulder pieces for corporals.</description>
@@ -157,7 +169,7 @@
 		</modExtensions>
 	</ThingDef>
 
-	<ThingDef ParentName="ROCKET_Ranks">
+	<ThingDef ParentName="ROCKET_Ranks_Enlisted">
 		<defName>ROCKET_Ranks_Sgt</defName>
 		<label>sergeant rank</label>
 		<description>A pair of ornamantal shoulder pieces for sergeants.</description>
@@ -174,7 +186,7 @@
 		</modExtensions>
 	</ThingDef>
 
-	<ThingDef ParentName="ROCKET_Ranks">
+	<ThingDef ParentName="ROCKET_Ranks_Enlisted">
 		<defName>ROCKET_Ranks_SSgt</defName>
 		<label>staff sergeant rank</label>
 		<description>A pair of ornamantal shoulder pieces for staff sergeants.</description>
@@ -191,7 +203,7 @@
 		</modExtensions>
 	</ThingDef>
 
-	<ThingDef ParentName="ROCKET_Ranks">
+	<ThingDef ParentName="ROCKET_Ranks_Enlisted">
 		<defName>ROCKET_Ranks_Sfc</defName>
 		<label>sergeant first class rank</label>
 		<description>A pair of ornamantal shoulder pieces for sergeant first class.</description>
@@ -208,7 +220,7 @@
 		</modExtensions>
 	</ThingDef>
 
-	<ThingDef ParentName="ROCKET_Ranks">
+	<ThingDef ParentName="ROCKET_Ranks_Enlisted">
 		<defName>ROCKET_Ranks_MSgt</defName>
 		<label>master sergeant rank</label>
 		<description>A pair of ornamantal shoulder pieces for master sergeants.</description>
@@ -225,7 +237,7 @@
 		</modExtensions>
 	</ThingDef>
 
-	<ThingDef ParentName="ROCKET_Ranks">
+	<ThingDef ParentName="ROCKET_Ranks_Enlisted">
 		<defName>ROCKET_Ranks_FSgt</defName>
 		<label>first sergeant rank</label>
 		<description>A pair of ornamantal shoulder pieces for first sergeants.</description>
@@ -242,7 +254,7 @@
 		</modExtensions>
 	</ThingDef>
 
-	<ThingDef ParentName="ROCKET_Ranks">
+	<ThingDef ParentName="ROCKET_Ranks_Enlisted">
 		<defName>ROCKET_Ranks_SgtMaj</defName>
 		<label>sergeant major rank</label>
 		<description>A pair of ornamantal shoulder pieces for sergeant majors.</description>
@@ -261,7 +273,7 @@
   
 	<!-- Officers -->
 
-	<ThingDef ParentName="ROCKET_Ranks">
+	<ThingDef ParentName="ROCKET_Ranks_Officer">
 		<defName>ROCKET_Ranks_2Lt</defName>
 		<label>second lieutenant rank</label>
 		<description>A pair of ornamental shoulder pieces for second lieutenants.</description>
@@ -278,7 +290,7 @@
 		</modExtensions>
 	</ThingDef>
 
-	<ThingDef ParentName="ROCKET_Ranks">
+	<ThingDef ParentName="ROCKET_Ranks_Officer">
 		<defName>ROCKET_Ranks_1Lt</defName>
 		<label>first lieutenant rank</label>
 		<description>A pair of ornamental shoulder pieces for first lieutenants.</description>
@@ -295,7 +307,7 @@
 		</modExtensions>
 	</ThingDef>
 
-	<ThingDef ParentName="ROCKET_Ranks">
+	<ThingDef ParentName="ROCKET_Ranks_Officer">
 		<defName>ROCKET_Ranks_Capt</defName>
 		<label>captain rank</label>
 		<description>A pair of ornamental shoulder pieces for captains.</description>
@@ -312,7 +324,7 @@
 		</modExtensions>
 	</ThingDef>
 
-	<ThingDef ParentName="ROCKET_Ranks">
+	<ThingDef ParentName="ROCKET_Ranks_Officer">
 		<defName>ROCKET_Ranks_Maj</defName>
 		<label>major rank</label>
 		<description>A pair of ornamental shoulder pieces for majors.</description>
@@ -329,7 +341,7 @@
 		</modExtensions>
 	</ThingDef>
 
-	<ThingDef ParentName="ROCKET_Ranks">
+	<ThingDef ParentName="ROCKET_Ranks_Officer">
 		<defName>ROCKET_Ranks_LtCol</defName>
 		<label>lieutenant colonel rank</label>
 		<description>A pair of ornamental shoulder pieces for lieutenant colonels.</description>
@@ -346,7 +358,7 @@
 		</modExtensions>
 	</ThingDef>
 
-	<ThingDef ParentName="ROCKET_Ranks">
+	<ThingDef ParentName="ROCKET_Ranks_Officer">
 		<defName>ROCKET_Ranks_Col</defName>
 		<label>colonel rank</label>
 		<description>A pair of ornamental shoulder pieces for colonels.</description>
@@ -363,7 +375,7 @@
 		</modExtensions>
 	</ThingDef>
 
-	<ThingDef ParentName="ROCKET_Ranks">
+	<ThingDef ParentName="ROCKET_Ranks_Officer">
 		<defName>ROCKET_Ranks_1Star</defName>
 		<label>brigadier general rank</label>
 		<description>A pair of ornamental shoulder pieces for brigadier generals.</description>
@@ -380,7 +392,7 @@
 		</modExtensions>
 	</ThingDef>
 
-	<ThingDef ParentName="ROCKET_Ranks">
+	<ThingDef ParentName="ROCKET_Ranks_Officer">
 		<defName>ROCKET_Ranks_2Star</defName>
 		<label>major general rank</label>
 		<description>A pair of ornamental shoulder pieces for major generals.</description>
@@ -397,7 +409,7 @@
 		</modExtensions>
 	</ThingDef>
 
-	<ThingDef ParentName="ROCKET_Ranks">
+	<ThingDef ParentName="ROCKET_Ranks_Officer">
 		<defName>ROCKET_Ranks_3Star</defName>
 		<label>lieutenant general rank</label>
 		<description>A pair of ornamental shoulder pieces for lieutenant generals.</description>

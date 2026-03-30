@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 
 namespace RocketsRanks
 {
@@ -23,7 +25,7 @@ namespace RocketsRanks
                 var comp = RankGameComponent.Instance;
                 var currentRank = comp?.GetRank(__instance);
                 var label = currentRank != null
-                    ? currentRank.LabelCap.ToString()
+                    ? currentRank.RankLabel
                     : "ROCKET_Promote".Translate().ToString();
                 var icon = currentRank?.Icon ?? RankTextures.PromoteIcon;
 
@@ -39,10 +41,10 @@ namespace RocketsRanks
     }
 
     /// <summary>
-    /// Draws the pawn's rank icon in the top-left corner of their colonist bar portrait.
+    /// Draws rank badge on colonist bar portraits.
     /// </summary>
     [HarmonyPatch(typeof(ColonistBarColonistDrawer), nameof(ColonistBarColonistDrawer.DrawColonist))]
-    public static class Patch_DrawColonist_RankBadge
+    public static class Patch_DrawColonist
     {
         public static void Postfix(Rect rect, Pawn colonist)
         {
@@ -54,19 +56,72 @@ namespace RocketsRanks
 
             var size = RanksMod.Settings.BadgeSize;
             var halfSize = size / 2f;
-
-            // Anchor point is portrait top-left (0,0) plus offsets;
-            // texture is centered on that anchor.
             var centerX = rect.x + RanksMod.Settings.BadgeOffsetX;
             var centerY = rect.y + RanksMod.Settings.BadgeOffsetY;
 
-            var badgeRect = new Rect(
+            GUI.DrawTexture(new Rect(
                 centerX - halfSize,
                 centerY - halfSize,
-                size,
-                size);
+                size, size), rank.Icon);
+        }
+    }
+    
+    [HarmonyPatch(typeof(ColonistBar), "CheckRecacheEntries")]
+    public static class Patch_HideColonistBarEntries
+    {
+        private static readonly AccessTools.FieldRef<ColonistBar, List<ColonistBar.Entry>> CachedEntriesRef =
+            AccessTools.FieldRefAccess<ColonistBar, List<ColonistBar.Entry>>("cachedEntries");
 
-            GUI.DrawTexture(badgeRect, rank.Icon);
+        private static readonly AccessTools.FieldRef<ColonistBar, List<Vector2>> CachedDrawLocsRef =
+            AccessTools.FieldRefAccess<ColonistBar, List<Vector2>>("cachedDrawLocs");
+
+        private static WorldRenderMode _prevMode = WorldRenderMode.None;
+
+        public static void Postfix(ColonistBar __instance)
+        {
+            var mode = WorldRendererUtility.CurrentWorldRenderMode;
+            var justReturnedFromWorld = _prevMode == WorldRenderMode.Planet && mode != WorldRenderMode.Planet;
+            _prevMode = mode;
+
+            // Force a clean recache next frame so vanilla repopulates entries fully
+            if (justReturnedFromWorld)
+            {
+                __instance.MarkColonistsDirty();
+                return;
+            }
+
+            var hideCrypto = RanksMod.Settings.HideCryptosleep;
+            var hideOffMap = RanksMod.Settings.HideOffMap;
+            var hideInMap = RanksMod.Settings.HideInMap;
+            if (!hideCrypto && !hideOffMap && !hideInMap) return;
+
+            var entries = CachedEntriesRef(__instance);
+            var drawLocs = CachedDrawLocsRef(__instance);
+            if (entries == null || entries.Count == 0) return;
+
+            for (var i = entries.Count - 1; i >= 0; i--)
+            {
+                if (!ShouldHide(entries[i].pawn)) continue;
+                entries.RemoveAt(i);
+                if (drawLocs != null && i < drawLocs.Count)
+                    drawLocs.RemoveAt(i);
+            }
+        }
+
+        private static bool ShouldHide(Pawn pawn)
+        {
+            if (pawn == null) return true;
+
+            if (RanksMod.Settings.HideInMap && WorldRendererUtility.CurrentWorldRenderMode is WorldRenderMode.Planet)
+                return true;
+
+            if (RanksMod.Settings.HideCryptosleep && pawn.ParentHolder is Building_CryptosleepCasket)
+                return true;
+
+            if (RanksMod.Settings.HideOffMap && Find.CurrentMap != null && pawn.Map != null && pawn.Map != Find.CurrentMap)
+                return true;
+
+            return false;
         }
     }
 
@@ -114,44 +169,80 @@ namespace RocketsRanks
 
     /// <summary>
     /// Hard block: prevent any code path from equipping rank-restricted apparel
-    /// if the pawn doesn't hold the required rank.
+    /// if the pawn doesn't hold the required rank. Only shows a message for
+    /// manual (player-initiated) wear attempts.
     /// </summary>
     [HarmonyPatch(typeof(Pawn_ApparelTracker), nameof(Pawn_ApparelTracker.Wear))]
     public static class Patch_ApparelTracker_Wear
     {
         public static bool Prefix(Pawn_ApparelTracker __instance, Apparel newApparel)
         {
+            if (newApparel is not RocketRank) return true;
+
             var ext = RankUtility.GetRankExtension(newApparel.def);
             if (ext?.requiredRank == null) return true;
 
             if (!RankUtility.PawnMeetsRankRequirement(__instance.pawn, newApparel.def))
             {
-                Messages.Message(
-                    "ROCKET_RankRequired".Translate(__instance.pawn.LabelShort, ext.requiredRank.LabelCap),
-                    __instance.pawn,
-                    MessageTypeDefOf.RejectInput,
-                    false);
+                Log.Warning($"[RocketsRanks] Wear BLOCKED: {__instance.pawn.LabelShort} (rank={RankGameComponent.Instance?.GetRank(__instance.pawn)?.label ?? "none"}) tried to wear {newApparel.def.defName} (requires {ext.requiredRank.label}). This should have been caught by ScoreGain!");
                 return false;
             }
-
             return true;
         }
     }
 
     /// <summary>
-    /// Prevent the auto-outfit system from scoring rank-restricted apparel
-    /// that the pawn can't wear.
+    /// Safety net: if a Wear job for rank gear slips through,
+    /// kill it before the pawn starts walking.
+    /// </summary>
+    [HarmonyPatch(typeof(JobGiver_OptimizeApparel), "TryGiveJob")]
+    public static class Patch_OptimizeApparel_TryGiveJob
+    {
+        public static void Postfix(Pawn pawn, ref Job __result)
+        {
+            if (__result == null) return;
+            if (__result.def != JobDefOf.Wear) return;
+            if (__result.targetA.Thing is not RocketRank) return;
+
+            if (!RankUtility.PawnMeetsRankRequirement(pawn, __result.targetA.Thing.def))
+            {
+                __result = null;
+                pawn.mindState.nextApparelOptimizeTick = Find.TickManager.TicksGame + 12000;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Prevent auto-equip of rank gear the pawn can't wear.
+    /// Mirrors the proven pattern from RocketMedals.
     /// </summary>
     [HarmonyPatch(typeof(JobGiver_OptimizeApparel), nameof(JobGiver_OptimizeApparel.ApparelScoreRaw))]
     public static class Patch_ApparelScoreRaw
     {
         public static void Postfix(Pawn pawn, Apparel ap, ref float __result)
         {
-            var ext = RankUtility.GetRankExtension(ap.def);
-            if (ext?.requiredRank == null) return;
-
-            if (!RankUtility.PawnMeetsRankRequirement(pawn, ap.def))
+            if (ap is RocketRank && !RankUtility.PawnMeetsRankRequirement(pawn, ap.def))
                 __result = -10000f;
+        }
+    }
+    
+    [HarmonyPatch(typeof(ApparelUtility), nameof(ApparelUtility.HasPartsToWear))]
+    public static class Patch_ApparelUtility_HasPartsToWear
+    {
+        public static void Postfix(Pawn p, ThingDef apparel, ref bool __result)
+        {
+            // If the base game already decided they can't wear it, skip
+            if (!__result) return;
+
+            // Check if the item is a Rank
+            if (typeof(RocketRank).IsAssignableFrom(apparel.thingClass))
+            {
+                // If they don't meet the requirement, they physically "cannot" wear it
+                if (!RankUtility.PawnMeetsRankRequirement(p, apparel))
+                {
+                    __result = false;
+                }
+            }
         }
     }
 
@@ -164,20 +255,15 @@ namespace RocketsRanks
     {
         public static void Postfix(ThingWithComps __instance, ref string __result)
         {
+            if (__instance is not RocketRank) return;
+
             var ext = RankUtility.GetRankExtension(__instance.def);
             if (ext?.requiredRank == null) return;
 
             var rank = ext.requiredRank;
             var sb = new System.Text.StringBuilder(__result);
             if (sb.Length > 0) sb.AppendLine();
-            sb.Append($"Rank required: {rank.LabelCap} (Lvl {rank.rankLevel})");
-
-            if (!rank.description.NullOrEmpty())
-            {
-                sb.AppendLine();
-                sb.Append(rank.description);
-            }
-
+            sb.Append($"Can only be worn by pawns with the rank of <color=#E6D966>{rank.RankLabel}</color>");
             __result = sb.ToString();
         }
     }
@@ -192,12 +278,10 @@ namespace RocketsRanks
         {
             if (pawn?.apparel == null) return;
 
-            // Find worn rank apparel that no longer matches the pawn's rank
-            var toRemove = new List<Apparel>();
+            var toRemove = new List<Apparel>(pawn.apparel.WornApparel.Count);
             foreach (var worn in pawn.apparel.WornApparel)
             {
-                var ext = RankUtility.GetRankExtension(worn.def);
-                if (ext?.requiredRank == null) continue;
+                if (worn is not RocketRank) continue;
                 if (!RankUtility.PawnMeetsRankRequirement(pawn, worn.def))
                     toRemove.Add(worn);
             }
@@ -210,8 +294,7 @@ namespace RocketsRanks
             }
 
             // Nudge optimizer to pick up the correct rank gear
-            if (pawn.mindState != null)
-                pawn.mindState.nextApparelOptimizeTick = 0;
+            pawn.mindState?.nextApparelOptimizeTick = 0;
         }
     }
 
@@ -225,7 +308,7 @@ namespace RocketsRanks
     {
         public static bool Prefix(Apparel apparel, BodyTypeDef bodyType, ref ApparelGraphicRecord rec, ref bool __result)
         {
-            if (RankUtility.GetRankExtension(apparel.def) == null) return true;
+            if (apparel is not RocketRank) return true;
 
             var path = apparel.def.apparel.wornGraphicPath;
             if (path.NullOrEmpty()) return true;
@@ -255,7 +338,7 @@ namespace RocketsRanks
         public static void Postfix(PawnRenderNode node, PawnDrawParms parms, ref Vector3 __result)
         {
             if (node is not PawnRenderNode_Apparel apparelNode) return;
-            if (RankUtility.GetRankExtension(apparelNode.apparel.def) == null) return;
+            if (apparelNode.apparel is not RocketRank) return;
 
             RankRenderSettings.GetOffsetAndScale(apparelNode.apparel.def,
                 parms.pawn?.story?.bodyType, parms.facing,
@@ -273,13 +356,13 @@ namespace RocketsRanks
     {
         private const float BaseZ = -0.1f;
         private const float SideShiftX = 0.02f;
-        private const float NorthDepthPush = 0.005f;
-        private const float SideDepthPush = 0.005f;
+        private const float DepthAboveShell = 0.01f;
+        private const float NorthExtraDepth = 0.02f;
 
         public static void Postfix(PawnRenderNode node, PawnDrawParms parms, ref Vector3 __result)
         {
             if (node is not PawnRenderNode_Apparel apparelNode) return;
-            if (RankUtility.GetRankExtension(apparelNode.apparel.def) == null) return;
+            if (apparelNode.apparel is not RocketRank) return;
 
             var facing = parms.facing;
             RankRenderSettings.GetOffsetAndScale(apparelNode.apparel.def,
@@ -287,23 +370,22 @@ namespace RocketsRanks
                 out var bodyOffsetX, out var bodyOffsetZ, out _);
 
             __result.z += BaseZ + bodyOffsetZ;
+            __result.y += DepthAboveShell;
 
             switch (facing.AsInt)
             {
                 case 0: // North
                     __result.x += bodyOffsetX;
-                    __result.y += NorthDepthPush;
+                    __result.y += NorthExtraDepth;
                     break;
                 case 1: // East
                     __result.x += SideShiftX + bodyOffsetX;
-                    __result.y += SideDepthPush;
                     break;
                 case 2: // South
                     __result.x += bodyOffsetX;
                     break;
                 case 3: // West
                     __result.x -= SideShiftX + bodyOffsetX;
-                    __result.y += SideDepthPush;
                     break;
             }
         }

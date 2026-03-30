@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Verse;
 
 namespace RocketsRanks
@@ -49,6 +50,15 @@ namespace RocketsRanks
                 LookMode.Reference, LookMode.Deep,
                 ref pawnKeys, ref dataValues);
             rankData ??= new Dictionary<Pawn, PawnRankData>();
+
+            // Dead/unresolvable pawns come back as null keys on load - strip them
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            {
+                Log.Warning($"[RocketsRanks] Removing {rankData.Keys.Count(k => k == null)} null keys from rank data after load.");
+                var nullKeys = rankData.Keys.Where(k => k == null).ToList();
+                foreach (var key in nullKeys) 
+                    rankData.Remove(key);
+            }
         }
 
         public static RankGameComponent Instance =>
@@ -109,7 +119,9 @@ namespace RocketsRanks
         public bool HasRank(Pawn pawn, RankDef rank)
         {
             if (rank == null || pawn == null) return false;
-            return GetRank(pawn) == rank;
+            var pawnRank = GetRank(pawn);
+            if (pawnRank == null) return false;
+            return pawnRank.defNameHash == rank.defNameHash;
         }
     }
 }

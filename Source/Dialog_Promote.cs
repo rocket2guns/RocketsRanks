@@ -60,7 +60,7 @@ namespace RocketsRanks
             var portraitX = rect.x + (rect.width - portraitSize) / 2f;
             var portraitRect = new Rect(portraitX, rect.y + 10f, portraitSize, portraitSize);
             GUI.DrawTexture(portraitRect, PortraitsCache.Get(pawn, new Vector2(portraitSize, portraitSize),
-                Rot4.South, default, 1f, true, true, false, false, null));
+                Rot4.South, default, 1.2f, true, true, true, true, null));
 
             // Pawn name
             Text.Font = GameFont.Small;
@@ -87,7 +87,7 @@ namespace RocketsRanks
                 Text.Font = GameFont.Tiny;
                 Text.Anchor = TextAnchor.UpperCenter;
                 GUI.color = new Color(0.9f, 0.85f, 0.4f);
-                var rankText = currentRank.LabelCap.ToString();
+                var rankText = currentRank.RankLabel;
                 var rankHeight = Text.CalcHeight(rankText, rect.width);
                 Widgets.Label(new Rect(rect.x, curY, rect.width, rankHeight), rankText);
                 GUI.color = Color.white;
@@ -239,7 +239,7 @@ namespace RocketsRanks
                 // Label
                 Text.Anchor = TextAnchor.MiddleLeft;
                 Text.Font = GameFont.Small;
-                Widgets.Label(new Rect(textOffset, curY, viewRect.width - textOffset - 60f, ROW_HEIGHT), rank.LabelCap);
+                Widgets.Label(new Rect(textOffset, curY, viewRect.width - textOffset - 60f, ROW_HEIGHT), rank.RankLabel);
 
                 // Rank level on the right
                 Text.Font = GameFont.Tiny;
@@ -269,18 +269,41 @@ namespace RocketsRanks
             comp.SetRank(pawn, selectedRank, draft);
 
             string actionLabel;
-            if (selectedRank == null)
-                actionLabel = $"{pawn.NameShortColored} has been stripped of rank.";
-            else if (previousRank == null)
-                actionLabel = $"{pawn.NameShortColored} has been assigned the rank of {selectedRank.LabelCap}.";
-            else if (selectedRank.rankLevel > previousRank.rankLevel)
-                actionLabel = $"{pawn.NameShortColored} has been promoted to {selectedRank.LabelCap}.";
-            else if (selectedRank.rankLevel < previousRank.rankLevel)
-                actionLabel = $"{pawn.NameShortColored} has been demoted to {selectedRank.LabelCap}.";
-            else
-                actionLabel = $"{pawn.NameShortColored} has been transferred to {selectedRank.LabelCap}.";
+            MessageTypeDef eventType;
+            switch (selectedRank)
+            {
+                case null:
+                    actionLabel = $"{pawn.NameShortColored} has been returned to civilian status.";
+                    eventType = MessageTypeDefOf.NeutralEvent;
+                    break;
+                default:
+                {
+                    if (previousRank == null)
+                    {
+                        actionLabel = $"{pawn.NameShortColored} has been assigned the rank of <color=#E6D966>{selectedRank.RankLabel}</color>.";
+                        eventType = MessageTypeDefOf.PositiveEvent;
+                    }
+                    else if (selectedRank.rankLevel > previousRank.rankLevel)
+                    {
+                        actionLabel = $"{pawn.NameShortColored} has been promoted to <color=#E6D966>{selectedRank.RankLabel}</color>.";
+                        eventType = MessageTypeDefOf.PositiveEvent;
+                    }
+                    else if (selectedRank.rankLevel < previousRank.rankLevel)
+                    {
+                        actionLabel = $"{pawn.NameShortColored} has been demoted to <color=#E6D966>{selectedRank.RankLabel}</color>.";
+                        eventType = MessageTypeDefOf.NegativeEvent;
+                    }
+                    else
+                    {
+                        actionLabel = $"{pawn.NameShortColored} has been transferred to <color=#E6D966>{selectedRank.RankLabel}</color>.";
+                        eventType = MessageTypeDefOf.NeutralEvent;
+                    }
 
-            Messages.Message(actionLabel, pawn, MessageTypeDefOf.PositiveEvent);
+                    break;
+                }
+            }
+
+            Messages.Message(actionLabel, pawn, eventType);
         }
     }
 }

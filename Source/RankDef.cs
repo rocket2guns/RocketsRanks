@@ -1,3 +1,5 @@
+using System.Globalization;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -19,6 +21,8 @@ namespace RocketsRanks
         public string iconPath;
 
         [Unsaved] private Texture2D cachedIcon;
+        
+        public string RankLabel => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(LabelCap);
 
         public Texture2D Icon
         {

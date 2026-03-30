@@ -10,7 +10,7 @@ namespace RocketsRanks
     public static class RankTextures
     {
         public static readonly Texture2D PromoteIcon =
-            ContentFinder<Texture2D>.Get("UI/RankPromote", false) ?? BaseContent.BadTex;
+            ContentFinder<Texture2D>.Get("UI/ButtonPromote", false) ?? BaseContent.BadTex;
     }
 
     public class RanksMod : Mod
@@ -26,7 +26,7 @@ namespace RocketsRanks
 
         public override void DoSettingsWindowContents(Rect inRect)
         {
-            var viewHeight = 400f;
+            var viewHeight = 500f;
             if (Settings.ShowRankBadge) viewHeight += 150f;
             if (Settings.ShowRankOnMap) viewHeight += 130f;
             if (Settings.ShowBodyTypeDebug) viewHeight += RankRenderSettings.BodyTypeLabels.Length * 420f;
@@ -59,6 +59,25 @@ namespace RocketsRanks
                 listing.Label($"Badge offset Y: {Settings.BadgeOffsetY:F0}px");
                 Settings.BadgeOffsetY = listing.Slider(Settings.BadgeOffsetY, -64f, 64f);
             }
+
+            // --- Colonist bar ---
+            listing.GapLine();
+            listing.CheckboxLabeled(
+                "Hide cryptosleep colonists from bar",
+                ref Settings.HideCryptosleep,
+                "If enabled, colonists inside cryptosleep caskets will not appear on the colonist bar."
+            );
+            listing.CheckboxLabeled(
+                "Hide off-map colonists from bar",
+                ref Settings.HideOffMap,
+                "If enabled, colonists on a different map than the one you are viewing will not appear on the colonist bar."
+            );
+            listing.CheckboxLabeled(
+                "Hide colonists when in map view",
+                ref Settings.HideInMap,
+                "If enabled, colonists in bar will be hidden while in map view."
+            );
+            listing.GapLine();
 
             listing.CheckboxLabeled(
                 "Show rank icon on map labels",
@@ -130,11 +149,13 @@ namespace RocketsRanks
         public float BadgeOffsetY = 4f;
         public bool ShowRankOnMap = true;
         public float MapIconSize = 16f;
-        public float MapIconOffsetX = 1f;
-        public float MapIconOffsetY = -5f;
+        public float MapIconOffsetX = 0f;
+        public float MapIconOffsetY = -3f;
+        public bool HideCryptosleep = false;
+        public bool HideOffMap;
+        public bool HideInMap;
         public bool ShowBodyTypeDebug;
         public RankBodyTypeSettings[] BodySettings = new RankBodyTypeSettings[(int)RankBodyType.Count];
-        private bool migrated;
 
         // UI state (not saved)
         public Vector2 settingsScroll;
@@ -149,12 +170,13 @@ namespace RocketsRanks
             Scribe_Values.Look(ref BadgeOffsetY, "BadgeOffsetY", 4f);
             Scribe_Values.Look(ref ShowRankOnMap, "ShowRankOnMap", true);
             Scribe_Values.Look(ref MapIconSize, "MapIconSize", 16f);
-            Scribe_Values.Look(ref MapIconOffsetX, "MapIconOffsetX", 1f);
-            Scribe_Values.Look(ref MapIconOffsetY, "MapIconOffsetY", -5f);
+            Scribe_Values.Look(ref MapIconOffsetX, "MapIconOffsetX", 0f);
+            Scribe_Values.Look(ref MapIconOffsetY, "MapIconOffsetY", -3f);
+            Scribe_Values.Look(ref HideCryptosleep, "HideCryptosleep", false);
+            Scribe_Values.Look(ref HideOffMap, "HideOffMap", false);
+            Scribe_Values.Look(ref HideInMap, "HideInMap", false);
             Scribe_Values.Look(ref ShowBodyTypeDebug, "ShowBodyTypeDebug", false);
-            Scribe_Values.Look(ref migrated, "migrated_v2", false);
 
-            // Serialize each body type's settings individually
             if (BodySettings == null)
                 BodySettings = new RankBodyTypeSettings[(int)RankBodyType.Count];
 
@@ -164,19 +186,16 @@ namespace RocketsRanks
             Scribe_Deep.Look(ref BodySettings[(int)RankBodyType.Fat], "bodyFat");
             Scribe_Deep.Look(ref BodySettings[(int)RankBodyType.Hulk], "bodyHulk");
 
-            // Ensure defaults for any null entries
             RankRenderSettings.EnsureDefaults(BodySettings);
-
-            if (!migrated)
-            {
-                if (BadgeOffsetX == 0f && BadgeOffsetY == 0f)
-                {
-                    BadgeOffsetX = 4f;
-                    BadgeOffsetY = 4f;
-                }
-                migrated = true;
-            }
         }
+    }
+    
+    /// <summary>
+    /// Marker subclass of Apparel for rank insignia items.
+    /// </summary>
+    public class RocketRank : Apparel
+    {
+
     }
 
     [StaticConstructorOnStartup]

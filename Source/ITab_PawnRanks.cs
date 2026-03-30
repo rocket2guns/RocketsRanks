@@ -95,7 +95,7 @@ namespace RocketsRanks
             Text.Font = GameFont.Medium;
             Text.Anchor = TextAnchor.MiddleCenter;
             var rankLabel = data.currentRank != null
-                ? data.currentRank.LabelCap.ToString()
+                ? data.currentRank.RankLabel
                 : "No Rank";
             var headerHeight = Text.CalcHeight(rankLabel, rect.width);
             Widgets.Label(new Rect(rect.x, curY, rect.width, headerHeight), rankLabel);
@@ -227,22 +227,22 @@ namespace RocketsRanks
             }
             else if (record.previousRank == null)
             {
-                changeText = $"Promoted to {record.rank.LabelCap}";
+                changeText = $"Promoted to {record.rank.RankLabel}";
                 changeColor = GreenColor;
             }
             else if (record.rank.rankLevel > record.previousRank.rankLevel)
             {
-                changeText = $"Promoted to {record.rank.LabelCap}";
+                changeText = $"Promoted to {record.rank.RankLabel}";
                 changeColor = GreenColor;
             }
             else if (record.rank.rankLevel < record.previousRank.rankLevel)
             {
-                changeText = $"Demoted to {record.rank.LabelCap}";
+                changeText = $"Demoted to {record.rank.RankLabel}";
                 changeColor = RedColor;
             }
             else
             {
-                changeText = $"Transferred to {record.rank.LabelCap}";
+                changeText = $"Transferred to {record.rank.RankLabel}";
                 changeColor = MutedColor;
             }
 
