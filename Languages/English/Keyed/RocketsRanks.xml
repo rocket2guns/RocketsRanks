@@ -10,6 +10,10 @@
   <ROCKET_SelectRank>Select a rank:</ROCKET_SelectRank>
   <ROCKET_PromotionCitation>Citation (optional):</ROCKET_PromotionCitation>
   <ROCKET_ConfirmPromotion>Confirm</ROCKET_ConfirmPromotion>
+  <ROCKET_CancelPromotion>Cancel</ROCKET_CancelPromotion>
+  <ROCKET_NoRankAssigned>No rank assigned</ROCKET_NoRankAssigned>
+  <ROCKET_NumberOfPromotions>{0} promotion(s)</ROCKET_NumberOfPromotions>
+  <ROCKET_NoRankSelected>No rank</ROCKET_NoRankSelected>
 
   <!-- Apparel block message -->
   <ROCKET_RankRequired>{0} cannot wear this — requires the rank of {1}.</ROCKET_RankRequired>
@@ -17,5 +21,21 @@
   <!-- ITab -->
   <ROCKET_RanksTab>Ranks</ROCKET_RanksTab>
   <ROCKET_PromotionHistory>Promotion History</ROCKET_PromotionHistory>
+  <ROCKET_StrippedOfRank>Stripped of Rank</ROCKET_StrippedOfRank>
+  <ROCKET_PromotedTo>Promoted to {0}</ROCKET_PromotedTo>
+  <ROCKET_DemotedTo>Demoted to {0}</ROCKET_DemotedTo>
+  <ROCKET_RankChangedTo>Changed to {0}</ROCKET_RankChangedTo>
+  <ROCKET_NoPromotionRecords>No promotion records.</ROCKET_NoPromotionRecords>
+  
+  <!-- Inspect tab -->
+  <ROCKET_InspectRankRequirement>Requires the rank of {0} to wear</ROCKET_InspectRankRequirement>
+  
+  <!-- Messages -->
+  
+  <ROCKET_HasBeenPromotedTo>{0} has been promoted to {1}.</ROCKET_HasBeenPromotedTo>
+  <ROCKET_HasBeenDemotedTo>{0} has been demoted to {1}.</ROCKET_HasBeenDemotedTo>
+  <ROCKET_HasBeenTransferredTo>{0} has been demoted to {1}.</ROCKET_HasBeenTransferredTo>
+  <ROCKET_HasBeenAssignedRankOf>{0} has been assigned the rank of {1}.</ROCKET_HasBeenAssignedRankOf>
+  <ROCKET_HasBecomeACivilian>{0} has become a civilian.</ROCKET_HasBecomeACivilian>
 
 </LanguageData>

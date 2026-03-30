@@ -19,6 +19,9 @@ namespace RocketsRanks
             var corpseDef = ThingDef.Named("Corpse_Human");
             InjectIntoDef(humanDef, tabType, tabInstance);
             InjectIntoDef(corpseDef, tabType, tabInstance);
+            // Inject CompRank onto Human
+            if (!humanDef.comps.Any(c => c.compClass == typeof(CompRank)))
+                humanDef.comps.Add(new CompProperties { compClass = typeof(CompRank) });
         }
 
         private static void InjectIntoDef(ThingDef def, Type tabType, InspectTabBase tabInstance)
@@ -58,8 +61,8 @@ namespace RocketsRanks
             {
                 var pawn = SelPawnForGear;
                 if (pawn == null) return false;
-                var comp = RankGameComponent.Instance;
-                return comp?.GetData(pawn) != null;
+                var comp = pawn.GetComp<CompRank>();
+                return comp?.history.Count > 0 || comp?.currentRank != null;
             }
         }
 
@@ -73,29 +76,26 @@ namespace RocketsRanks
         protected override void FillTab()
         {
             var pawn = SelPawnForGear;
-            if (pawn == null) return;
-
-            var comp = RankGameComponent.Instance;
-            var data = comp?.GetData(pawn);
-            if (data == null) return;
+            var comp = pawn?.GetComp<CompRank>();
+            if (comp == null) return;
 
             var rect = new Rect(0f, 0f, size.x, size.y).ContractedBy(PADDING);
             var curY = rect.y;
 
             // Rank icon, centered
-            if (data.currentRank?.Icon != null)
+            if (comp.currentRank?.Icon != null)
             {
                 var iconSize = 48f;
                 var iconX = rect.x + (rect.width - iconSize) / 2f;
-                GUI.DrawTexture(new Rect(iconX, curY, iconSize, iconSize), data.currentRank.Icon);
+                GUI.DrawTexture(new Rect(iconX, curY, iconSize, iconSize), comp.currentRank.Icon);
                 curY += iconSize + 6f;
             }
 
             // Header: Current rank
             Text.Font = GameFont.Medium;
             Text.Anchor = TextAnchor.MiddleCenter;
-            var rankLabel = data.currentRank != null
-                ? data.currentRank.RankLabel
+            var rankLabel = comp.currentRank != null
+                ? comp.currentRank.RankLabel
                 : "No Rank";
             var headerHeight = Text.CalcHeight(rankLabel, rect.width);
             Widgets.Label(new Rect(rect.x, curY, rect.width, headerHeight), rankLabel);
@@ -109,12 +109,12 @@ namespace RocketsRanks
             curY += nameHeight + 4f;
 
             // Rank description
-            if (data.currentRank?.description != null)
+            if (comp.currentRank?.description != null)
             {
                 Text.Font = GameFont.Tiny;
                 GUI.color = MutedColor;
-                var descHeight = Text.CalcHeight(data.currentRank.description, rect.width);
-                Widgets.Label(new Rect(rect.x, curY, rect.width, descHeight), data.currentRank.description);
+                var descHeight = Text.CalcHeight(comp.currentRank.description, rect.width);
+                Widgets.Label(new Rect(rect.x, curY, rect.width, descHeight), comp.currentRank.description);
                 GUI.color = Color.white;
                 curY += descHeight + 4f;
             }
@@ -134,17 +134,17 @@ namespace RocketsRanks
             curY += 28f;
 
             // History list
-            if (data.history.Count == 0)
+            if (comp.history.Count == 0)
             {
                 Text.Font = GameFont.Tiny;
                 GUI.color = Color.gray;
-                Widgets.Label(new Rect(rect.x, curY, rect.width, 24f), "No promotion records.");
+                Widgets.Label(new Rect(rect.x, curY, rect.width, 24f), "ROCKET_NoPromotionRecords".Translate());
                 GUI.color = Color.white;
             }
             else
             {
                 var listRect = new Rect(rect.x, curY, rect.width, rect.yMax - curY);
-                DrawHistoryList(listRect, data.history, pawn);
+                DrawHistoryList(listRect, comp.history, pawn);
             }
 
             Text.Font = GameFont.Small;
@@ -222,27 +222,27 @@ namespace RocketsRanks
             Color changeColor;
             if (record.rank == null)
             {
-                changeText = "Stripped of rank";
+                changeText = "ROCKET_StrippedOfRank".Translate();
                 changeColor = MutedColor;
             }
             else if (record.previousRank == null)
             {
-                changeText = $"Promoted to {record.rank.RankLabel}";
+                changeText = "ROCKET_PromotedTo".Translate(record.rank.RankLabel);
                 changeColor = GreenColor;
             }
             else if (record.rank.rankLevel > record.previousRank.rankLevel)
             {
-                changeText = $"Promoted to {record.rank.RankLabel}";
+                changeText = "ROCKET_PromotedTo".Translate(record.rank.RankLabel);
                 changeColor = GreenColor;
             }
             else if (record.rank.rankLevel < record.previousRank.rankLevel)
             {
-                changeText = $"Demoted to {record.rank.RankLabel}";
+                changeText = "ROCKET_DemotedTo".Translate(record.rank.RankLabel);
                 changeColor = RedColor;
             }
             else
             {
-                changeText = $"Transferred to {record.rank.RankLabel}";
+                changeText = "ROCKET_RankChangedTo".Translate(record.rank.RankLabel);
                 changeColor = MutedColor;
             }
 

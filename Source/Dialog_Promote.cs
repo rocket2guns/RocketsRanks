@@ -27,8 +27,7 @@ namespace RocketsRanks
                 .OrderBy(r => r.rankLevel)
                 .ToList();
 
-            var comp = RankGameComponent.Instance;
-            selectedRank = comp?.GetRank(pawn);
+            selectedRank = pawn.GetComp<CompRank>()?.currentRank;
 
             forcePause = true;
             doCloseX = true;
@@ -70,8 +69,8 @@ namespace RocketsRanks
             Widgets.Label(nameRect, pawn.LabelShort);
 
             // Current rank with icon
-            var comp = RankGameComponent.Instance;
-            var currentRank = comp?.GetRank(pawn);
+            var comp = pawn.GetComp<CompRank>();
+            var currentRank = comp?.currentRank;
             var curY = nameRect.yMax + 6f;
 
             if (currentRank != null)
@@ -98,7 +97,7 @@ namespace RocketsRanks
                 Text.Font = GameFont.Tiny;
                 Text.Anchor = TextAnchor.UpperCenter;
                 GUI.color = Color.gray;
-                var noRankText = "No rank assigned";
+                var noRankText = "ROCKET_NoRankAssigned".Translate();
                 var noRankHeight = Text.CalcHeight(noRankText, rect.width);
                 Widgets.Label(new Rect(rect.x, curY, rect.width, noRankHeight), noRankText);
                 GUI.color = Color.white;
@@ -106,11 +105,10 @@ namespace RocketsRanks
             }
 
             // Promotion count
-            var data = comp?.GetData(pawn);
-            if (data is { history.Count: > 0 })
+            if (comp is { history.Count: > 0 })
             {
                 GUI.color = Color.gray;
-                var histText = $"{data.history.Count} promotion(s)";
+                var histText = "ROCKET_NumberOfPromotions".Translate(comp.history.Count);
                 var histHeight = Text.CalcHeight(histText, rect.width);
                 Widgets.Label(new Rect(rect.x, curY, rect.width, histHeight), histText);
                 GUI.color = Color.white;
@@ -167,8 +165,7 @@ namespace RocketsRanks
             var btnY = textRect.yMax + 24f;
             var btnWidth = (rect.width - 10f) / 2f;
 
-            var comp = RankGameComponent.Instance;
-            var currentRank = comp?.GetRank(pawn);
+            var currentRank = pawn.GetComp<CompRank>()?.currentRank;
             var canConfirm = selectedRank != currentRank;
 
             if (canConfirm)
@@ -186,7 +183,7 @@ namespace RocketsRanks
                 GUI.color = Color.white;
             }
 
-            if (Widgets.ButtonText(new Rect(rect.x + btnWidth + 10f, btnY, btnWidth, 35f), "Cancel"))
+            if (Widgets.ButtonText(new Rect(rect.x + btnWidth + 10f, btnY, btnWidth, 35f), "ROCKET_CancelPromotion".Translate()))
                 Close();
         }
 
@@ -210,7 +207,7 @@ namespace RocketsRanks
                 Widgets.DrawHighlight(noRankRect);
             Text.Anchor = TextAnchor.MiddleLeft;
             GUI.color = selectedRank == null ? Color.white : Color.gray;
-            Widgets.Label(new Rect(10f, curY, viewRect.width - 10f, ROW_HEIGHT), "No rank");
+            Widgets.Label(new Rect(10f, curY, viewRect.width - 10f, ROW_HEIGHT), "ROCKET_NoRankSelected".Translate());
             GUI.color = Color.white;
             if (Widgets.ButtonInvisible(noRankRect))
                 selectedRank = null;
@@ -262,40 +259,41 @@ namespace RocketsRanks
 
         private void ApplyPromotion()
         {
-            var comp = RankGameComponent.Instance;
+            var comp = pawn.GetComp<CompRank>();
             if (comp == null) return;
 
-            var previousRank = comp.GetRank(pawn);
-            comp.SetRank(pawn, selectedRank, draft);
-
+            var previousRank = comp.currentRank;
+            comp.SetRank(selectedRank, draft);
+            
             string actionLabel;
             MessageTypeDef eventType;
             switch (selectedRank)
             {
                 case null:
-                    actionLabel = $"{pawn.NameShortColored} has been returned to civilian status.";
+                    actionLabel = "ROCKET_HasBecomeACivilian".Translate(pawn.NameShortColored);
                     eventType = MessageTypeDefOf.NeutralEvent;
                     break;
                 default:
                 {
+                    var selectedColor = $"<color=#E6D966>{selectedRank.RankLabel}</color>";
                     if (previousRank == null)
                     {
-                        actionLabel = $"{pawn.NameShortColored} has been assigned the rank of <color=#E6D966>{selectedRank.RankLabel}</color>.";
+                        actionLabel = "ROCKET_HasBeenAssignedRankOf".Translate(pawn.NameShortColored, selectedColor);
                         eventType = MessageTypeDefOf.PositiveEvent;
                     }
                     else if (selectedRank.rankLevel > previousRank.rankLevel)
                     {
-                        actionLabel = $"{pawn.NameShortColored} has been promoted to <color=#E6D966>{selectedRank.RankLabel}</color>.";
+                        actionLabel = "ROCKET_HasBeenPromotedTo".Translate(pawn.NameShortColored, selectedColor);
                         eventType = MessageTypeDefOf.PositiveEvent;
                     }
                     else if (selectedRank.rankLevel < previousRank.rankLevel)
                     {
-                        actionLabel = $"{pawn.NameShortColored} has been demoted to <color=#E6D966>{selectedRank.RankLabel}</color>.";
+                        actionLabel = "ROCKET_HasBeenDemotedTo".Translate(pawn.NameShortColored, selectedColor);
                         eventType = MessageTypeDefOf.NegativeEvent;
                     }
                     else
                     {
-                        actionLabel = $"{pawn.NameShortColored} has been transferred to <color=#E6D966>{selectedRank.RankLabel}</color>.";
+                        actionLabel = "ROCKET_HasBeenTransferredTo".Translate(pawn.NameShortColored, selectedColor);
                         eventType = MessageTypeDefOf.NeutralEvent;
                     }
 

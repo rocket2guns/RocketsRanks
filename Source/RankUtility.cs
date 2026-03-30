@@ -14,8 +14,7 @@ namespace RocketsRanks
             var ext = apparelDef.GetModExtension<RankExtension>();
             if (ext?.requiredRank == null) return true;
 
-            var comp = RankGameComponent.Instance;
-            return comp != null && comp.HasRank(pawn, ext.requiredRank);
+            return pawn?.GetComp<CompRank>()?.HasRank(ext.requiredRank) ?? false;
         }
 
         /// <summary>

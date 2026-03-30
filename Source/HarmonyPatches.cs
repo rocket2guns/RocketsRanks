@@ -22,8 +22,8 @@ namespace RocketsRanks
 
             if (__instance.IsColonistPlayerControlled)
             {
-                var comp = RankGameComponent.Instance;
-                var currentRank = comp?.GetRank(__instance);
+                var comp = __instance.GetComp<CompRank>();
+                var currentRank = comp?.currentRank;
                 var label = currentRank != null
                     ? currentRank.RankLabel
                     : "ROCKET_Promote".Translate().ToString();
@@ -50,8 +50,8 @@ namespace RocketsRanks
         {
             if (!RanksMod.Settings.ShowRankBadge) return;
 
-            var comp = RankGameComponent.Instance;
-            var rank = comp?.GetRank(colonist);
+            var comp = colonist.GetComp<CompRank>();
+            var rank = comp?.currentRank;
             if (rank?.Icon == null) return;
 
             var size = RanksMod.Settings.BadgeSize;
@@ -144,8 +144,8 @@ namespace RocketsRanks
             if (Find.CameraDriver.CurrentZoom > CameraZoomRange.Middle) return;
             if (!pawn.IsColonistPlayerControlled) return;
 
-            var comp = RankGameComponent.Instance;
-            var rank = comp?.GetRank(pawn);
+            var comp = pawn.GetComp<CompRank>();
+            var rank = comp?.currentRank;
             if (rank?.Icon == null) return;
 
             var pos = GenMapUI.LabelDrawPosFor(pawn, -0.6f);
@@ -184,7 +184,9 @@ namespace RocketsRanks
 
             if (!RankUtility.PawnMeetsRankRequirement(__instance.pawn, newApparel.def))
             {
-                Log.Warning($"[RocketsRanks] Wear BLOCKED: {__instance.pawn.LabelShort} (rank={RankGameComponent.Instance?.GetRank(__instance.pawn)?.label ?? "none"}) tried to wear {newApparel.def.defName} (requires {ext.requiredRank.label}). This should have been caught by ScoreGain!");
+                var comp = __instance.pawn.GetComp<CompRank>();
+                var currentRank = comp?.currentRank;
+                Log.Warning($"[RocketsRanks] Wear BLOCKED: {__instance.pawn.LabelShort} (rank={currentRank?.label ?? "none"}) tried to wear {newApparel.def.defName} (requires {ext.requiredRank.label}). This should have been caught by ScoreGain!");
                 return false;
             }
             return true;
@@ -263,7 +265,7 @@ namespace RocketsRanks
             var rank = ext.requiredRank;
             var sb = new System.Text.StringBuilder(__result);
             if (sb.Length > 0) sb.AppendLine();
-            sb.Append($"Can only be worn by pawns with the rank of <color=#E6D966>{rank.RankLabel}</color>");
+            sb.Append("ROCKET_InspectRankRequirement".Translate($"<color=#E6D966>{rank.RankLabel}</color>"));
             __result = sb.ToString();
         }
     }
