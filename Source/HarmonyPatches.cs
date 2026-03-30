@@ -97,16 +97,16 @@ namespace RocketsRanks
 
             Text.Font = GameFont.Tiny;
             var name = pawn.Name?.ToStringShort ?? pawn.LabelShort;
-            var textWidth = Text.CalcSize(name).x;
+            var textSize = Text.CalcSize(name);
 
             var iconSize = RanksMod.Settings.MapIconSize;
-            var halfIcon = iconSize * 0.5f;
 
             // Horizontal: right edge of icon meets left edge of text, plus user offset
-            var iconX = pos.x - textWidth / 2f - iconSize + RanksMod.Settings.MapIconOffsetX;
+            var iconX = pos.x - textSize.x / 2f - iconSize + RanksMod.Settings.MapIconOffsetX;
 
-            // Vertical: centre icon on the label's Y anchor, plus fine-tune
-            var iconY = pos.y - halfIcon + RanksMod.Settings.MapIconOffsetY;
+            // Vertical: find the text's vertical centre, then centre the icon on it
+            var textCenterY = pos.y + textSize.y * 0.5f;
+            var iconY = textCenterY - iconSize * 0.5f + RanksMod.Settings.MapIconOffsetY;
 
             GUI.DrawTexture(new Rect(iconX, iconY, iconSize, iconSize), rank.Icon);
         }

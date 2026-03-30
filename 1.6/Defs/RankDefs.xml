@@ -42,10 +42,18 @@
   </RocketsRanks.RankDef>
   
   <RocketsRanks.RankDef>
+    <defName>Rank_SergeantFirstClass</defName>
+    <label>sergeant first class</label>
+    <description>A senior non-commissioned officer with significant experience and leadership responsibilities.</description>
+    <rankLevel>6</rankLevel>
+    <iconPath>UI/Rank_SergeantFirstClass</iconPath>
+  </RocketsRanks.RankDef>
+  
+  <RocketsRanks.RankDef>
     <defName>Rank_MasterSergeant</defName>
     <label>master sergeant</label>
     <description>A highly experienced non-commissioned officer with extensive leadership and management skills.</description>
-    <rankLevel>6</rankLevel>
+    <rankLevel>7</rankLevel>
     <iconPath>UI/Rank_MasterSergeant</iconPath>
   </RocketsRanks.RankDef>
   
@@ -53,7 +61,7 @@
     <defName>Rank_FirstSergeant</defName>
     <label>first sergeant</label>
     <description>The highest-ranking non-commissioned officer, responsible for overall discipline and operations.</description>
-    <rankLevel>7</rankLevel>
+    <rankLevel>8</rankLevel>
     <iconPath>UI/Rank_FirstSergeant</iconPath>
   </RocketsRanks.RankDef>
   
@@ -61,7 +69,7 @@
     <defName>Rank_SergeantMajor</defName>
     <label>sergeant major</label>
     <description>The senior non-commissioned officer, responsible for overseeing the training and discipline of the entire colony's forces.</description>
-    <rankLevel>8</rankLevel>
+    <rankLevel>9</rankLevel>
     <iconPath>UI/Rank_SergeantMajor</iconPath>
   </RocketsRanks.RankDef>
   
@@ -69,7 +77,7 @@
     <defName>Rank_SecondLieutenant</defName>
     <label>second lieutenant</label>
     <description>The entry-level officer rank. A colonist who has been commissioned as an officer.</description>
-    <rankLevel>9</rankLevel>
+    <rankLevel>10</rankLevel>
     <iconPath>UI/Rank_SecondLieutenant</iconPath>
   </RocketsRanks.RankDef>
   
@@ -77,7 +85,7 @@
     <defName>Rank_FirstLieutenant</defName>
     <label>first lieutenant</label>
     <description>A junior officer responsible for leading a platoon or serving as a staff officer.</description>
-    <rankLevel>10</rankLevel>
+    <rankLevel>11</rankLevel>
     <iconPath>UI/Rank_FirstLieutenant</iconPath>
   </RocketsRanks.RankDef>
   
@@ -85,7 +93,7 @@
     <defName>Rank_Captain</defName>
     <label>captain</label>
     <description>A mid-level officer responsible for leading a company or serving in a staff role.</description>
-    <rankLevel>11</rankLevel>
+    <rankLevel>12</rankLevel>
     <iconPath>UI/Rank_Captain</iconPath>
   </RocketsRanks.RankDef>
 

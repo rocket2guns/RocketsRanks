@@ -157,7 +157,7 @@
 
   <ThingDef ParentName="ROCKET_Ranks">
     <defName>ROCKET_Ranks_Sgt</defName>
-    <label>corporal rank</label>
+    <label>sergeant rank</label>
     <description>A pair of ornamantal shoulder pieces for sergeants.</description>
     <graphicData>
 		<texPath>Things/Apparel/Ranks/Sgt/Rank</texPath>
@@ -168,6 +168,74 @@
     <modExtensions Inherit="True">
       <li Class="RocketsRanks.RankExtension">
         <requiredRank>Rank_Sergeant</requiredRank>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="ROCKET_Ranks">
+    <defName>ROCKET_Ranks_SSgt</defName>
+    <label>staff sergeant rank</label>
+    <description>A pair of ornamantal shoulder pieces for staff sergeants.</description>
+    <graphicData>
+		<texPath>Things/Apparel/Ranks/SSgt/Rank</texPath>
+    </graphicData>
+    <apparel>
+      <wornGraphicPath>Things/Apparel/Ranks/SSgt/Rank</wornGraphicPath>
+    </apparel>
+    <modExtensions Inherit="True">
+      <li Class="RocketsRanks.RankExtension">
+        <requiredRank>Rank_StaffSergeant</requiredRank>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="ROCKET_Ranks">
+    <defName>ROCKET_Ranks_Sfc</defName>
+    <label>sergeant first class rank</label>
+    <description>A pair of ornamantal shoulder pieces for sergeant first class.</description>
+    <graphicData>
+		<texPath>Things/Apparel/Ranks/Sfc/Rank</texPath>
+    </graphicData>
+    <apparel>
+      <wornGraphicPath>Things/Apparel/Ranks/Sfc/Rank</wornGraphicPath>
+    </apparel>
+    <modExtensions Inherit="True">
+      <li Class="RocketsRanks.RankExtension">
+        <requiredRank>Rank_SergeantFirstClass</requiredRank>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="ROCKET_Ranks">
+    <defName>ROCKET_Ranks_MSgt</defName>
+    <label>master sergeant rank</label>
+    <description>A pair of ornamantal shoulder pieces for master sergeants.</description>
+    <graphicData>
+		<texPath>Things/Apparel/Ranks/MSgt/Rank</texPath>
+    </graphicData>
+    <apparel>
+      <wornGraphicPath>Things/Apparel/Ranks/MSgt/Rank</wornGraphicPath>
+    </apparel>
+    <modExtensions Inherit="True">
+      <li Class="RocketsRanks.RankExtension">
+        <requiredRank>Rank_MasterSergeant</requiredRank>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="ROCKET_Ranks">
+    <defName>ROCKET_Ranks_FSgt</defName>
+    <label>first sergeant rank</label>
+    <description>A pair of ornamantal shoulder pieces for first sergeants.</description>
+    <graphicData>
+		<texPath>Things/Apparel/Ranks/FSgt/Rank</texPath>
+    </graphicData>
+    <apparel>
+      <wornGraphicPath>Things/Apparel/Ranks/FSgt/Rank</wornGraphicPath>
+    </apparel>
+    <modExtensions Inherit="True">
+      <li Class="RocketsRanks.RankExtension">
+        <requiredRank>Rank_FirstSergeant</requiredRank>
       </li>
     </modExtensions>
   </ThingDef>

@@ -130,8 +130,8 @@ namespace RocketsRanks
         public float BadgeOffsetY = 4f;
         public bool ShowRankOnMap = true;
         public float MapIconSize = 16f;
-        public float MapIconOffsetX = 0f;
-        public float MapIconOffsetY = 0f;
+        public float MapIconOffsetX = 1f;
+        public float MapIconOffsetY = -5f;
         public bool ShowBodyTypeDebug;
         public RankBodyTypeSettings[] BodySettings = new RankBodyTypeSettings[(int)RankBodyType.Count];
         private bool migrated;
@@ -149,8 +149,8 @@ namespace RocketsRanks
             Scribe_Values.Look(ref BadgeOffsetY, "BadgeOffsetY", 4f);
             Scribe_Values.Look(ref ShowRankOnMap, "ShowRankOnMap", true);
             Scribe_Values.Look(ref MapIconSize, "MapIconSize", 16f);
-            Scribe_Values.Look(ref MapIconOffsetX, "MapIconOffsetX", 0f);
-            Scribe_Values.Look(ref MapIconOffsetY, "MapIconOffsetY", 0f);
+            Scribe_Values.Look(ref MapIconOffsetX, "MapIconOffsetX", 1f);
+            Scribe_Values.Look(ref MapIconOffsetY, "MapIconOffsetY", -5f);
             Scribe_Values.Look(ref ShowBodyTypeDebug, "ShowBodyTypeDebug", false);
             Scribe_Values.Look(ref migrated, "migrated_v2", false);
 
