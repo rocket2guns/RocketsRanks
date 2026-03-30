@@ -6,255 +6,412 @@
 		<drawOrder>85</drawOrder>
 	</ApparelLayerDef>
 	
-  <ThingDef ParentName="ApparelMakeableBase" Name="ROCKET_Ranks" Abstract="True">  
-	<thingCategories>
-		<li>ROCKET_Apparel_Ranks</li>
-    </thingCategories>
-    <modExtensions>
-        <li Class="RocketsRanks.RankRenderExtension">
-            <bodyTypes>
-                <li>
-                    <bodyType>Male</bodyType>
-                    <northOffsetX>-0.00115</northOffsetX>
-                    <northOffsetZ>0.1722</northOffsetZ>
-                    <northScale>1.5556</northScale>
-                    <eastOffsetX>-0.0614</eastOffsetX>
-                    <eastOffsetZ>0.1579</eastOffsetZ>
-                    <eastScale>0.8701</eastScale>
-                </li>
-                <li>
-                    <bodyType>Female</bodyType>
-                    <northOffsetZ>0.1625</northOffsetZ>
-                    <northScale>1.1837</northScale>
-                    <eastOffsetX>0.0477</eastOffsetX>
-                    <eastOffsetZ>0.1275</eastOffsetZ>
-                    <eastScale>0.6842</eastScale>
-                </li>
-                <li>
-                    <bodyType>Thin</bodyType>
-                    <northOffsetX>0.00115</northOffsetX>
-                    <northOffsetZ>0.1441</northOffsetZ>
-                    <northScale>0.8285</northScale>
-                    <eastOffsetX>-0.0603</eastOffsetX>
-                    <eastOffsetZ>0.1309</eastOffsetZ>
-                    <eastScale>0.7258</eastScale>
-                </li>
-                <li>
-                    <bodyType>Fat</bodyType>
-                    <northOffsetZ>0.1906</northOffsetZ>
-                    <northScale>1.9052</northScale>
-                    <eastOffsetX>-0.089</eastOffsetX>
-                    <eastOffsetZ>0.0993</eastOffsetZ>
-                    <eastScale>0.8118</eastScale>
-                </li>
-                <li>
-                    <bodyType>Hulk</bodyType>
-                    <northOffsetZ>0.1728</northOffsetZ>
-                    <northScale>2.1272</northScale>
-                    <eastOffsetX>-0.0683</eastOffsetX>
-                    <eastOffsetZ>0.0861</eastOffsetZ>
-                    <eastScale>0.834</eastScale>
-                </li>
-            </bodyTypes>
-        </li>
-    </modExtensions>
-	<graphicData>
-		<graphicClass>Graphic_Single</graphicClass>
-		<shaderType>CutoutComplex</shaderType>
-		<drawSize>0.75</drawSize>
-	</graphicData>
-    <statBases>
-		<MaxHitPoints>100</MaxHitPoints>
-		<WorkToMake>1500</WorkToMake>
-		<Mass>0.1</Mass>
-		<ArmorRating_Sharp>0.1</ArmorRating_Sharp>
-		<ArmorRating_Blunt>0.1</ArmorRating_Blunt>
-		<EquipDelay>1.5</EquipDelay>
-    </statBases>
-	<equippedStatOffsets>
-		<SuppressionPower MayRequire="Ludeon.RimWorld.Ideology">0.15</SuppressionPower>
-		<SlaveSuppressionOffset MayRequire="Ludeon.RimWorld.Ideology">-0.15</SlaveSuppressionOffset>
-		<MentalBreakThreshold>-0.15</MentalBreakThreshold>
-    </equippedStatOffsets>
-    <costStuffCount>10</costStuffCount>
-	<costList>
-		<Gold>1</Gold>
-	</costList>
-    <stuffCategories>
-      <li>Fabric</li>
-      <li>Leathery</li>
-	  <li>Metallic</li>
-    </stuffCategories>
-    <apparel>
-      <countsAsClothingForNudity>false</countsAsClothingForNudity>
-	  <layers>
-        <li>ROCKET_RankLayer</li>
-      </layers>
-	  <useWornGraphicMask>true</useWornGraphicMask>
-      <bodyPartGroups>
-        <li>Shoulders</li>
-      </bodyPartGroups>
-      <tags>
-        <li>RankInsignia</li>
-      </tags>
-	  <defaultOutfitTags>
-        <li>Soldier</li>
-		<li>Nudist</li>
-      </defaultOutfitTags>
-    </apparel>
-  </ThingDef>
+	<ThingDef ParentName="ApparelMakeableBase" Name="ROCKET_Ranks" Abstract="True">
+		<thingCategories>
+			<li>ROCKET_Apparel_Ranks</li>
+		</thingCategories>
+		<modExtensions>
+			<li Class="RocketsRanks.RankRenderExtension">
+				<bodyTypes>
+					<li>
+						<bodyType>Male</bodyType>
+						<northOffsetX>-0.00115</northOffsetX>
+						<northOffsetZ>0.1722</northOffsetZ>
+						<northScale>1.5556</northScale>
+						<eastOffsetX>-0.0614</eastOffsetX>
+						<eastOffsetZ>0.1579</eastOffsetZ>
+						<eastScale>0.8701</eastScale>
+					</li>
+					<li>
+						<bodyType>Female</bodyType>
+						<northOffsetZ>0.1625</northOffsetZ>
+						<northScale>1.1837</northScale>
+						<eastOffsetX>0.0477</eastOffsetX>
+						<eastOffsetZ>0.1275</eastOffsetZ>
+						<eastScale>0.6842</eastScale>
+					</li>
+					<li>
+						<bodyType>Thin</bodyType>
+						<northOffsetX>0.00115</northOffsetX>
+						<northOffsetZ>0.1441</northOffsetZ>
+						<northScale>0.8285</northScale>
+						<eastOffsetX>-0.0603</eastOffsetX>
+						<eastOffsetZ>0.1309</eastOffsetZ>
+						<eastScale>0.7258</eastScale>
+					</li>
+					<li>
+						<bodyType>Fat</bodyType>
+						<northOffsetZ>0.1906</northOffsetZ>
+						<northScale>1.9052</northScale>
+						<eastOffsetX>-0.089</eastOffsetX>
+						<eastOffsetZ>0.0993</eastOffsetZ>
+						<eastScale>0.8118</eastScale>
+					</li>
+					<li>
+						<bodyType>Hulk</bodyType>
+						<northOffsetZ>0.1728</northOffsetZ>
+						<northScale>2.1272</northScale>
+						<eastOffsetX>-0.0683</eastOffsetX>
+						<eastOffsetZ>0.0861</eastOffsetZ>
+						<eastScale>0.834</eastScale>
+					</li>
+				</bodyTypes>
+			</li>
+		</modExtensions>
+		<graphicData>
+			<graphicClass>Graphic_Single</graphicClass>
+			<shaderType>CutoutComplex</shaderType>
+			<drawSize>0.75</drawSize>
+		</graphicData>
+		<statBases>
+			<MaxHitPoints>100</MaxHitPoints>
+			<WorkToMake>1500</WorkToMake>
+			<Mass>0.1</Mass>
+			<ArmorRating_Sharp>0.1</ArmorRating_Sharp>
+			<ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+			<EquipDelay>1.5</EquipDelay>
+		</statBases>
+		<equippedStatOffsets>
+			<SuppressionPower MayRequire="Ludeon.RimWorld.Ideology">0.15</SuppressionPower>
+			<SlaveSuppressionOffset MayRequire="Ludeon.RimWorld.Ideology">-0.15</SlaveSuppressionOffset>
+			<MentalBreakThreshold>-0.15</MentalBreakThreshold>
+		</equippedStatOffsets>
+		<costStuffCount>10</costStuffCount>
+		<costList>
+			<Gold>1</Gold>
+		</costList>
+		<stuffCategories>
+			<li>Fabric</li>
+			<li>Leathery</li>
+			<li>Metallic</li>
+		</stuffCategories>
+		<apparel>
+			<countsAsClothingForNudity>false</countsAsClothingForNudity>
+			<layers>
+				<li>ROCKET_RankLayer</li>
+			</layers>
+			<useWornGraphicMask>true</useWornGraphicMask>
+			<bodyPartGroups>
+				<li>Shoulders</li>
+			</bodyPartGroups>
+			<tags>
+				<li>RankInsignia</li>
+			</tags>
+			<defaultOutfitTags>
+				<li>Soldier</li>
+				<li>Nudist</li>
+			</defaultOutfitTags>
+		</apparel>
+	</ThingDef>
+  
+	<!-- Enlisted -->
 
-  <ThingDef ParentName="ROCKET_Ranks">
-    <defName>ROCKET_Ranks_Pvt</defName>
-    <label>private rank</label>
-    <description>A pair of ornamantal shoulder pieces for privates.</description>
-    <graphicData>
-		<texPath>Things/Apparel/Ranks/Pvt/Rank</texPath>
-    </graphicData>
-    <apparel>
-      <wornGraphicPath>Things/Apparel/Ranks/Pvt/Rank</wornGraphicPath>
-    </apparel>
-    <modExtensions Inherit="True">
-      <li Class="RocketsRanks.RankExtension">
-        <requiredRank>Rank_Private</requiredRank>
-      </li>
-    </modExtensions>
-  </ThingDef>
+	<ThingDef ParentName="ROCKET_Ranks">
+		<defName>ROCKET_Ranks_Pvt</defName>
+		<label>private rank</label>
+		<description>A pair of ornamantal shoulder pieces for privates.</description>
+		<graphicData>
+			<texPath>Things/Apparel/Ranks/Pvt/Rank</texPath>
+		</graphicData>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/Ranks/Pvt/Rank</wornGraphicPath>
+		</apparel>
+		<modExtensions Inherit="True">
+			<li Class="RocketsRanks.RankExtension">
+				<requiredRank>Rank_Private</requiredRank>
+			</li>
+		</modExtensions>
+	</ThingDef>
 
-  <ThingDef ParentName="ROCKET_Ranks">
-    <defName>ROCKET_Ranks_Pfc</defName>
-    <label>private first class rank</label>
-    <description>A pair of ornamantal shoulder pieces for private first class.</description>
-    <graphicData>
-		<texPath>Things/Apparel/Ranks/Pfc/Rank</texPath>
-    </graphicData>
-    <apparel>
-      <wornGraphicPath>Things/Apparel/Ranks/Pfc/Rank</wornGraphicPath>
-    </apparel>
-    <modExtensions Inherit="True">
-      <li Class="RocketsRanks.RankExtension">
-        <requiredRank>Rank_PrivateFirstClass</requiredRank>
-      </li>
-    </modExtensions>
-  </ThingDef>
+	<ThingDef ParentName="ROCKET_Ranks">
+		<defName>ROCKET_Ranks_Pfc</defName>
+		<label>private first class rank</label>
+		<description>A pair of ornamantal shoulder pieces for private first class.</description>
+		<graphicData>
+			<texPath>Things/Apparel/Ranks/Pfc/Rank</texPath>
+		</graphicData>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/Ranks/Pfc/Rank</wornGraphicPath>
+		</apparel>
+		<modExtensions Inherit="True">
+			<li Class="RocketsRanks.RankExtension">
+				<requiredRank>Rank_PrivateFirstClass</requiredRank>
+			</li>
+		</modExtensions>
+	</ThingDef>
 
-  <ThingDef ParentName="ROCKET_Ranks">
-    <defName>ROCKET_Ranks_Cpl</defName>
-    <label>corporal rank</label>
-    <description>A pair of ornamantal shoulder pieces for corporals.</description>
-    <graphicData>
-		<texPath>Things/Apparel/Ranks/Cpl/Rank</texPath>
-    </graphicData>
-    <apparel>
-      <wornGraphicPath>Things/Apparel/Ranks/Cpl/Rank</wornGraphicPath>
-    </apparel>
-    <modExtensions Inherit="True">
-      <li Class="RocketsRanks.RankExtension">
-        <requiredRank>Rank_Corporal</requiredRank>
-      </li>
-    </modExtensions>
-  </ThingDef>
+	<ThingDef ParentName="ROCKET_Ranks">
+		<defName>ROCKET_Ranks_Cpl</defName>
+		<label>corporal rank</label>
+		<description>A pair of ornamantal shoulder pieces for corporals.</description>
+		<graphicData>
+			<texPath>Things/Apparel/Ranks/Cpl/Rank</texPath>
+		</graphicData>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/Ranks/Cpl/Rank</wornGraphicPath>
+		</apparel>
+		<modExtensions Inherit="True">
+			<li Class="RocketsRanks.RankExtension">
+				<requiredRank>Rank_Corporal</requiredRank>
+			</li>
+		</modExtensions>
+	</ThingDef>
 
-  <ThingDef ParentName="ROCKET_Ranks">
-    <defName>ROCKET_Ranks_Sgt</defName>
-    <label>sergeant rank</label>
-    <description>A pair of ornamantal shoulder pieces for sergeants.</description>
-    <graphicData>
-		<texPath>Things/Apparel/Ranks/Sgt/Rank</texPath>
-    </graphicData>
-    <apparel>
-      <wornGraphicPath>Things/Apparel/Ranks/Sgt/Rank</wornGraphicPath>
-    </apparel>
-    <modExtensions Inherit="True">
-      <li Class="RocketsRanks.RankExtension">
-        <requiredRank>Rank_Sergeant</requiredRank>
-      </li>
-    </modExtensions>
-  </ThingDef>
+	<ThingDef ParentName="ROCKET_Ranks">
+		<defName>ROCKET_Ranks_Sgt</defName>
+		<label>sergeant rank</label>
+		<description>A pair of ornamantal shoulder pieces for sergeants.</description>
+		<graphicData>
+			<texPath>Things/Apparel/Ranks/Sgt/Rank</texPath>
+		</graphicData>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/Ranks/Sgt/Rank</wornGraphicPath>
+		</apparel>
+		<modExtensions Inherit="True">
+			<li Class="RocketsRanks.RankExtension">
+				<requiredRank>Rank_Sergeant</requiredRank>
+			</li>
+		</modExtensions>
+	</ThingDef>
 
-  <ThingDef ParentName="ROCKET_Ranks">
-    <defName>ROCKET_Ranks_SSgt</defName>
-    <label>staff sergeant rank</label>
-    <description>A pair of ornamantal shoulder pieces for staff sergeants.</description>
-    <graphicData>
-		<texPath>Things/Apparel/Ranks/SSgt/Rank</texPath>
-    </graphicData>
-    <apparel>
-      <wornGraphicPath>Things/Apparel/Ranks/SSgt/Rank</wornGraphicPath>
-    </apparel>
-    <modExtensions Inherit="True">
-      <li Class="RocketsRanks.RankExtension">
-        <requiredRank>Rank_StaffSergeant</requiredRank>
-      </li>
-    </modExtensions>
-  </ThingDef>
+	<ThingDef ParentName="ROCKET_Ranks">
+		<defName>ROCKET_Ranks_SSgt</defName>
+		<label>staff sergeant rank</label>
+		<description>A pair of ornamantal shoulder pieces for staff sergeants.</description>
+		<graphicData>
+			<texPath>Things/Apparel/Ranks/SSgt/Rank</texPath>
+		</graphicData>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/Ranks/SSgt/Rank</wornGraphicPath>
+		</apparel>
+		<modExtensions Inherit="True">
+			<li Class="RocketsRanks.RankExtension">
+				<requiredRank>Rank_StaffSergeant</requiredRank>
+			</li>
+		</modExtensions>
+	</ThingDef>
 
-  <ThingDef ParentName="ROCKET_Ranks">
-    <defName>ROCKET_Ranks_Sfc</defName>
-    <label>sergeant first class rank</label>
-    <description>A pair of ornamantal shoulder pieces for sergeant first class.</description>
-    <graphicData>
-		<texPath>Things/Apparel/Ranks/Sfc/Rank</texPath>
-    </graphicData>
-    <apparel>
-      <wornGraphicPath>Things/Apparel/Ranks/Sfc/Rank</wornGraphicPath>
-    </apparel>
-    <modExtensions Inherit="True">
-      <li Class="RocketsRanks.RankExtension">
-        <requiredRank>Rank_SergeantFirstClass</requiredRank>
-      </li>
-    </modExtensions>
-  </ThingDef>
+	<ThingDef ParentName="ROCKET_Ranks">
+		<defName>ROCKET_Ranks_Sfc</defName>
+		<label>sergeant first class rank</label>
+		<description>A pair of ornamantal shoulder pieces for sergeant first class.</description>
+		<graphicData>
+			<texPath>Things/Apparel/Ranks/Sfc/Rank</texPath>
+		</graphicData>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/Ranks/Sfc/Rank</wornGraphicPath>
+		</apparel>
+		<modExtensions Inherit="True">
+			<li Class="RocketsRanks.RankExtension">
+				<requiredRank>Rank_SergeantFirstClass</requiredRank>
+			</li>
+		</modExtensions>
+	</ThingDef>
 
-  <ThingDef ParentName="ROCKET_Ranks">
-    <defName>ROCKET_Ranks_MSgt</defName>
-    <label>master sergeant rank</label>
-    <description>A pair of ornamantal shoulder pieces for master sergeants.</description>
-    <graphicData>
-		<texPath>Things/Apparel/Ranks/MSgt/Rank</texPath>
-    </graphicData>
-    <apparel>
-      <wornGraphicPath>Things/Apparel/Ranks/MSgt/Rank</wornGraphicPath>
-    </apparel>
-    <modExtensions Inherit="True">
-      <li Class="RocketsRanks.RankExtension">
-        <requiredRank>Rank_MasterSergeant</requiredRank>
-      </li>
-    </modExtensions>
-  </ThingDef>
+	<ThingDef ParentName="ROCKET_Ranks">
+		<defName>ROCKET_Ranks_MSgt</defName>
+		<label>master sergeant rank</label>
+		<description>A pair of ornamantal shoulder pieces for master sergeants.</description>
+		<graphicData>
+			<texPath>Things/Apparel/Ranks/MSgt/Rank</texPath>
+		</graphicData>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/Ranks/MSgt/Rank</wornGraphicPath>
+		</apparel>
+		<modExtensions Inherit="True">
+			<li Class="RocketsRanks.RankExtension">
+				<requiredRank>Rank_MasterSergeant</requiredRank>
+			</li>
+		</modExtensions>
+	</ThingDef>
 
-  <ThingDef ParentName="ROCKET_Ranks">
-    <defName>ROCKET_Ranks_FSgt</defName>
-    <label>first sergeant rank</label>
-    <description>A pair of ornamantal shoulder pieces for first sergeants.</description>
-    <graphicData>
-		<texPath>Things/Apparel/Ranks/FSgt/Rank</texPath>
-    </graphicData>
-    <apparel>
-      <wornGraphicPath>Things/Apparel/Ranks/FSgt/Rank</wornGraphicPath>
-    </apparel>
-    <modExtensions Inherit="True">
-      <li Class="RocketsRanks.RankExtension">
-        <requiredRank>Rank_FirstSergeant</requiredRank>
-      </li>
-    </modExtensions>
-  </ThingDef>
+	<ThingDef ParentName="ROCKET_Ranks">
+		<defName>ROCKET_Ranks_FSgt</defName>
+		<label>first sergeant rank</label>
+		<description>A pair of ornamantal shoulder pieces for first sergeants.</description>
+		<graphicData>
+			<texPath>Things/Apparel/Ranks/FSgt/Rank</texPath>
+		</graphicData>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/Ranks/FSgt/Rank</wornGraphicPath>
+		</apparel>
+		<modExtensions Inherit="True">
+			<li Class="RocketsRanks.RankExtension">
+				<requiredRank>Rank_FirstSergeant</requiredRank>
+			</li>
+		</modExtensions>
+	</ThingDef>
 
-  <ThingDef ParentName="ROCKET_Ranks">
-    <defName>ROCKET_Ranks_SgtMaj</defName>
-    <label>sergeant major rank</label>
-    <description>A pair of ornamantal shoulder pieces for sergeant majors.</description>
-    <graphicData>
-		<texPath>Things/Apparel/Ranks/SgtMaj/Rank</texPath>
-    </graphicData>
-    <apparel>
-      <wornGraphicPath>Things/Apparel/Ranks/SgtMaj/Rank</wornGraphicPath>
-    </apparel>
-    <modExtensions Inherit="True">
-      <li Class="RocketsRanks.RankExtension">
-        <requiredRank>Rank_SergeantMajor</requiredRank>
-      </li>
-    </modExtensions>
-  </ThingDef>
+	<ThingDef ParentName="ROCKET_Ranks">
+		<defName>ROCKET_Ranks_SgtMaj</defName>
+		<label>sergeant major rank</label>
+		<description>A pair of ornamantal shoulder pieces for sergeant majors.</description>
+		<graphicData>
+			<texPath>Things/Apparel/Ranks/SgtMaj/Rank</texPath>
+		</graphicData>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/Ranks/SgtMaj/Rank</wornGraphicPath>
+		</apparel>
+		<modExtensions Inherit="True">
+			<li Class="RocketsRanks.RankExtension">
+				<requiredRank>Rank_SergeantMajor</requiredRank>
+			</li>
+		</modExtensions>
+	</ThingDef>
+  
+	<!-- Officers -->
+
+	<ThingDef ParentName="ROCKET_Ranks">
+		<defName>ROCKET_Ranks_2Lt</defName>
+		<label>second lieutenant rank</label>
+		<description>A pair of ornamental shoulder pieces for second lieutenants.</description>
+		<graphicData>
+			<texPath>Things/Apparel/Officers/2Lt/Rank</texPath>
+		</graphicData>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/Officers/2Lt/Rank</wornGraphicPath>
+		</apparel>
+		<modExtensions Inherit="True">
+			<li Class="RocketsRanks.RankExtension">
+				<requiredRank>Rank_SecondLieutenant</requiredRank>
+			</li>
+		</modExtensions>
+	</ThingDef>
+
+	<ThingDef ParentName="ROCKET_Ranks">
+		<defName>ROCKET_Ranks_1Lt</defName>
+		<label>first lieutenant rank</label>
+		<description>A pair of ornamental shoulder pieces for first lieutenants.</description>
+		<graphicData>
+			<texPath>Things/Apparel/Officers/1Lt/Rank</texPath>
+		</graphicData>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/Officers/1Lt/Rank</wornGraphicPath>
+		</apparel>
+		<modExtensions Inherit="True">
+			<li Class="RocketsRanks.RankExtension">
+				<requiredRank>Rank_FirstLieutenant</requiredRank>
+			</li>
+		</modExtensions>
+	</ThingDef>
+
+	<ThingDef ParentName="ROCKET_Ranks">
+		<defName>ROCKET_Ranks_Capt</defName>
+		<label>captain rank</label>
+		<description>A pair of ornamental shoulder pieces for captains.</description>
+		<graphicData>
+			<texPath>Things/Apparel/Officers/Capt/Rank</texPath>
+		</graphicData>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/Officers/Capt/Rank</wornGraphicPath>
+		</apparel>
+		<modExtensions Inherit="True">
+			<li Class="RocketsRanks.RankExtension">
+				<requiredRank>Rank_Captain</requiredRank>
+			</li>
+		</modExtensions>
+	</ThingDef>
+
+	<ThingDef ParentName="ROCKET_Ranks">
+		<defName>ROCKET_Ranks_Maj</defName>
+		<label>major rank</label>
+		<description>A pair of ornamental shoulder pieces for majors.</description>
+		<graphicData>
+			<texPath>Things/Apparel/Officers/Maj/Rank</texPath>
+		</graphicData>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/Officers/Maj/Rank</wornGraphicPath>
+		</apparel>
+		<modExtensions Inherit="True">
+			<li Class="RocketsRanks.RankExtension">
+				<requiredRank>Rank_Major</requiredRank>
+			</li>
+		</modExtensions>
+	</ThingDef>
+
+	<ThingDef ParentName="ROCKET_Ranks">
+		<defName>ROCKET_Ranks_LtCol</defName>
+		<label>lieutenant colonel rank</label>
+		<description>A pair of ornamental shoulder pieces for lieutenant colonels.</description>
+		<graphicData>
+			<texPath>Things/Apparel/Officers/LtCol/Rank</texPath>
+		</graphicData>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/Officers/LtCol/Rank</wornGraphicPath>
+		</apparel>
+		<modExtensions Inherit="True">
+			<li Class="RocketsRanks.RankExtension">
+				<requiredRank>Rank_LieutenantColonel</requiredRank>
+			</li>
+		</modExtensions>
+	</ThingDef>
+
+	<ThingDef ParentName="ROCKET_Ranks">
+		<defName>ROCKET_Ranks_Col</defName>
+		<label>colonel rank</label>
+		<description>A pair of ornamental shoulder pieces for colonels.</description>
+		<graphicData>
+			<texPath>Things/Apparel/Officers/Col/Rank</texPath>
+		</graphicData>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/Officers/Col/Rank</wornGraphicPath>
+		</apparel>
+		<modExtensions Inherit="True">
+			<li Class="RocketsRanks.RankExtension">
+				<requiredRank>Rank_Colonel</requiredRank>
+			</li>
+		</modExtensions>
+	</ThingDef>
+
+	<ThingDef ParentName="ROCKET_Ranks">
+		<defName>ROCKET_Ranks_1Star</defName>
+		<label>brigadier general rank</label>
+		<description>A pair of ornamental shoulder pieces for brigadier generals.</description>
+		<graphicData>
+			<texPath>Things/Apparel/Officers/1Star/Rank</texPath>
+		</graphicData>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/Officers/1Star/Rank</wornGraphicPath>
+		</apparel>
+		<modExtensions Inherit="True">
+			<li Class="RocketsRanks.RankExtension">
+				<requiredRank>Rank_BrigadierGeneral</requiredRank>
+			</li>
+		</modExtensions>
+	</ThingDef>
+
+	<ThingDef ParentName="ROCKET_Ranks">
+		<defName>ROCKET_Ranks_2Star</defName>
+		<label>major general rank</label>
+		<description>A pair of ornamental shoulder pieces for major generals.</description>
+		<graphicData>
+			<texPath>Things/Apparel/Officers/2Star/Rank</texPath>
+		</graphicData>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/Officers/2Star/Rank</wornGraphicPath>
+		</apparel>
+		<modExtensions Inherit="True">
+			<li Class="RocketsRanks.RankExtension">
+				<requiredRank>Rank_MajorGeneral</requiredRank>
+			</li>
+		</modExtensions>
+	</ThingDef>
+
+	<ThingDef ParentName="ROCKET_Ranks">
+		<defName>ROCKET_Ranks_3Star</defName>
+		<label>lieutenant general rank</label>
+		<description>A pair of ornamental shoulder pieces for lieutenant generals.</description>
+		<graphicData>
+			<texPath>Things/Apparel/Officers/3Star/Rank</texPath>
+		</graphicData>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/Officers/3Star/Rank</wornGraphicPath>
+		</apparel>
+		<modExtensions Inherit="True">
+			<li Class="RocketsRanks.RankExtension">
+				<requiredRank>Rank_LieutenantGeneral</requiredRank>
+			</li>
+		</modExtensions>
+	</ThingDef>
 
 </Defs>

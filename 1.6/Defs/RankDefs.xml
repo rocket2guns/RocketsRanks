@@ -78,7 +78,7 @@
     <label>second lieutenant</label>
     <description>The entry-level officer rank. A colonist who has been commissioned as an officer.</description>
     <rankLevel>10</rankLevel>
-    <iconPath>UI/Rank_SecondLieutenant</iconPath>
+    <iconPath>UI/Officer_SecondLieutenant</iconPath>
   </RocketsRanks.RankDef>
   
   <RocketsRanks.RankDef>
@@ -86,7 +86,7 @@
     <label>first lieutenant</label>
     <description>A junior officer responsible for leading a platoon or serving as a staff officer.</description>
     <rankLevel>11</rankLevel>
-    <iconPath>UI/Rank_FirstLieutenant</iconPath>
+    <iconPath>UI/Officer_FirstLieutenant</iconPath>
   </RocketsRanks.RankDef>
   
   <RocketsRanks.RankDef>
@@ -94,7 +94,55 @@
     <label>captain</label>
     <description>A mid-level officer responsible for leading a company or serving in a staff role.</description>
     <rankLevel>12</rankLevel>
-    <iconPath>UI/Rank_Captain</iconPath>
+    <iconPath>UI/Officer_Captain</iconPath>
+  </RocketsRanks.RankDef>
+  
+  <RocketsRanks.RankDef>
+    <defName>Rank_Major</defName>
+    <label>major</label>
+    <description>A senior officer responsible for coordinating operations between multiple units.</description>
+    <rankLevel>13</rankLevel>
+    <iconPath>UI/Officer_Major</iconPath>
+  </RocketsRanks.RankDef>
+  
+  <RocketsRanks.RankDef>
+    <defName>Rank_LieutenantColonel</defName>
+    <label>lieutenant colonel</label>
+    <description>A high-ranking officer who serves as second-in-command of a regiment or leads a battalion.</description>
+    <rankLevel>14</rankLevel>
+    <iconPath>UI/Officer_LieutenantColonel</iconPath>
+  </RocketsRanks.RankDef>
+  
+  <RocketsRanks.RankDef>
+    <defName>Rank_Colonel</defName>
+    <label>colonel</label>
+    <description>A senior officer commanding a regiment or serving as a senior staff officer.</description>
+    <rankLevel>15</rankLevel>
+    <iconPath>UI/Officer_Colonel</iconPath>
+  </RocketsRanks.RankDef>
+  
+  <RocketsRanks.RankDef>
+    <defName>Rank_BrigadierGeneral</defName>
+    <label>brigadier general</label>
+    <description>A one-star general officer responsible for commanding a brigade or serving as a senior advisor.</description>
+    <rankLevel>16</rankLevel>
+    <iconPath>UI/Officer_BrigadierGeneral</iconPath>
+  </RocketsRanks.RankDef>
+  
+  <RocketsRanks.RankDef>
+    <defName>Rank_MajorGeneral</defName>
+    <label>major general</label>
+    <description>A two-star general officer commanding a division or serving in a high-level staff role.</description>
+    <rankLevel>17</rankLevel>
+    <iconPath>UI/Officer_MajorGeneral</iconPath>
+  </RocketsRanks.RankDef>
+  
+  <RocketsRanks.RankDef>
+    <defName>Rank_LieutenantGeneral</defName>
+    <label>lieutenant general</label>
+    <description>A three-star general officer responsible for commanding a corps or theatre of operations.</description>
+    <rankLevel>18</rankLevel>
+    <iconPath>UI/Officer_LieutenantGeneral</iconPath>
   </RocketsRanks.RankDef>
 
 </Defs>
