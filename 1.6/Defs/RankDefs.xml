@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <RocketsRanks.RankDef>
+    <defName>Rank_Private</defName>
+    <label>private</label>
+    <description>The entry-level rank. A colonist who has been formally enlisted.</description>
+    <rankLevel>1</rankLevel>
+    <iconPath>UI/Rank_Private</iconPath>
+  </RocketsRanks.RankDef>
+
+  <RocketsRanks.RankDef>
+    <defName>Rank_PrivateFirstClass</defName>
+    <label>private first class</label>
+    <description>A qualified soldier. The first promotion a colonist soldier receives.</description>
+    <rankLevel>2</rankLevel>
+    <iconPath>UI/Rank_PrivateFirstClass</iconPath>
+  </RocketsRanks.RankDef>
+
+  <RocketsRanks.RankDef>
+    <defName>Rank_Corporal</defName>
+    <label>corporal</label>
+    <description>A junior non-commissioned officer. Entrusted with leading a small team.</description>
+    <rankLevel>3</rankLevel>
+    <iconPath>UI/Rank_Corporal</iconPath>
+  </RocketsRanks.RankDef>
+
+  <RocketsRanks.RankDef>
+    <defName>Rank_Sergeant</defName>
+    <label>sergeant</label>
+    <description>A seasoned non-commissioned officer responsible for discipline and training.</description>
+    <rankLevel>4</rankLevel>
+    <iconPath>UI/Rank_Sergeant</iconPath>
+  </RocketsRanks.RankDef>
+  
+  <RocketsRanks.RankDef>
+    <defName>Rank_StaffSergeant</defName>
+    <label>staff sergeant</label>
+    <description>A senior non-commissioned officer with significant experience and leadership responsibilities.</description>
+    <rankLevel>5</rankLevel>
+    <iconPath>UI/Rank_StaffSergeant</iconPath>
+  </RocketsRanks.RankDef>
+  
+  <RocketsRanks.RankDef>
+    <defName>Rank_MasterSergeant</defName>
+    <label>master sergeant</label>
+    <description>A highly experienced non-commissioned officer with extensive leadership and management skills.</description>
+    <rankLevel>6</rankLevel>
+    <iconPath>UI/Rank_MasterSergeant</iconPath>
+  </RocketsRanks.RankDef>
+  
+  <RocketsRanks.RankDef>
+    <defName>Rank_FirstSergeant</defName>
+    <label>first sergeant</label>
+    <description>The highest-ranking non-commissioned officer, responsible for overall discipline and operations.</description>
+    <rankLevel>7</rankLevel>
+    <iconPath>UI/Rank_FirstSergeant</iconPath>
+  </RocketsRanks.RankDef>
+  
+  <RocketsRanks.RankDef>
+    <defName>Rank_SergeantMajor</defName>
+    <label>sergeant major</label>
+    <description>The senior non-commissioned officer, responsible for overseeing the training and discipline of the entire colony's forces.</description>
+    <rankLevel>8</rankLevel>
+    <iconPath>UI/Rank_SergeantMajor</iconPath>
+  </RocketsRanks.RankDef>
+  
+  <RocketsRanks.RankDef>
+    <defName>Rank_SecondLieutenant</defName>
+    <label>second lieutenant</label>
+    <description>The entry-level officer rank. A colonist who has been commissioned as an officer.</description>
+    <rankLevel>9</rankLevel>
+    <iconPath>UI/Rank_SecondLieutenant</iconPath>
+  </RocketsRanks.RankDef>
+  
+  <RocketsRanks.RankDef>
+    <defName>Rank_FirstLieutenant</defName>
+    <label>first lieutenant</label>
+    <description>A junior officer responsible for leading a platoon or serving as a staff officer.</description>
+    <rankLevel>10</rankLevel>
+    <iconPath>UI/Rank_FirstLieutenant</iconPath>
+  </RocketsRanks.RankDef>
+  
+  <RocketsRanks.RankDef>
+    <defName>Rank_Captain</defName>
+    <label>captain</label>
+    <description>A mid-level officer responsible for leading a company or serving in a staff role.</description>
+    <rankLevel>11</rankLevel>
+    <iconPath>UI/Rank_Captain</iconPath>
+  </RocketsRanks.RankDef>
+
+</Defs>

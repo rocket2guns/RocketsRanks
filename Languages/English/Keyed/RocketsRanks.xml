@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- Gizmo -->
+  <ROCKET_Promote>Promote</ROCKET_Promote>
+  <ROCKET_PromoteDesc>Change this colonist's rank. Rank determines which insignia and rank-restricted gear they can equip.</ROCKET_PromoteDesc>
+
+  <!-- Dialog_Promote -->
+  <ROCKET_PromoteHeader>Change Rank</ROCKET_PromoteHeader>
+  <ROCKET_SelectRank>Select a rank:</ROCKET_SelectRank>
+  <ROCKET_PromotionCitation>Citation (optional):</ROCKET_PromotionCitation>
+  <ROCKET_ConfirmPromotion>Confirm</ROCKET_ConfirmPromotion>
+
+  <!-- Apparel block message -->
+  <ROCKET_RankRequired>{0} cannot wear this — requires the rank of {1}.</ROCKET_RankRequired>
+
+  <!-- ITab -->
+  <ROCKET_RanksTab>Ranks</ROCKET_RanksTab>
+  <ROCKET_PromotionHistory>Promotion History</ROCKET_PromotionHistory>
+
+</LanguageData>
