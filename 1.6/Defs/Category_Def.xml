@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<ThingCategoryDef>
+		<defName>ROCKET_Apparel_Ranks</defName>
+		<label>Ranks</label>
+		<parent>Apparel</parent>
+    </ThingCategoryDef>
+	
+	<ThingCategoryDef>
+		<defName>ROCKET_Apparel_Officers</defName>
+		<label>Officers</label>
+		<parent>ROCKET_Apparel_Ranks</parent>
+    </ThingCategoryDef>
+	
+	<ThingCategoryDef>
+		<defName>ROCKET_Apparel_Enlisted</defName>
+		<label>Enlisted</label>
+		<parent>ROCKET_Apparel_Ranks</parent>
+    </ThingCategoryDef>
+	
+</Defs>

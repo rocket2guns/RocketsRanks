@@ -8,17 +8,14 @@
 	
 	<ThingDef ParentName="ApparelMakeableBase" Name="ROCKET_Ranks" Abstract="True">
 		<thingClass>RocketsRanks.RocketRank</thingClass>
-		<thingCategories>
-			<li>ROCKET_Apparel_Ranks</li>
-		</thingCategories>
 		<modExtensions>
 			<li Class="RocketsRanks.RankRenderExtension">
 				<bodyTypes>
 					<li>
 						<bodyType>Male</bodyType>
-						<northOffsetX>-0.00115</northOffsetX>
-						<northOffsetZ>0.1722</northOffsetZ>
-						<northScale>1.32</northScale>
+						<northOffsetX>0</northOffsetX>
+						<northOffsetZ>0.183</northOffsetZ>
+						<northScale>1.35</northScale>
 						<eastOffsetX>-0.0614</eastOffsetX>
 						<eastOffsetZ>0.1579</eastOffsetZ>
 						<eastScale>0.8701</eastScale>
@@ -50,8 +47,8 @@
 					</li>
 					<li>
 						<bodyType>Hulk</bodyType>
-						<northOffsetZ>0.1728</northOffsetZ>
-						<northScale>2.1272</northScale>
+						<northOffsetZ>0.247</northOffsetZ>
+						<northScale>1.96</northScale>
 						<eastOffsetX>-0.0683</eastOffsetX>
 						<eastOffsetZ>0.0861</eastOffsetZ>
 						<eastScale>0.834</eastScale>
@@ -100,20 +97,28 @@
 		</apparel>
 	</ThingDef>
 	
-	<ThingDef ParentName="ROCKET_Ranks" Name="ROCKET_Ranks_Enlisted" Abstract="True">
+	<ThingDef ParentName="ROCKET_Ranks" Name="ROCKET_Ranks_Enlisted" Abstract="True">	
+		<thingCategories>
+			<li>ROCKET_Apparel_Enlisted</li>
+		</thingCategories>
 		<equippedStatOffsets>
 			<SuppressionPower MayRequire="Ludeon.RimWorld.Ideology">0.05</SuppressionPower>
 			<SlaveSuppressionOffset MayRequire="Ludeon.RimWorld.Ideology">-0.05</SlaveSuppressionOffset>
 			<MentalBreakThreshold>-0.05</MentalBreakThreshold>
-		</equippedStatOffsets>		
+		</equippedStatOffsets>
+		<uiOrder>1</uiOrder>
 	</ThingDef>
 	
 	<ThingDef ParentName="ROCKET_Ranks" Name="ROCKET_Ranks_Officer" Abstract="True">
+		<thingCategories>
+			<li>ROCKET_Apparel_Officers</li>
+		</thingCategories>
 		<equippedStatOffsets>
 			<SuppressionPower MayRequire="Ludeon.RimWorld.Ideology">0.15</SuppressionPower>
 			<SlaveSuppressionOffset MayRequire="Ludeon.RimWorld.Ideology">-0.15</SlaveSuppressionOffset>
 			<MentalBreakThreshold>-0.15</MentalBreakThreshold>
 		</equippedStatOffsets>
+		<uiOrder>2</uiOrder>
 	</ThingDef>
   
 	<!-- Enlisted -->
@@ -133,6 +138,7 @@
 				<requiredRank>Rank_Private</requiredRank>
 			</li>
 		</modExtensions>
+		<uiOrder>3</uiOrder>
 	</ThingDef>
 
 	<ThingDef ParentName="ROCKET_Ranks_Enlisted">
@@ -150,6 +156,7 @@
 				<requiredRank>Rank_PrivateFirstClass</requiredRank>
 			</li>
 		</modExtensions>
+		<uiOrder>4</uiOrder>
 	</ThingDef>
 
 	<ThingDef ParentName="ROCKET_Ranks_Enlisted">
@@ -167,6 +174,7 @@
 				<requiredRank>Rank_Corporal</requiredRank>
 			</li>
 		</modExtensions>
+		<uiOrder>5</uiOrder>
 	</ThingDef>
 
 	<ThingDef ParentName="ROCKET_Ranks_Enlisted">
@@ -184,6 +192,7 @@
 				<requiredRank>Rank_Sergeant</requiredRank>
 			</li>
 		</modExtensions>
+		<uiOrder>6</uiOrder>
 	</ThingDef>
 
 	<ThingDef ParentName="ROCKET_Ranks_Enlisted">
@@ -201,6 +210,7 @@
 				<requiredRank>Rank_StaffSergeant</requiredRank>
 			</li>
 		</modExtensions>
+		<uiOrder>7</uiOrder>
 	</ThingDef>
 
 	<ThingDef ParentName="ROCKET_Ranks_Enlisted">
@@ -218,6 +228,7 @@
 				<requiredRank>Rank_SergeantFirstClass</requiredRank>
 			</li>
 		</modExtensions>
+		<uiOrder>8</uiOrder>
 	</ThingDef>
 
 	<ThingDef ParentName="ROCKET_Ranks_Enlisted">
@@ -235,6 +246,7 @@
 				<requiredRank>Rank_MasterSergeant</requiredRank>
 			</li>
 		</modExtensions>
+		<uiOrder>9</uiOrder>
 	</ThingDef>
 
 	<ThingDef ParentName="ROCKET_Ranks_Enlisted">
@@ -252,6 +264,7 @@
 				<requiredRank>Rank_FirstSergeant</requiredRank>
 			</li>
 		</modExtensions>
+		<uiOrder>10</uiOrder>
 	</ThingDef>
 
 	<ThingDef ParentName="ROCKET_Ranks_Enlisted">
@@ -269,6 +282,7 @@
 				<requiredRank>Rank_SergeantMajor</requiredRank>
 			</li>
 		</modExtensions>
+		<uiOrder>11</uiOrder>
 	</ThingDef>
   
 	<!-- Officers -->
@@ -288,6 +302,7 @@
 				<requiredRank>Rank_SecondLieutenant</requiredRank>
 			</li>
 		</modExtensions>
+		<uiOrder>12</uiOrder>
 	</ThingDef>
 
 	<ThingDef ParentName="ROCKET_Ranks_Officer">
@@ -305,6 +320,7 @@
 				<requiredRank>Rank_FirstLieutenant</requiredRank>
 			</li>
 		</modExtensions>
+		<uiOrder>13</uiOrder>
 	</ThingDef>
 
 	<ThingDef ParentName="ROCKET_Ranks_Officer">
@@ -322,6 +338,7 @@
 				<requiredRank>Rank_Captain</requiredRank>
 			</li>
 		</modExtensions>
+		<uiOrder>14</uiOrder>
 	</ThingDef>
 
 	<ThingDef ParentName="ROCKET_Ranks_Officer">
@@ -339,6 +356,7 @@
 				<requiredRank>Rank_Major</requiredRank>
 			</li>
 		</modExtensions>
+		<uiOrder>15</uiOrder>
 	</ThingDef>
 
 	<ThingDef ParentName="ROCKET_Ranks_Officer">
@@ -356,6 +374,7 @@
 				<requiredRank>Rank_LieutenantColonel</requiredRank>
 			</li>
 		</modExtensions>
+		<uiOrder>16</uiOrder>
 	</ThingDef>
 
 	<ThingDef ParentName="ROCKET_Ranks_Officer">
@@ -373,6 +392,7 @@
 				<requiredRank>Rank_Colonel</requiredRank>
 			</li>
 		</modExtensions>
+		<uiOrder>17</uiOrder>
 	</ThingDef>
 
 	<ThingDef ParentName="ROCKET_Ranks_Officer">
@@ -390,6 +410,7 @@
 				<requiredRank>Rank_BrigadierGeneral</requiredRank>
 			</li>
 		</modExtensions>
+		<uiOrder>18</uiOrder>
 	</ThingDef>
 
 	<ThingDef ParentName="ROCKET_Ranks_Officer">
@@ -407,6 +428,7 @@
 				<requiredRank>Rank_MajorGeneral</requiredRank>
 			</li>
 		</modExtensions>
+		<uiOrder>19</uiOrder>
 	</ThingDef>
 
 	<ThingDef ParentName="ROCKET_Ranks_Officer">
@@ -424,6 +446,7 @@
 				<requiredRank>Rank_LieutenantGeneral</requiredRank>
 			</li>
 		</modExtensions>
+		<uiOrder>20</uiOrder>
 	</ThingDef>
 
 </Defs>
