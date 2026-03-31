@@ -14,7 +14,7 @@
 					<li>
 						<bodyType>Male</bodyType>
 						<northOffsetX>0</northOffsetX>
-						<northOffsetZ>0.183</northOffsetZ>
+						<northOffsetZ>0.209</northOffsetZ>
 						<northScale>1.35</northScale>
 						<eastOffsetX>-0.0614</eastOffsetX>
 						<eastOffsetZ>0.1579</eastOffsetZ>
@@ -22,8 +22,8 @@
 					</li>
 					<li>
 						<bodyType>Female</bodyType>
-						<northOffsetZ>0.1625</northOffsetZ>
-						<northScale>1.1837</northScale>
+						<northOffsetZ>0.197</northOffsetZ>
+						<northScale>1.15</northScale>
 						<eastOffsetX>0.0477</eastOffsetX>
 						<eastOffsetZ>0.1275</eastOffsetZ>
 						<eastScale>0.6842</eastScale>
@@ -65,14 +65,11 @@
 			<MaxHitPoints>100</MaxHitPoints>
 			<WorkToMake>1500</WorkToMake>
 			<Mass>0.1</Mass>
-			<ArmorRating_Sharp>0.1</ArmorRating_Sharp>
-			<ArmorRating_Blunt>0.1</ArmorRating_Blunt>
 			<EquipDelay>1.5</EquipDelay>
+			<Bulk MayRequire="CETeam.CombatExtended">0.05</Bulk>
+			<WornBulk MayRequire="CETeam.CombatExtended">0</WornBulk>
 		</statBases>
 		<costStuffCount>10</costStuffCount>
-		<costList>
-			<Gold>1</Gold>
-		</costList>
 		<stuffCategories>
 			<li>Fabric</li>
 			<li>Leathery</li>
@@ -114,11 +111,26 @@
 			<li>ROCKET_Apparel_Officers</li>
 		</thingCategories>
 		<equippedStatOffsets>
+			<SuppressionPower MayRequire="Ludeon.RimWorld.Ideology">0.10</SuppressionPower>
+			<SlaveSuppressionOffset MayRequire="Ludeon.RimWorld.Ideology">-0.10</SlaveSuppressionOffset>
+			<MentalBreakThreshold>-0.10</MentalBreakThreshold>
+		</equippedStatOffsets>
+		<uiOrder>2</uiOrder>
+		<costList>
+			<Silver>1</Silver>
+		</costList>
+	</ThingDef>
+	
+	<ThingDef ParentName="ROCKET_Ranks_Officer" Name="ROCKET_Ranks_General" Abstract="True">
+		<equippedStatOffsets>
 			<SuppressionPower MayRequire="Ludeon.RimWorld.Ideology">0.15</SuppressionPower>
 			<SlaveSuppressionOffset MayRequire="Ludeon.RimWorld.Ideology">-0.15</SlaveSuppressionOffset>
 			<MentalBreakThreshold>-0.15</MentalBreakThreshold>
 		</equippedStatOffsets>
-		<uiOrder>2</uiOrder>
+		<uiOrder>3</uiOrder>
+		<costList>
+			<Gold>1</Gold>
+		</costList>
 	</ThingDef>
   
 	<!-- Enlisted -->
@@ -394,8 +406,10 @@
 		</modExtensions>
 		<uiOrder>17</uiOrder>
 	</ThingDef>
+	
+	<!-- GENERALS -->
 
-	<ThingDef ParentName="ROCKET_Ranks_Officer">
+	<ThingDef ParentName="ROCKET_Ranks_General">
 		<defName>ROCKET_Ranks_1Star</defName>
 		<label>brigadier general rank</label>
 		<description>A pair of ornamental shoulder pieces for brigadier generals.</description>
@@ -413,7 +427,7 @@
 		<uiOrder>18</uiOrder>
 	</ThingDef>
 
-	<ThingDef ParentName="ROCKET_Ranks_Officer">
+	<ThingDef ParentName="ROCKET_Ranks_General">
 		<defName>ROCKET_Ranks_2Star</defName>
 		<label>major general rank</label>
 		<description>A pair of ornamental shoulder pieces for major generals.</description>
@@ -431,7 +445,7 @@
 		<uiOrder>19</uiOrder>
 	</ThingDef>
 
-	<ThingDef ParentName="ROCKET_Ranks_Officer">
+	<ThingDef ParentName="ROCKET_Ranks_General">
 		<defName>ROCKET_Ranks_3Star</defName>
 		<label>lieutenant general rank</label>
 		<description>A pair of ornamental shoulder pieces for lieutenant generals.</description>
