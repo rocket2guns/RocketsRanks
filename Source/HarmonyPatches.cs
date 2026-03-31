@@ -359,7 +359,8 @@ namespace RocketsRanks
         private const float BaseZ = -0.1f;
         private const float SideShiftX = 0.02f;
         private const float DepthAboveShell = 0.01f;
-        private const float NorthExtraDepth = 0.02f;
+        private const float NorthExtraDepth = -0.001f; // 0.02f
+        private const float EastExtraDepth = -0.001f;
 
         public static void Postfix(PawnRenderNode node, PawnDrawParms parms, ref Vector3 __result)
         {
@@ -382,12 +383,14 @@ namespace RocketsRanks
                     break;
                 case 1: // East
                     __result.x += SideShiftX + bodyOffsetX;
+                    __result.y += EastExtraDepth;
                     break;
                 case 2: // South
                     __result.x += bodyOffsetX;
                     break;
                 case 3: // West
                     __result.x -= SideShiftX + bodyOffsetX;
+                    __result.y += EastExtraDepth;
                     break;
             }
         }
