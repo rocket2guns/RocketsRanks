@@ -55,6 +55,11 @@ namespace RocketsRanks
                 ref Settings.ShowRankOnMap,
                 "If enabled, the pawn's rank icon will be displayed next to their name label on the map."
             );
+            listing.CheckboxLabeled(
+                "Hide map rank icon when not drafted",
+                ref Settings.HideRankWhenUndrafted,
+                "If enabled, the rank icon on map labels will only be shown when the pawn is drafted."
+            );
             if (Settings.ShowRankOnMap)
             {
                 listing.Label($"  Map icon size: {Settings.MapIconSize:F0}px");
@@ -194,6 +199,7 @@ namespace RocketsRanks
         public bool HideCryptosleep = false;
         public bool HideOffMap;
         public bool HideInMap;
+        public bool HideRankWhenUndrafted;
         public bool ShowBodyTypeDebug;
         public RankBodyTypeSettings[] BodySettings = new RankBodyTypeSettings[(int)RankBodyType.Count];
 
@@ -218,6 +224,7 @@ namespace RocketsRanks
             Scribe_Values.Look(ref HideCryptosleep, "HideCryptosleep", false);
             Scribe_Values.Look(ref HideOffMap, "HideOffMap", false);
             Scribe_Values.Look(ref HideInMap, "HideInMap", false);
+            Scribe_Values.Look(ref HideRankWhenUndrafted, "HideRankWhenUndrafted", false);
             Scribe_Values.Look(ref ShowBodyTypeDebug, "ShowBodyTypeDebug", false);
 
             if (BodySettings == null)

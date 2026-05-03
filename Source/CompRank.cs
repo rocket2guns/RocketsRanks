@@ -24,6 +24,24 @@ namespace RocketsRanks
     {
         public RankDef currentRank;
         public List<PromotionRecord> history = new();
+        private Command_Action cachedGizmo;
+
+        public Command_Action GetGizmo()
+        {
+            if (cachedGizmo == null)
+            {
+                var pawn = (Pawn)parent;
+                cachedGizmo = new Command_Action
+                {
+                    defaultDesc = "ROCKET_PromoteDesc".Translate(),
+                    action = () => Find.WindowStack.Add(new Dialog_Promote(pawn))
+                };
+            }
+            cachedGizmo.defaultLabel = currentRank?.RankLabel
+                ?? "ROCKET_Promote".Translate().ToString();
+            cachedGizmo.icon = currentRank?.Icon ?? RankTextures.PromoteIcon;
+            return cachedGizmo;
+        }
 
         public override void PostExposeData()
         {

@@ -20,6 +20,7 @@
 
   <!-- ITab -->
   <ROCKET_RanksTab>Ranks</ROCKET_RanksTab>
+  <ROCKET_NoRank>No Rank</ROCKET_NoRank>
   <ROCKET_PromotionHistory>Promotion History</ROCKET_PromotionHistory>
   <ROCKET_StrippedOfRank>Stripped of Rank</ROCKET_StrippedOfRank>
   <ROCKET_PromotedTo>Promoted to {0}</ROCKET_PromotedTo>

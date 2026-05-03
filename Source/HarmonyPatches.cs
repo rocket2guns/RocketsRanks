@@ -23,19 +23,8 @@ namespace RocketsRanks
             if (__instance.IsColonistPlayerControlled)
             {
                 var comp = __instance.GetComp<CompRank>();
-                var currentRank = comp?.currentRank;
-                var label = currentRank != null
-                    ? currentRank.RankLabel
-                    : "ROCKET_Promote".Translate().ToString();
-                var icon = currentRank?.Icon ?? RankTextures.PromoteIcon;
-
-                yield return new Command_Action
-                {
-                    defaultLabel = label,
-                    defaultDesc = "ROCKET_PromoteDesc".Translate(),
-                    icon = icon,
-                    action = () => Find.WindowStack.Add(new Dialog_Promote(__instance))
-                };
+                if (comp != null)
+                    yield return comp.GetGizmo();
             }
         }
     }
@@ -139,10 +128,11 @@ namespace RocketsRanks
             if (!RanksMod.Settings.ShowRankOnMap) return;
 
             var pawn = PawnRef(__instance);
-            if (pawn == null || !pawn.Spawned) return;
+            if (pawn is not { Spawned: true }) return;
 
             if (Find.CameraDriver.CurrentZoom > CameraZoomRange.Middle) return;
             if (!pawn.IsColonistPlayerControlled) return;
+            if (RanksMod.Settings.HideRankWhenUndrafted && !pawn.Drafted) return;
 
             var comp = pawn.GetComp<CompRank>();
             var rank = comp?.currentRank;

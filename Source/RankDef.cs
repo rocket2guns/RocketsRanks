@@ -21,8 +21,10 @@ namespace RocketsRanks
         public string iconPath;
 
         [Unsaved] private Texture2D cachedIcon;
-        
-        public string RankLabel => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(LabelCap);
+        [Unsaved] private string cachedRankLabel;
+
+        public string RankLabel =>
+            cachedRankLabel ??= CultureInfo.CurrentCulture.TextInfo.ToTitleCase(LabelCap);
 
         public Texture2D Icon
         {

@@ -18,13 +18,10 @@ namespace RocketsRanks
 
             foreach (var def in DefDatabase<ThingDef>.AllDefsListForReading)
             {
-                if (def.race == null || !def.race.Humanlike) continue;
-
+                if (def.race is not { Humanlike: true }) continue;
                 InjectIntoDef(def, tabType, tabInstance);
-
                 if (def.race.corpseDef != null)
                     InjectIntoDef(def.race.corpseDef, tabType, tabInstance);
-
                 def.comps ??= new List<CompProperties>();
                 if (!def.comps.Any(c => c.compClass == typeof(CompRank)))
                     def.comps.Add(new CompProperties { compClass = typeof(CompRank) });
@@ -103,7 +100,7 @@ namespace RocketsRanks
             Text.Anchor = TextAnchor.MiddleCenter;
             var rankLabel = comp.currentRank != null
                 ? comp.currentRank.RankLabel
-                : "No Rank";
+                : "ROCKET_NoRank".Translate().ToString();
             var headerHeight = Text.CalcHeight(rankLabel, rect.width);
             Widgets.Label(new Rect(rect.x, curY, rect.width, headerHeight), rankLabel);
             curY += headerHeight + 4f;
