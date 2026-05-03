@@ -26,7 +26,7 @@ namespace RocketsRanks
 
         public override void DoSettingsWindowContents(Rect inRect)
         {
-            var viewHeight = 500f;
+            var viewHeight = 650f;
             if (Settings.ShowRankBadge) viewHeight += 150f;
             if (Settings.ShowRankOnMap) viewHeight += 130f;
             if (Settings.ShowBodyTypeDebug) viewHeight += RankRenderSettings.BodyTypeLabels.Length * 420f;
@@ -39,45 +39,16 @@ namespace RocketsRanks
             Text.Font = GameFont.Small;
             listing.Gap(6f);
 
+            // ── Pawn Labels ──
+            Text.Font = GameFont.Medium;
+            listing.Label("Pawn Labels");
+            Text.Font = GameFont.Small;
+            listing.Gap();
             listing.CheckboxLabeled(
                 "Show rank in pawn label",
                 ref Settings.ShowRankInLabel,
                 "If enabled, a pawn's rank will be shown as a prefix in their name label."
             );
-
-            listing.CheckboxLabeled(
-                "Show rank badge on portraits",
-                ref Settings.ShowRankBadge,
-                "If enabled, the pawn's rank icon will be displayed on their colonist bar portrait."
-            );
-            if (Settings.ShowRankBadge)
-            {
-                listing.Label($"Badge size: {Settings.BadgeSize:F0}px");
-                Settings.BadgeSize = listing.Slider(Settings.BadgeSize, 12f, 128f);
-                listing.Label($"Badge offset X: {Settings.BadgeOffsetX:F0}px");
-                Settings.BadgeOffsetX = listing.Slider(Settings.BadgeOffsetX, -64f, 64f);
-                listing.Label($"Badge offset Y: {Settings.BadgeOffsetY:F0}px");
-                Settings.BadgeOffsetY = listing.Slider(Settings.BadgeOffsetY, -64f, 64f);
-            }
-
-            // --- Colonist bar ---
-            listing.GapLine();
-            listing.CheckboxLabeled(
-                "Hide cryptosleep colonists from bar",
-                ref Settings.HideCryptosleep,
-                "If enabled, colonists inside cryptosleep caskets will not appear on the colonist bar."
-            );
-            listing.CheckboxLabeled(
-                "Hide off-map colonists from bar",
-                ref Settings.HideOffMap,
-                "If enabled, colonists on a different map than the one you are viewing will not appear on the colonist bar."
-            );
-            listing.CheckboxLabeled(
-                "Hide colonists when in map view",
-                ref Settings.HideInMap,
-                "If enabled, colonists in bar will be hidden while in map view."
-            );
-            listing.GapLine();
 
             listing.CheckboxLabeled(
                 "Show rank icon on map labels",
@@ -86,15 +57,83 @@ namespace RocketsRanks
             );
             if (Settings.ShowRankOnMap)
             {
-                listing.Label($"Map icon size: {Settings.MapIconSize:F0}px");
+                listing.Label($"  Map icon size: {Settings.MapIconSize:F0}px");
                 Settings.MapIconSize = listing.Slider(Settings.MapIconSize, 8f, 32f);
-                listing.Label($"Map icon offset X: {Settings.MapIconOffsetX:F0}px");
+                listing.Label($"  Map icon offset X: {Settings.MapIconOffsetX:F0}px");
                 Settings.MapIconOffsetX = listing.Slider(Settings.MapIconOffsetX, -16f, 16f);
-                listing.Label($"Map icon offset Y: {Settings.MapIconOffsetY:F0}px");
+                listing.Label($"  Map icon offset Y: {Settings.MapIconOffsetY:F0}px");
                 Settings.MapIconOffsetY = listing.Slider(Settings.MapIconOffsetY, -16f, 16f);
             }
 
+            listing.Gap(12f);
+
+            // ── Colonist Bar ──
             listing.GapLine();
+            Text.Font = GameFont.Medium;
+            listing.Label("Colonist Bar");
+            Text.Font = GameFont.Small;
+            listing.Gap();
+            listing.CheckboxLabeled(
+                "Hide cryptosleep colonists",
+                ref Settings.HideCryptosleep,
+                "Colonists inside cryptosleep caskets will not appear on the colonist bar."
+            );
+            listing.CheckboxLabeled(
+                "Hide off-map colonists",
+                ref Settings.HideOffMap,
+                "Colonists on a different map than the one you are viewing will not appear on the colonist bar."
+            );
+            listing.CheckboxLabeled(
+                "Hide colonists in map view",
+                ref Settings.HideInMap,
+                "Colonists in bar will be hidden while in map view."
+            );
+            listing.Gap(12f);
+
+            // ── Colonist Bar: Badge ──
+            listing.GapLine();
+            Text.Font = GameFont.Medium;
+            listing.Label("Colonist Bar Rank Badge");
+            Text.Font = GameFont.Small;
+            listing.Gap();
+
+            listing.CheckboxLabeled(
+                "Show rank badge on portraits",
+                ref Settings.ShowRankBadge,
+                "If enabled, the pawn's rank icon will be displayed on their colonist bar portrait."
+            );
+            if (Settings.ShowRankBadge)
+            {
+                listing.Label($"  Badge size: {Settings.BadgeSize:F0}px");
+                Settings.BadgeSize = listing.Slider(Settings.BadgeSize, 12f, 128f);
+                listing.Label($"  Badge offset X: {Settings.BadgeOffsetX:F0}px");
+                Settings.BadgeOffsetX = listing.Slider(Settings.BadgeOffsetX, -64f, 64f);
+                listing.Label($"  Badge offset Y: {Settings.BadgeOffsetY:F0}px");
+                Settings.BadgeOffsetY = listing.Slider(Settings.BadgeOffsetY, -64f, 64f);
+            }
+            listing.Gap(12f);
+
+            listing.GapLine();
+            // ── Colonist Bar: Weapon Icon ──
+            Text.Font = GameFont.Medium;
+            listing.Label("Colonist Bar Weapon Icon");
+            Text.Font = GameFont.Small;
+            listing.Gap();
+            listing.Label($"  Offset X: {Settings.WeaponOffsetX:F0}px");
+            Settings.WeaponOffsetX = listing.Slider(Settings.WeaponOffsetX, -64f, 64f);
+            listing.Label($"  Offset Y: {Settings.WeaponOffsetY:F0}px");
+            Settings.WeaponOffsetY = listing.Slider(Settings.WeaponOffsetY, -64f, 64f);
+            listing.Label($"  Scale: {Settings.WeaponScale:F2}x");
+            Settings.WeaponScale = listing.Slider(Settings.WeaponScale, 0.1f, 3.0f);
+
+            listing.Gap(12f);
+
+            // ── Debug ──
+            listing.GapLine();
+            Text.Font = GameFont.Medium;
+            listing.Label("Content Creation / Debug");
+            Text.Font = GameFont.Small;
+            listing.Gap();
             listing.CheckboxLabeled(
                 "Show worn render debug settings",
                 ref Settings.ShowBodyTypeDebug,
@@ -115,7 +154,6 @@ namespace RocketsRanks
                     listing.Label($"— {RankRenderSettings.BodyTypeLabels[i]} —");
                     GUI.color = Color.white;
 
-                    // North/South settings
                     listing.Label("  North / South:");
                     listing.Label($"    Offset X: {bs.north.offsetX:F3}");
                     bs.north.offsetX = listing.Slider(bs.north.offsetX, -0.3f, 0.3f);
@@ -124,7 +162,6 @@ namespace RocketsRanks
                     listing.Label($"    Scale: {bs.north.scale:F2}");
                     bs.north.scale = listing.Slider(bs.north.scale, 0.1f, 3f);
 
-                    // East/West settings
                     listing.Label("  East / West:");
                     listing.Label($"    Offset X: {bs.east.offsetX:F3}");
                     bs.east.offsetX = listing.Slider(bs.east.offsetX, -0.3f, 0.3f);
@@ -151,6 +188,9 @@ namespace RocketsRanks
         public float MapIconSize = 16f;
         public float MapIconOffsetX = 0f;
         public float MapIconOffsetY = -3f;
+        public float WeaponOffsetX = 0f;
+        public float WeaponOffsetY = 0f;
+        public float WeaponScale = 1f;
         public bool HideCryptosleep = false;
         public bool HideOffMap;
         public bool HideInMap;
@@ -170,6 +210,9 @@ namespace RocketsRanks
             Scribe_Values.Look(ref BadgeOffsetY, "BadgeOffsetY", 4f);
             Scribe_Values.Look(ref ShowRankOnMap, "ShowRankOnMap", true);
             Scribe_Values.Look(ref MapIconSize, "MapIconSize", 16f);
+            Scribe_Values.Look(ref WeaponOffsetX, "WeaponOffsetX", 0f);
+            Scribe_Values.Look(ref WeaponOffsetY, "WeaponOffsetY", 0f);
+            Scribe_Values.Look(ref WeaponScale, "WeaponScale", 1f);
             Scribe_Values.Look(ref MapIconOffsetX, "MapIconOffsetX", 0f);
             Scribe_Values.Look(ref MapIconOffsetY, "MapIconOffsetY", -3f);
             Scribe_Values.Look(ref HideCryptosleep, "HideCryptosleep", false);

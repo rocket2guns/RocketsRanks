@@ -15,13 +15,20 @@ namespace RocketsRanks
         {
             var tabType = typeof(ITab_PawnRanks);
             var tabInstance = InspectTabManager.GetSharedInstance(tabType);
-            var humanDef = ThingDef.Named("Human");
-            var corpseDef = ThingDef.Named("Corpse_Human");
-            InjectIntoDef(humanDef, tabType, tabInstance);
-            InjectIntoDef(corpseDef, tabType, tabInstance);
-            // Inject CompRank onto Human
-            if (!humanDef.comps.Any(c => c.compClass == typeof(CompRank)))
-                humanDef.comps.Add(new CompProperties { compClass = typeof(CompRank) });
+
+            foreach (var def in DefDatabase<ThingDef>.AllDefsListForReading)
+            {
+                if (def.race == null || !def.race.Humanlike) continue;
+
+                InjectIntoDef(def, tabType, tabInstance);
+
+                if (def.race.corpseDef != null)
+                    InjectIntoDef(def.race.corpseDef, tabType, tabInstance);
+
+                def.comps ??= new List<CompProperties>();
+                if (!def.comps.Any(c => c.compClass == typeof(CompRank)))
+                    def.comps.Add(new CompProperties { compClass = typeof(CompRank) });
+            }
         }
 
         private static void InjectIntoDef(ThingDef def, Type tabType, InspectTabBase tabInstance)
