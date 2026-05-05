@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -8,8 +7,14 @@ namespace RocketsRanks
 {
     public class Dialog_Promote : Window
     {
+        // Per-pack rank lists, sorted by rankLevel. Built once after defs load.
+        private static Dictionary<RankPackDef, List<RankDef>> _ranksByPack;
+        private static List<RankPackDef> _packsByMinLevel;
+
         private readonly Pawn pawn;
-        private readonly List<RankDef> allRanks;
+        private readonly List<RankPackDef> tabs;
+        private readonly List<TabRecord> tabBuf = new();
+        private RankPackDef currentTab;
         private RankDef selectedRank;
         private string draft = "";
         private Vector2 rankScroll;
@@ -19,15 +24,29 @@ namespace RocketsRanks
         private const float RANK_LIST_HEIGHT = 200f;
         private const float ROW_HEIGHT = 34f;
         private const float ICON_SIZE = 24f;
+        private const float TAB_BAR_HEIGHT = 32f;
 
         public Dialog_Promote(Pawn pawn)
         {
             this.pawn = pawn;
-            allRanks = DefDatabase<RankDef>.AllDefsListForReading
-                .OrderBy(r => r.rankLevel)
-                .ToList();
+            var currentRank = pawn.GetComp<CompRank>()?.currentRank;
 
-            selectedRank = pawn.GetComp<CompRank>()?.currentRank;
+            EnsureRankCache();
+
+            // Hidden packs produce no tab.
+            tabs = new List<RankPackDef>(_packsByMinLevel.Count);
+            for (var i = 0; i < _packsByMinLevel.Count; i++)
+            {
+                var pack = _packsByMinLevel[i];
+                if (!RankUtility.IsPackHidden(pack))
+                    tabs.Add(pack);
+            }
+
+            selectedRank = currentRank;
+            var preferred = currentRank?.Pack;
+            currentTab = preferred != null && !RankUtility.IsPackHidden(preferred)
+                ? preferred
+                : tabs.Count > 0 ? tabs[0] : null;
 
             forcePause = true;
             doCloseX = true;
@@ -35,7 +54,47 @@ namespace RocketsRanks
             closeOnClickedOutside = false;
         }
 
-        public override Vector2 InitialSize => new(620f, 510f);
+        private static void EnsureRankCache()
+        {
+            if (_ranksByPack != null) return;
+
+            _ranksByPack = new Dictionary<RankPackDef, List<RankDef>>();
+            var defs = DefDatabase<RankDef>.AllDefsListForReading;
+            for (var i = 0; i < defs.Count; i++)
+            {
+                var rank = defs[i];
+                if (rank.Pack == null) continue;
+                if (!_ranksByPack.TryGetValue(rank.Pack, out var list))
+                {
+                    list = new List<RankDef>();
+                    _ranksByPack[rank.Pack] = list;
+                }
+                list.Add(rank);
+            }
+
+            foreach (var kv in _ranksByPack)
+                kv.Value.Sort(RankLevelComparer.Instance);
+
+            _packsByMinLevel = new List<RankPackDef>(_ranksByPack.Count);
+            foreach (var key in _ranksByPack.Keys)
+                _packsByMinLevel.Add(key);
+            _packsByMinLevel.Sort(PackMinLevelComparer.Instance);
+        }
+
+        private sealed class RankLevelComparer : IComparer<RankDef>
+        {
+            public static readonly RankLevelComparer Instance = new();
+            public int Compare(RankDef a, RankDef b) => a.rankLevel.CompareTo(b.rankLevel);
+        }
+
+        private sealed class PackMinLevelComparer : IComparer<RankPackDef>
+        {
+            public static readonly PackMinLevelComparer Instance = new();
+            public int Compare(RankPackDef a, RankPackDef b) =>
+                _ranksByPack[a][0].rankLevel.CompareTo(_ranksByPack[b][0].rankLevel);
+        }
+
+        public override Vector2 InitialSize => new(780f, 510f);
 
         public override void DoWindowContents(Rect inRect)
         {
@@ -126,15 +185,23 @@ namespace RocketsRanks
             Widgets.Label(headerRect, "ROCKET_PromoteHeader".Translate());
             Text.Font = GameFont.Small;
 
-            // Rank list
-            var listLabel = new Rect(rect.x, headerRect.yMax + 6f, rect.width, 20f);
-            Text.Font = GameFont.Tiny;
-            GUI.color = Color.gray;
-            Widgets.Label(listLabel, "ROCKET_SelectRank".Translate());
-            GUI.color = Color.white;
-            Text.Font = GameFont.Small;
+            float listY;
+            if (tabs.Count > 1)
+            {
+                listY = headerRect.yMax + 6f + TAB_BAR_HEIGHT;
+            }
+            else
+            {
+                var listLabel = new Rect(rect.x, headerRect.yMax + 6f, rect.width, 20f);
+                Text.Font = GameFont.Tiny;
+                GUI.color = Color.gray;
+                Widgets.Label(listLabel, "ROCKET_SelectRank".Translate());
+                GUI.color = Color.white;
+                Text.Font = GameFont.Small;
+                listY = listLabel.yMax + 4f;
+            }
 
-            var listRect = new Rect(rect.x, listLabel.yMax + 4f, rect.width, RANK_LIST_HEIGHT);
+            var listRect = new Rect(rect.x, listY, rect.width, RANK_LIST_HEIGHT);
             DrawRankList(listRect);
 
             // Citation
@@ -189,10 +256,26 @@ namespace RocketsRanks
 
         private void DrawRankList(Rect rect)
         {
+            if (tabs.Count > 1)
+            {
+                tabBuf.Clear();
+                foreach (var pack in tabs)
+                {
+                    var p = pack;
+                    tabBuf.Add(new TabRecord(pack.LabelCap, () => currentTab = p, currentTab == p));
+                }
+                TabDrawer.DrawTabs(rect, tabBuf);
+            }
+
             Widgets.DrawMenuSection(rect);
 
+            var ranks = currentTab != null && _ranksByPack.TryGetValue(currentTab, out var list)
+                ? list
+                : null;
+            var rankCount = ranks?.Count ?? 0;
+
             var innerRect = rect.ContractedBy(4f);
-            var viewHeight = (allRanks.Count + 1) * ROW_HEIGHT; // +1 for "No rank"
+            var viewHeight = (rankCount + 1) * ROW_HEIGHT; // +1 for "No rank"
             var viewRect = new Rect(0f, 0f, innerRect.width - 16f, viewHeight);
 
             Widgets.BeginScrollView(innerRect, ref rankScroll, viewRect);
@@ -213,8 +296,15 @@ namespace RocketsRanks
                 selectedRank = null;
             curY += ROW_HEIGHT;
 
+            if (ranks == null)
+            {
+                Widgets.EndScrollView();
+                Text.Anchor = TextAnchor.UpperLeft;
+                return;
+            }
+
             // Rank entries
-            foreach (var rank in allRanks)
+            foreach (var rank in ranks)
             {
                 var rowRect = new Rect(0f, curY, viewRect.width, ROW_HEIGHT);
                 var isSelected = selectedRank == rank;

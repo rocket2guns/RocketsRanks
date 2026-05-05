@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Globalization;
 using RimWorld;
 using UnityEngine;
@@ -19,6 +20,22 @@ namespace RocketsRanks
         /// e.g. "UI/Rank_Corporal"
         /// </summary>
         public string iconPath;
+
+        /// <summary>
+        /// Pack this rank belongs to. Required — validated in ConfigErrors so
+        /// every rank surfaces in exactly one promote-menu tab.
+        /// </summary>
+        public RankPackDef pack;
+
+        public RankPackDef Pack => pack;
+
+        public override IEnumerable<string> ConfigErrors()
+        {
+            foreach (var err in base.ConfigErrors())
+                yield return err;
+            if (pack == null)
+                yield return $"RankDef {defName} is missing required <pack>.";
+        }
 
         [Unsaved] private Texture2D cachedIcon;
         [Unsaved] private string cachedRankLabel;

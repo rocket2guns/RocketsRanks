@@ -319,6 +319,22 @@ namespace RocketsRanks
     }
 
     /// <summary>
+    /// Hide recipes whose product is rank apparel of a hidden pack from
+    /// crafting menus. Existing bills go inert (vanilla behaviour for
+    /// !AvailableNow recipes) and resume cleanly if the pack is un-hidden.
+    /// </summary>
+    [HarmonyPatch(typeof(RecipeDef), nameof(RecipeDef.AvailableNow), MethodType.Getter)]
+    public static class Patch_RecipeDef_AvailableNow
+    {
+        public static void Postfix(RecipeDef __instance, ref bool __result)
+        {
+            if (!__result) return;
+            if (RankUtility.IsRecipeHidden(__instance))
+                __result = false;
+        }
+    }
+
+    /// <summary>
     /// Scale rank apparel insignia.
     /// Uses XML def defaults, or mod settings when debug is enabled.
     /// </summary>

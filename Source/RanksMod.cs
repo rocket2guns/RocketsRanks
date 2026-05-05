@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
@@ -24,32 +25,72 @@ namespace RocketsRanks
 
         public override string SettingsCategory() => "Rocket's Ranks";
 
+        private enum SettingsTab { Packs, Labels, Bar, Debug }
+        private static SettingsTab currentTab = SettingsTab.Packs;
+        private static readonly List<TabRecord> tabBuf = new();
+
         public override void DoSettingsWindowContents(Rect inRect)
         {
-            var viewHeight = 650f;
-            if (Settings.ShowRankBadge) viewHeight += 150f;
-            if (Settings.ShowRankOnMap) viewHeight += 130f;
-            if (Settings.ShowBodyTypeDebug) viewHeight += RankRenderSettings.BodyTypeLabels.Length * 420f;
+            const float tabBarHeight = 32f;
+            var contentRect = new Rect(inRect.x, inRect.y + tabBarHeight, inRect.width, inRect.height - tabBarHeight);
 
-            var viewRect = new Rect(0f, 0f, inRect.width - 16f, viewHeight);
-            Widgets.BeginScrollView(inRect, ref Settings.settingsScroll, viewRect);
+            tabBuf.Clear();
+            tabBuf.Add(new TabRecord("Rank Packs", () => currentTab = SettingsTab.Packs, currentTab == SettingsTab.Packs));
+            tabBuf.Add(new TabRecord("Pawn Labels", () => currentTab = SettingsTab.Labels, currentTab == SettingsTab.Labels));
+            tabBuf.Add(new TabRecord("Colonist Bar", () => currentTab = SettingsTab.Bar, currentTab == SettingsTab.Bar));
+            tabBuf.Add(new TabRecord("Debug", () => currentTab = SettingsTab.Debug, currentTab == SettingsTab.Debug));
+
+            Widgets.DrawMenuSection(contentRect);
+            TabDrawer.DrawTabs(contentRect, tabBuf);
+
+            var inner = contentRect.ContractedBy(12f);
+            switch (currentTab)
+            {
+                case SettingsTab.Packs:  DrawPacksTab(inner); break;
+                case SettingsTab.Labels: DrawLabelsTab(inner); break;
+                case SettingsTab.Bar:    DrawBarTab(inner); break;
+                case SettingsTab.Debug:  DrawDebugTab(inner); break;
+            }
+        }
+
+        private static void DrawPacksTab(Rect rect)
+        {
+            var packs = DefDatabase<RankPackDef>.AllDefsListForReading;
+            Settings.HiddenPacks ??= new HashSet<string>();
 
             var listing = new Listing_Standard();
-            listing.Begin(viewRect);
+            listing.Begin(rect);
             Text.Font = GameFont.Small;
-            listing.Gap(6f);
 
-            // ── Pawn Labels ──
-            Text.Font = GameFont.Medium;
-            listing.Label("Pawn Labels");
+            GUI.color = new Color(0.7f, 0.7f, 0.7f);
+            listing.Label("Tick a pack to enable it. Disabled packs have their ranks hidden from the promote menu and their apparel removed from crafting menus. Existing ranks and items in the world are not affected.");
+            GUI.color = Color.white;
+            listing.Gap(8f);
+
+            foreach (var pack in packs.OrderBy(p => p.defName))
+            {
+                var enabled = !Settings.HiddenPacks.Contains(pack.defName);
+                var wasEnabled = enabled;
+                listing.CheckboxLabeled(pack.LabelCap, ref enabled, pack.description);
+                if (enabled == wasEnabled) continue;
+                if (enabled) Settings.HiddenPacks.Remove(pack.defName);
+                else Settings.HiddenPacks.Add(pack.defName);
+            }
+
+            listing.End();
+        }
+
+        private static void DrawLabelsTab(Rect rect)
+        {
+            var listing = new Listing_Standard();
+            listing.Begin(rect);
             Text.Font = GameFont.Small;
-            listing.Gap();
+
             listing.CheckboxLabeled(
                 "Show rank in pawn label",
                 ref Settings.ShowRankInLabel,
                 "If enabled, a pawn's rank will be shown as a prefix in their name label."
             );
-
             listing.CheckboxLabeled(
                 "Show rank icon on map labels",
                 ref Settings.ShowRankOnMap,
@@ -62,22 +103,25 @@ namespace RocketsRanks
             );
             if (Settings.ShowRankOnMap)
             {
-                listing.Label($"  Map icon size: {Settings.MapIconSize:F0}px");
+                listing.Gap(6f);
+                listing.Label($"Map icon size: {Settings.MapIconSize:F0}px");
                 Settings.MapIconSize = listing.Slider(Settings.MapIconSize, 8f, 32f);
-                listing.Label($"  Map icon offset X: {Settings.MapIconOffsetX:F0}px");
+                listing.Label($"Map icon offset X: {Settings.MapIconOffsetX:F0}px");
                 Settings.MapIconOffsetX = listing.Slider(Settings.MapIconOffsetX, -16f, 16f);
-                listing.Label($"  Map icon offset Y: {Settings.MapIconOffsetY:F0}px");
+                listing.Label($"Map icon offset Y: {Settings.MapIconOffsetY:F0}px");
                 Settings.MapIconOffsetY = listing.Slider(Settings.MapIconOffsetY, -16f, 16f);
             }
 
-            listing.Gap(12f);
+            listing.End();
+        }
 
-            // ── Colonist Bar ──
-            listing.GapLine();
-            Text.Font = GameFont.Medium;
-            listing.Label("Colonist Bar");
+        private static void DrawBarTab(Rect rect)
+        {
+            var listing = new Listing_Standard();
+            listing.Begin(rect);
             Text.Font = GameFont.Small;
-            listing.Gap();
+
+            // Visibility filters
             listing.CheckboxLabeled(
                 "Hide cryptosleep colonists",
                 ref Settings.HideCryptosleep,
@@ -93,15 +137,12 @@ namespace RocketsRanks
                 ref Settings.HideInMap,
                 "Colonists in bar will be hidden while in map view."
             );
-            listing.Gap(12f);
 
-            // ── Colonist Bar: Badge ──
+            listing.Gap(10f);
             listing.GapLine();
-            Text.Font = GameFont.Medium;
-            listing.Label("Colonist Bar Rank Badge");
-            Text.Font = GameFont.Small;
-            listing.Gap();
 
+            // Rank badge
+            SubHeader(listing, "Rank Badge");
             listing.CheckboxLabeled(
                 "Show rank badge on portraits",
                 ref Settings.ShowRankBadge,
@@ -109,36 +150,48 @@ namespace RocketsRanks
             );
             if (Settings.ShowRankBadge)
             {
-                listing.Label($"  Badge size: {Settings.BadgeSize:F0}px");
+                listing.Label($"Badge size: {Settings.BadgeSize:F0}px");
                 Settings.BadgeSize = listing.Slider(Settings.BadgeSize, 12f, 128f);
-                listing.Label($"  Badge offset X: {Settings.BadgeOffsetX:F0}px");
+                listing.Label($"Badge offset X: {Settings.BadgeOffsetX:F0}px");
                 Settings.BadgeOffsetX = listing.Slider(Settings.BadgeOffsetX, -64f, 64f);
-                listing.Label($"  Badge offset Y: {Settings.BadgeOffsetY:F0}px");
+                listing.Label($"Badge offset Y: {Settings.BadgeOffsetY:F0}px");
                 Settings.BadgeOffsetY = listing.Slider(Settings.BadgeOffsetY, -64f, 64f);
             }
-            listing.Gap(12f);
 
+            listing.Gap(10f);
             listing.GapLine();
-            // ── Colonist Bar: Weapon Icon ──
-            Text.Font = GameFont.Medium;
-            listing.Label("Colonist Bar Weapon Icon");
-            Text.Font = GameFont.Small;
-            listing.Gap();
-            listing.Label($"  Offset X: {Settings.WeaponOffsetX:F0}px");
+
+            // Weapon icon
+            SubHeader(listing, "Weapon Icon");
+            listing.Label($"Offset X: {Settings.WeaponOffsetX:F0}px");
             Settings.WeaponOffsetX = listing.Slider(Settings.WeaponOffsetX, -64f, 64f);
-            listing.Label($"  Offset Y: {Settings.WeaponOffsetY:F0}px");
+            listing.Label($"Offset Y: {Settings.WeaponOffsetY:F0}px");
             Settings.WeaponOffsetY = listing.Slider(Settings.WeaponOffsetY, -64f, 64f);
-            listing.Label($"  Scale: {Settings.WeaponScale:F2}x");
+            listing.Label($"Scale: {Settings.WeaponScale:F2}x");
             Settings.WeaponScale = listing.Slider(Settings.WeaponScale, 0.1f, 3.0f);
 
-            listing.Gap(12f);
+            listing.End();
+        }
 
-            // ── Debug ──
-            listing.GapLine();
-            Text.Font = GameFont.Medium;
-            listing.Label("Content Creation / Debug");
+        private static void DrawDebugTab(Rect rect)
+        {
+            // Debug content can be tall when expanded — wrap in a scroll view.
+            var viewHeight = 90f;
+            if (Settings.ShowBodyTypeDebug)
+                viewHeight += RankRenderSettings.BodyTypeLabels.Length * 420f;
+
+            var viewRect = new Rect(0f, 0f, rect.width - 16f, viewHeight);
+            Widgets.BeginScrollView(rect, ref Settings.settingsScroll, viewRect);
+
+            var listing = new Listing_Standard();
+            listing.Begin(viewRect);
             Text.Font = GameFont.Small;
-            listing.Gap();
+
+            GUI.color = new Color(0.7f, 0.7f, 0.7f);
+            listing.Label("Tools for content creators tuning rank insignia placement. Most players can leave this off.");
+            GUI.color = Color.white;
+            listing.Gap(6f);
+
             listing.CheckboxLabeled(
                 "Show worn render debug settings",
                 ref Settings.ShowBodyTypeDebug,
@@ -180,6 +233,14 @@ namespace RocketsRanks
             listing.End();
             Widgets.EndScrollView();
         }
+
+        private static void SubHeader(Listing_Standard listing, string text)
+        {
+            Text.Font = GameFont.Medium;
+            listing.Label(text);
+            Text.Font = GameFont.Small;
+            listing.Gap(4f);
+        }
     }
 
     public class RanksModSettings : ModSettings
@@ -201,6 +262,7 @@ namespace RocketsRanks
         public bool HideInMap;
         public bool HideRankWhenUndrafted;
         public bool ShowBodyTypeDebug;
+        public HashSet<string> HiddenPacks = new();
         public RankBodyTypeSettings[] BodySettings = new RankBodyTypeSettings[(int)RankBodyType.Count];
 
         // UI state (not saved)
@@ -226,6 +288,8 @@ namespace RocketsRanks
             Scribe_Values.Look(ref HideInMap, "HideInMap", false);
             Scribe_Values.Look(ref HideRankWhenUndrafted, "HideRankWhenUndrafted", false);
             Scribe_Values.Look(ref ShowBodyTypeDebug, "ShowBodyTypeDebug", false);
+            Scribe_Collections.Look(ref HiddenPacks, "HiddenPacks", LookMode.Value);
+            HiddenPacks ??= new HashSet<string>();
 
             if (BodySettings == null)
                 BodySettings = new RankBodyTypeSettings[(int)RankBodyType.Count];

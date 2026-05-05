@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <RocketsRanks.RankPackDef>
+    <defName>CoreArmy</defName>
+    <label>Army (US)</label>
+    <description>The U.S. Army enlisted rank set bundled with Rocket's Ranks.</description>
+  </RocketsRanks.RankPackDef>
+
+  <RocketsRanks.RankPackDef>
+    <defName>CoreOfficers</defName>
+    <label>Officers (US)</label>
+    <description>The U.S. commissioned officer rank set bundled with Rocket's Ranks.</description>
+  </RocketsRanks.RankPackDef>
+
+</Defs>
