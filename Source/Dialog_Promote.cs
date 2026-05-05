@@ -48,6 +48,19 @@ namespace RocketsRanks
                 ? preferred
                 : tabs.Count > 0 ? tabs[0] : null;
 
+            // Pre-build TabRecords so the per-frame draw path allocates
+            // nothing. Func<bool> for selected re-evaluates each frame, so
+            // tab highlighting stays in sync with currentTab.
+            if (tabs.Count > 1)
+            {
+                tabBuf.Capacity = tabs.Count;
+                for (var i = 0; i < tabs.Count; i++)
+                {
+                    var p = tabs[i];
+                    tabBuf.Add(new TabRecord(p.LabelCap, () => currentTab = p, () => currentTab == p));
+                }
+            }
+
             forcePause = true;
             doCloseX = true;
             absorbInputAroundWindow = true;
@@ -256,16 +269,9 @@ namespace RocketsRanks
 
         private void DrawRankList(Rect rect)
         {
+            // Tab record list is pre-built in the ctor so this path is alloc-free.
             if (tabs.Count > 1)
-            {
-                tabBuf.Clear();
-                foreach (var pack in tabs)
-                {
-                    var p = pack;
-                    tabBuf.Add(new TabRecord(pack.LabelCap, () => currentTab = p, currentTab == p));
-                }
                 TabDrawer.DrawTabs(rect, tabBuf);
-            }
 
             Widgets.DrawMenuSection(rect);
 
