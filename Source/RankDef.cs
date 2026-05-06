@@ -27,6 +27,12 @@ namespace RocketsRanks
         /// </summary>
         public RankPackDef pack;
 
+        /// <summary>
+        /// Multiplier applied to the map icon size when this rank is drawn
+        /// next to a pawn's floating name label.
+        /// </summary>
+        public float mapScale = 1f;
+
         public RankPackDef Pack => pack;
 
         public override IEnumerable<string> ConfigErrors()

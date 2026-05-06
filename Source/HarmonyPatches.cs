@@ -144,7 +144,7 @@ namespace RocketsRanks
             var name = pawn.Name?.ToStringShort ?? pawn.LabelShort;
             var textSize = Text.CalcSize(name);
 
-            var iconSize = RanksMod.Settings.MapIconSize;
+            var iconSize = RanksMod.Settings.MapIconSize * rank.mapScale;
 
             // Horizontal: right edge of icon meets left edge of text, plus user offset
             var iconX = pos.x - textSize.x / 2f - iconSize + RanksMod.Settings.MapIconOffsetX;
