@@ -3,7 +3,7 @@
     <RocketsRanks.RankDef>
         <defName>Rank_SecondLieutenant</defName>
         <label>second lieutenant</label>
-        <description>The entry-level officer rank. A colonist who has been commissioned as an officer.</description>
+        <description>A freshly commissioned officer wearing a single gold bar. Their authority outweighs their experience — for now.</description>
         <rankLevel>20</rankLevel>
         <iconPath>UI/Officer_SecondLieutenant</iconPath>
         <pack>CoreOfficers</pack>
@@ -12,7 +12,7 @@
     <RocketsRanks.RankDef>
         <defName>Rank_FirstLieutenant</defName>
         <label>first lieutenant</label>
-        <description>A junior officer responsible for leading a platoon or serving as a staff officer.</description>
+        <description>A junior officer trusted with leading a platoon, or filling a junior staff appointment under a senior officer's wing.</description>
         <rankLevel>21</rankLevel>
         <iconPath>UI/Officer_FirstLieutenant</iconPath>
         <pack>CoreOfficers</pack>
@@ -21,7 +21,7 @@
     <RocketsRanks.RankDef>
         <defName>Rank_Captain</defName>
         <label>captain</label>
-        <description>A mid-level officer responsible for leading a company or serving in a staff role.</description>
+        <description>A company commander or senior staff officer. The first rank where strategy begins to outweigh tactics.</description>
         <rankLevel>22</rankLevel>
         <iconPath>UI/Officer_Captain</iconPath>
         <pack>CoreOfficers</pack>
@@ -30,7 +30,7 @@
     <RocketsRanks.RankDef>
         <defName>Rank_Major</defName>
         <label>major</label>
-        <description>A senior officer responsible for coordinating operations between multiple units.</description>
+        <description>A field-grade officer coordinating multiple companies, often serving as a battalion's executive or operations officer.</description>
         <rankLevel>23</rankLevel>
         <iconPath>UI/Officer_Major</iconPath>
         <pack>CoreOfficers</pack>
@@ -39,7 +39,7 @@
     <RocketsRanks.RankDef>
         <defName>Rank_LieutenantColonel</defName>
         <label>lieutenant colonel</label>
-        <description>A high-ranking officer who serves as second-in-command of a regiment or leads a battalion.</description>
+        <description>A senior field officer commanding a battalion, or serving as a regiment's second-in-command.</description>
         <rankLevel>24</rankLevel>
         <iconPath>UI/Officer_LieutenantColonel</iconPath>
         <pack>CoreOfficers</pack>
@@ -48,7 +48,7 @@
     <RocketsRanks.RankDef>
         <defName>Rank_Colonel</defName>
         <label>colonel</label>
-        <description>A senior officer commanding a regiment or serving as a senior staff officer.</description>
+        <description>The commanding officer of a regiment, or a principal staff officer at the highest formation levels. Their word moves whole formations.</description>
         <rankLevel>25</rankLevel>
         <iconPath>UI/Officer_Colonel</iconPath>
         <pack>CoreOfficers</pack>
@@ -57,8 +57,10 @@
     <RocketsRanks.RankDef>
         <defName>Rank_BrigadierGeneral</defName>
         <label>brigadier general</label>
-        <description>A one-star general officer responsible for commanding a brigade or serving as a senior advisor.</description>
+        <description>A one-star general commanding a brigade. The first rank to wear a star — and the first to truly answer for the lives of thousands.</description>
         <rankLevel>26</rankLevel>
+		<mapScale>1.1</mapScale>
+        <portraitScale>1.1</portraitScale>
         <iconPath>UI/Officer_BrigadierGeneral</iconPath>
         <pack>CoreOfficers</pack>
     </RocketsRanks.RankDef>
@@ -66,8 +68,10 @@
     <RocketsRanks.RankDef>
         <defName>Rank_MajorGeneral</defName>
         <label>major general</label>
-        <description>A two-star general officer commanding a division or serving in a high-level staff role.</description>
+        <description>A two-star general commanding a division. Their orders set the rhythm of a campaign.</description>
         <rankLevel>27</rankLevel>
+		<mapScale>1.1</mapScale>
+        <portraitScale>1.1</portraitScale>
         <iconPath>UI/Officer_MajorGeneral</iconPath>
         <pack>CoreOfficers</pack>
     </RocketsRanks.RankDef>
@@ -75,9 +79,22 @@
     <RocketsRanks.RankDef>
         <defName>Rank_LieutenantGeneral</defName>
         <label>lieutenant general</label>
-        <description>A three-star general officer responsible for commanding a corps or theatre of operations.</description>
+        <description>A three-star general commanding a corps or a theater of operations. Wars hinge on their judgement.</description>
         <rankLevel>28</rankLevel>
+		<mapScale>1.4</mapScale>
+        <portraitScale>1.4</portraitScale>
         <iconPath>UI/Officer_LieutenantGeneral</iconPath>
+        <pack>CoreOfficers</pack>
+    </RocketsRanks.RankDef>
+
+    <RocketsRanks.RankDef>
+        <defName>Rank_General</defName>
+        <label>general</label>
+        <description>A four-star general at the apex of professional command, answerable only to civilian leadership.</description>
+        <rankLevel>29</rankLevel>
+		<mapScale>1.5</mapScale>
+        <portraitScale>1.5</portraitScale>
+        <iconPath>UI/Officer_General</iconPath>
         <pack>CoreOfficers</pack>
     </RocketsRanks.RankDef>
 </Defs>

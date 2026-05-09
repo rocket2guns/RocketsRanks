@@ -33,6 +33,12 @@ namespace RocketsRanks
         /// </summary>
         public float mapScale = 1f;
 
+        /// <summary>
+        /// Multiplier applied to the badge size when this rank is drawn on
+        /// the colonist bar portrait.
+        /// </summary>
+        public float portraitScale = 1f;
+
         public RankPackDef Pack => pack;
 
         public override IEnumerable<string> ConfigErrors()

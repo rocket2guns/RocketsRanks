@@ -4,7 +4,7 @@
   <RocketsRanks.RankDef>
     <defName>Rank_Private</defName>
     <label>private</label>
-    <description>The entry-level rank. A colonist who has been formally enlisted.</description>
+    <description>A freshly enlisted colonist soldier. The oath has been sworn and the kit drawn — everything else is yet to be earned.</description>
     <rankLevel>1</rankLevel>
     <iconPath>UI/USArmy/OR2</iconPath>
     <pack>CoreArmy</pack>
@@ -13,7 +13,7 @@
   <RocketsRanks.RankDef>
     <defName>Rank_PrivateFirstClass</defName>
     <label>private first class</label>
-    <description>A qualified soldier. The first promotion a colonist soldier receives.</description>
+    <description>A soldier who has proven they can shoulder basic duties without supervision. The first acknowledgement that they are no longer raw.</description>
     <rankLevel>2</rankLevel>
     <iconPath>UI/USArmy/OR3</iconPath>
     <pack>CoreArmy</pack>
@@ -22,7 +22,7 @@
   <RocketsRanks.RankDef>
     <defName>Rank_Corporal</defName>
     <label>corporal</label>
-    <description>A junior non-commissioned officer. Entrusted with leading a small team.</description>
+    <description>A junior non-commissioned officer entrusted with a fireteam. The first taste of command, and the first chance to stand accountable for others.</description>
     <rankLevel>3</rankLevel>
     <iconPath>UI/USArmy/OR4</iconPath>
     <pack>CoreArmy</pack>
@@ -31,7 +31,7 @@
   <RocketsRanks.RankDef>
     <defName>Rank_Sergeant</defName>
     <label>sergeant</label>
-    <description>A seasoned non-commissioned officer responsible for discipline and training.</description>
+    <description>A seasoned non-commissioned officer who runs a squad. They enforce the standards their seniors set, day in and day out.</description>
     <rankLevel>4</rankLevel>
     <iconPath>UI/USArmy/OR5</iconPath>
     <pack>CoreArmy</pack>
@@ -40,7 +40,7 @@
   <RocketsRanks.RankDef>
     <defName>Rank_StaffSergeant</defName>
     <label>staff sergeant</label>
-    <description>A senior non-commissioned officer with significant experience and leadership responsibilities.</description>
+    <description>An experienced section leader who handles a platoon's daily affairs. Where junior sergeants drill the troops, the staff sergeant runs the schedule.</description>
     <rankLevel>5</rankLevel>
     <iconPath>UI/USArmy/OR6</iconPath>
     <pack>CoreArmy</pack>
@@ -49,7 +49,7 @@
   <RocketsRanks.RankDef>
     <defName>Rank_SergeantFirstClass</defName>
     <label>sergeant first class</label>
-    <description>A senior non-commissioned officer with significant experience and leadership responsibilities.</description>
+    <description>The senior non-commissioned officer of a platoon, mentoring lieutenants and shepherding the junior sergeants under their wing.</description>
     <rankLevel>6</rankLevel>
     <iconPath>UI/USArmy/OR7</iconPath>
     <pack>CoreArmy</pack>
@@ -58,7 +58,7 @@
   <RocketsRanks.RankDef>
     <defName>Rank_MasterSergeant</defName>
     <label>master sergeant</label>
-    <description>A highly experienced non-commissioned officer with extensive leadership and management skills.</description>
+    <description>A principal staff NCO at company level, trusted with administration, logistics, and complex operations beyond a single platoon.</description>
     <rankLevel>7</rankLevel>
     <iconPath>UI/USArmy/OR8a</iconPath>
     <pack>CoreArmy</pack>
@@ -67,7 +67,7 @@
   <RocketsRanks.RankDef>
     <defName>Rank_FirstSergeant</defName>
     <label>first sergeant</label>
-    <description>The highest-ranking non-commissioned officer, responsible for overall discipline and operations.</description>
+    <description>The senior NCO of a company, answerable for the readiness and discipline of every soldier under its banner.</description>
     <rankLevel>8</rankLevel>
     <iconPath>UI/USArmy/OR8b</iconPath>
     <pack>CoreArmy</pack>
@@ -76,7 +76,7 @@
   <RocketsRanks.RankDef>
     <defName>Rank_SergeantMajor</defName>
     <label>sergeant major</label>
-    <description>The senior non-commissioned officer, responsible for overseeing the training and discipline of the entire colony's forces.</description>
+    <description>A senior enlisted advisor at battalion level. The bridge between a commander's intent and the company NCOs who must make it real.</description>
     <rankLevel>9</rankLevel>
     <iconPath>UI/USArmy/OR9a</iconPath>
     <pack>CoreArmy</pack>
@@ -85,7 +85,7 @@
   <RocketsRanks.RankDef>
     <defName>Rank_CommandSergeantMajor</defName>
     <label>command sergeant major</label>
-    <description>The highest-ranking non-commissioned officer of a color-bearing Army unit (battalion or higher).</description>
+    <description>The senior enlisted soldier of a color-bearing unit. Their authority over the rank and file is matched only by the formation's commanding officer.</description>
     <rankLevel>10</rankLevel>
     <iconPath>UI/USArmy/OR9b</iconPath>
     <pack>CoreArmy</pack>
@@ -94,7 +94,7 @@
   <RocketsRanks.RankDef>
     <defName>Rank_SergeantMajorOfTheArmy</defName>
     <label>sergeant major of the army</label>
-    <description>The senior enlisted advisor to the Army Chief of Staff. The holder of this rank and position is the most senior enlisted soldier in the Army, unless an enlisted soldier is serving as the senior enlisted advisor to the chairman.</description>
+    <description>The senior enlisted soldier in the entire army, and the voice of every soldier who has ever drawn rations under its colors.</description>
     <rankLevel>11</rankLevel>
     <iconPath>UI/USArmy/OR9c</iconPath>
     <pack>CoreArmy</pack>

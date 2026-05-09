@@ -43,7 +43,7 @@ namespace RocketsRanks
             var rank = comp?.currentRank;
             if (rank?.Icon == null) return;
 
-            var size = RanksMod.Settings.BadgeSize;
+            var size = RanksMod.Settings.BadgeSize * rank.portraitScale;
             var halfSize = size / 2f;
             var centerX = rect.x + RanksMod.Settings.BadgeOffsetX;
             var centerY = rect.y + RanksMod.Settings.BadgeOffsetY;

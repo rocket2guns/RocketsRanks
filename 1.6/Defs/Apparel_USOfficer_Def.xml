@@ -194,4 +194,22 @@
 		<uiOrder>28</uiOrder>
 	</ThingDef>
 
+	<ThingDef ParentName="ROCKET_Ranks_General">
+		<defName>ROCKET_Ranks_4Star</defName>
+		<label>general rank</label>
+		<description>A pair of ornamental shoulder pieces for generals.</description>
+		<graphicData>
+			<texPath>Things/Apparel/Officers/4Star/Rank</texPath>
+		</graphicData>
+		<apparel>
+			<wornGraphicPath>Things/Apparel/Officers/4Star/Rank</wornGraphicPath>
+		</apparel>
+		<modExtensions Inherit="True">
+			<li Class="RocketsRanks.RankExtension">
+				<requiredRank>Rank_General</requiredRank>
+			</li>
+		</modExtensions>
+		<uiOrder>29</uiOrder>
+	</ThingDef>
+
 </Defs>

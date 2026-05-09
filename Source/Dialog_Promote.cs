@@ -320,6 +320,9 @@ namespace RocketsRanks
                 if (Mouse.IsOver(rowRect))
                     Widgets.DrawHighlight(rowRect);
 
+                if (!rank.description.NullOrEmpty())
+                    TooltipHandler.TipRegion(rowRect, rank.description);
+
                 // Icon
                 var textOffset = 10f;
                 if (rank.Icon != null)

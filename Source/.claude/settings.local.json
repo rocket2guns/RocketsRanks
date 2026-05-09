@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "PowerShell(dotnet build *)"
+      "PowerShell(dotnet build *)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Program Files \\(x86\\)\\\\Steam\\\\steamapps\\\\common\\\\RimWorld\\\\Mods\\\\RocketsRanksUKArmy\" -Recurse -Directory | ForEach-Object { $_.FullName })",
+      "Skill(update-config)",
+      "Bash(git -C \"C:/Program Files \\(x86\\)/Steam/steamapps/common/RimWorld/Mods/RocketsRanks\" ls-files)",
+      "Bash(git *)"
     ]
   }
 }
