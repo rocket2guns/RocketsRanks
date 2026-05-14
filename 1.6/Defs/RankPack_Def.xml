@@ -4,12 +4,14 @@
   <RocketsRanks.RankPackDef>
     <defName>CoreArmy</defName>
     <label>Army (US)</label>
+    <previewRank>Rank_SergeantMajor</previewRank>
     <description>The U.S. Army enlisted rank set bundled with Rocket's Ranks.</description>
   </RocketsRanks.RankPackDef>
 
   <RocketsRanks.RankPackDef>
     <defName>CoreOfficers</defName>
     <label>Officers (US)</label>
+    <previewRank>Rank_Captain</previewRank>
     <description>The U.S. commissioned officer rank set bundled with Rocket's Ranks.</description>
   </RocketsRanks.RankPackDef>
 

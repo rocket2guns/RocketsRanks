@@ -4,6 +4,7 @@ using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace RocketsRanks
 {
@@ -71,13 +72,55 @@ namespace RocketsRanks
             {
                 var enabled = !Settings.HiddenPacks.Contains(pack.defName);
                 var wasEnabled = enabled;
-                listing.CheckboxLabeled(pack.LabelCap, ref enabled, pack.description);
+                DrawPackRow(listing, pack, ref enabled);
                 if (enabled == wasEnabled) continue;
                 if (enabled) Settings.HiddenPacks.Remove(pack.defName);
                 else Settings.HiddenPacks.Add(pack.defName);
             }
 
             listing.End();
+        }
+
+        private const float PackRowHeight = 32f;
+        private const float PackRowIconSize = 28f;
+        private const float PackRowCheckboxSize = 24f;
+
+        private static void DrawPackRow(Listing_Standard listing, RankPackDef pack, ref bool enabled)
+        {
+            var row = listing.GetRect(PackRowHeight);
+            if (Mouse.IsOver(row))
+            {
+                Widgets.DrawHighlight(row);
+                if (!pack.description.NullOrEmpty())
+                    TooltipHandler.TipRegion(row, pack.description);
+            }
+
+            var checkboxPos = new Vector2(row.x, row.y + (row.height - PackRowCheckboxSize) / 2f);
+            Widgets.Checkbox(checkboxPos, ref enabled, PackRowCheckboxSize);
+
+            // Let clicks on the icon/label area also toggle, matching the
+            // old CheckboxLabeled behaviour. The checkbox rect is excluded
+            // so Widgets.Checkbox's own click handling doesn't double-fire.
+            var afterCheckbox = new Rect(checkboxPos.x + PackRowCheckboxSize, row.y,
+                row.width - PackRowCheckboxSize, row.height);
+            if (Widgets.ButtonInvisible(afterCheckbox, false))
+            {
+                enabled = !enabled;
+                SoundDefOf.Checkbox_TurnedOn.PlayOneShotOnCamera();
+            }
+
+            var iconRect = new Rect(checkboxPos.x + PackRowCheckboxSize + 8f,
+                row.y + (row.height - PackRowIconSize) / 2f,
+                PackRowIconSize, PackRowIconSize);
+            var icon = pack.PreviewIcon;
+            if (icon != null)
+                GUI.DrawTexture(iconRect, icon, ScaleMode.ScaleToFit);
+
+            var labelRect = new Rect(iconRect.xMax + 8f, row.y, row.width - iconRect.xMax - 8f, row.height);
+            var prevAnchor = Text.Anchor;
+            Text.Anchor = TextAnchor.MiddleLeft;
+            Widgets.Label(labelRect, pack.LabelCap);
+            Text.Anchor = prevAnchor;
         }
 
         private static void DrawLabelsTab(Rect rect)

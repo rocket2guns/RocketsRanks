@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RocketsRanks
@@ -10,6 +12,50 @@ namespace RocketsRanks
     /// </summary>
     public class RankPackDef : Def
     {
+        /// <summary>
+        /// Optional. Rank whose icon represents this pack in the settings UI.
+        /// When null, falls back to the lowest-level rank in the pack that has an icon.
+        /// </summary>
+        public RankDef previewRank;
+
+        [Unsaved] private Texture2D cachedPreviewIcon;
+        [Unsaved] private bool previewIconResolved;
+
+        public Texture2D PreviewIcon
+        {
+            get
+            {
+                if (previewIconResolved) return cachedPreviewIcon;
+                previewIconResolved = true;
+
+                if (previewRank != null)
+                {
+                    cachedPreviewIcon = previewRank.Icon;
+                    if (cachedPreviewIcon != null) return cachedPreviewIcon;
+                }
+
+                RankDef best = null;
+                var defs = DefDatabase<RankDef>.AllDefsListForReading;
+                for (var i = 0; i < defs.Count; i++)
+                {
+                    var r = defs[i];
+                    if (r.Pack != this) continue;
+                    if (r.Icon == null) continue;
+                    if (best == null || r.rankLevel < best.rankLevel) best = r;
+                }
+
+                cachedPreviewIcon = best?.Icon;
+                return cachedPreviewIcon;
+            }
+        }
+
+        public override IEnumerable<string> ConfigErrors()
+        {
+            foreach (var err in base.ConfigErrors())
+                yield return err;
+            if (previewRank != null && previewRank.Pack != this)
+                yield return $"RankPackDef {defName} previewRank '{previewRank.defName}' belongs to pack '{previewRank.Pack?.defName ?? "<none>"}'.";
+        }
     }
 
     [DefOf]
