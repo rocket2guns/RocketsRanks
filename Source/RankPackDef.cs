@@ -34,17 +34,19 @@ namespace RocketsRanks
                     if (cachedPreviewIcon != null) return cachedPreviewIcon;
                 }
 
-                RankDef best = null;
+                var packRanks = new List<RankDef>();
                 var defs = DefDatabase<RankDef>.AllDefsListForReading;
                 for (var i = 0; i < defs.Count; i++)
                 {
                     var r = defs[i];
                     if (r.Pack != this) continue;
                     if (r.Icon == null) continue;
-                    if (best == null || r.rankLevel < best.rankLevel) best = r;
+                    packRanks.Add(r);
                 }
+                packRanks.Sort((a, b) => a.rankLevel.CompareTo(b.rankLevel));
 
-                cachedPreviewIcon = best?.Icon;
+                if (packRanks.Count > 0)
+                    cachedPreviewIcon = packRanks[packRanks.Count / 2].Icon;
                 return cachedPreviewIcon;
             }
         }
