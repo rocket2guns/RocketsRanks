@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using RimWorld;
@@ -127,10 +128,14 @@ namespace RocketsRanks
                 return true;
             };
 
-            var extraInfo = new System.Collections.Generic.List<string>
+            var extraInfo = new List<string>
             {
                 "ROCKET_CeremonyLocationLine".Translate(locationLabel)
             };
+
+            // Lock the awardee role to the source pawn so the player cannot
+            // swap who gets promoted from the ritual dialog.
+            var forcedRoles = new Dictionary<string, Pawn> { { "awardee", awardee } };
 
             Find.WindowStack.Add(new Dialog_BeginRitual(
                 ritualLabel: ceremonyName,
@@ -143,7 +148,7 @@ namespace RocketsRanks
                 filter: null,
                 okButtonText: "ROCKET_BeginCeremonyButton".Translate(),
                 requiredPawns: null,
-                forcedForRole: null,
+                forcedForRole: forcedRoles,
                 outcome: pattern.ritualOutcomeEffect,
                 extraInfoText: extraInfo,
                 selectedPawn: preferredPresenter
