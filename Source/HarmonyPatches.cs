@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
@@ -55,6 +57,45 @@ namespace RocketsRanks
         }
     }
     
+    [HarmonyPatch(typeof(ColonistBar), nameof(ColonistBar.ColonistBarOnGUI))]
+    public static class Patch_ColonistBar_WeaponIcon
+    {
+        private static readonly MethodInfo VanillaThingIcon = AccessTools.Method(
+            typeof(Widgets), nameof(Widgets.ThingIcon),
+            new[] { typeof(Rect), typeof(Thing), typeof(float), typeof(Rot4?), typeof(bool), typeof(float), typeof(bool) });
+
+        private static readonly MethodInfo Replacement = AccessTools.Method(
+            typeof(Patch_ColonistBar_WeaponIcon), nameof(DrawWeaponIconAdjusted));
+
+        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            var patched = false;
+            foreach (var ins in instructions)
+            {
+                if (!patched && VanillaThingIcon != null && ins.Calls(VanillaThingIcon))
+                {
+                    yield return new CodeInstruction(OpCodes.Call, Replacement) { labels = ins.labels };
+                    patched = true;
+                    continue;
+                }
+                yield return ins;
+            }
+            if (!patched)
+                Log.Warning("[RocketsRanks] ColonistBar weapon-icon transpiler did not find Widgets.ThingIcon call; weapon icon offset/scale settings have no effect.");
+        }
+
+        public static void DrawWeaponIconAdjusted(Rect rect, Thing thing, float alpha, Rot4? rot, bool stackOfOne, float scale, bool grayscale)
+        {
+            var s = RanksMod.Settings;
+            var w = rect.width * s.WeaponScale;
+            var h = rect.height * s.WeaponScale;
+            var cx = rect.x + rect.width * 0.5f;
+            var cy = rect.y + rect.height * 0.5f;
+            var adjusted = new Rect(cx - w * 0.5f + s.WeaponOffsetX, cy - h * 0.5f + s.WeaponOffsetY, w, h);
+            Widgets.ThingIcon(adjusted, thing, alpha, rot, stackOfOne, scale, grayscale);
+        }
+    }
+
     [HarmonyPatch(typeof(ColonistBar), "CheckRecacheEntries")]
     public static class Patch_HideColonistBarEntries
     {

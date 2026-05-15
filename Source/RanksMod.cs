@@ -36,10 +36,10 @@ namespace RocketsRanks
             var contentRect = new Rect(inRect.x, inRect.y + tabBarHeight, inRect.width, inRect.height - tabBarHeight);
 
             tabBuf.Clear();
-            tabBuf.Add(new TabRecord("Rank Packs", () => currentTab = SettingsTab.Packs, currentTab == SettingsTab.Packs));
-            tabBuf.Add(new TabRecord("Pawn Labels", () => currentTab = SettingsTab.Labels, currentTab == SettingsTab.Labels));
-            tabBuf.Add(new TabRecord("Colonist Bar", () => currentTab = SettingsTab.Bar, currentTab == SettingsTab.Bar));
-            tabBuf.Add(new TabRecord("Debug", () => currentTab = SettingsTab.Debug, currentTab == SettingsTab.Debug));
+            tabBuf.Add(new TabRecord("Rank Packs", () => currentTab = SettingsTab.Packs, currentTab is SettingsTab.Packs));
+            tabBuf.Add(new TabRecord("Pawn Labels", () => currentTab = SettingsTab.Labels, currentTab is SettingsTab.Labels));
+            tabBuf.Add(new TabRecord("Colonist Bar", () => currentTab = SettingsTab.Bar, currentTab is SettingsTab.Bar));
+            tabBuf.Add(new TabRecord("Debug", () => currentTab = SettingsTab.Debug, currentTab is SettingsTab.Debug));
 
             Widgets.DrawMenuSection(contentRect);
             TabDrawer.DrawTabs(contentRect, tabBuf);
@@ -81,13 +81,13 @@ namespace RocketsRanks
             listing.End();
         }
 
-        private const float PackRowHeight = 32f;
-        private const float PackRowIconSize = 28f;
-        private const float PackRowCheckboxSize = 24f;
+        private const float PACK_ROW_HEIGHT = 32f;
+        private const float PACK_ROW_ICON_SIZE = 28f;
+        private const float PACK_ROW_CHECKBOX_SIZE = 24f;
 
         private static void DrawPackRow(Listing_Standard listing, RankPackDef pack, ref bool enabled)
         {
-            var row = listing.GetRect(PackRowHeight);
+            var row = listing.GetRect(PACK_ROW_HEIGHT);
             if (Mouse.IsOver(row))
             {
                 Widgets.DrawHighlight(row);
@@ -95,23 +95,23 @@ namespace RocketsRanks
                     TooltipHandler.TipRegion(row, pack.description);
             }
 
-            var checkboxPos = new Vector2(row.x, row.y + (row.height - PackRowCheckboxSize) / 2f);
-            Widgets.Checkbox(checkboxPos, ref enabled, PackRowCheckboxSize);
+            var checkboxPos = new Vector2(row.x, row.y + (row.height - PACK_ROW_CHECKBOX_SIZE) / 2f);
+            Widgets.Checkbox(checkboxPos, ref enabled, PACK_ROW_CHECKBOX_SIZE);
 
             // Let clicks on the icon/label area also toggle, matching the
             // old CheckboxLabeled behaviour. The checkbox rect is excluded
             // so Widgets.Checkbox's own click handling doesn't double-fire.
-            var afterCheckbox = new Rect(checkboxPos.x + PackRowCheckboxSize, row.y,
-                row.width - PackRowCheckboxSize, row.height);
+            var afterCheckbox = new Rect(checkboxPos.x + PACK_ROW_CHECKBOX_SIZE, row.y,
+                row.width - PACK_ROW_CHECKBOX_SIZE, row.height);
             if (Widgets.ButtonInvisible(afterCheckbox, false))
             {
                 enabled = !enabled;
                 SoundDefOf.Checkbox_TurnedOn.PlayOneShotOnCamera();
             }
 
-            var iconRect = new Rect(checkboxPos.x + PackRowCheckboxSize + 8f,
-                row.y + (row.height - PackRowIconSize) / 2f,
-                PackRowIconSize, PackRowIconSize);
+            var iconRect = new Rect(checkboxPos.x + PACK_ROW_CHECKBOX_SIZE + 8f,
+                row.y + (row.height - PACK_ROW_ICON_SIZE) / 2f,
+                PACK_ROW_ICON_SIZE, PACK_ROW_ICON_SIZE);
             var icon = pack.PreviewIcon;
             if (icon != null)
                 GUI.DrawTexture(iconRect, icon, ScaleMode.ScaleToFit);
@@ -134,6 +134,12 @@ namespace RocketsRanks
                 ref Settings.ShowRankInLabel,
                 "If enabled, a pawn's rank will be shown as a prefix in their name label."
             );
+
+            listing.Gap(10f);
+            listing.GapLine();
+
+            // Map icon
+            SubHeader(listing, "Map Icon", ResetMapIcon);
             listing.CheckboxLabeled(
                 "Show rank icon on map labels",
                 ref Settings.ShowRankOnMap,
@@ -156,6 +162,13 @@ namespace RocketsRanks
             }
 
             listing.End();
+        }
+
+        private static void ResetMapIcon()
+        {
+            Settings.MapIconSize = 16f;
+            Settings.MapIconOffsetX = 0f;
+            Settings.MapIconOffsetY = -3f;
         }
 
         private static void DrawBarTab(Rect rect)
@@ -185,7 +198,7 @@ namespace RocketsRanks
             listing.GapLine();
 
             // Rank badge
-            SubHeader(listing, "Rank Badge");
+            SubHeader(listing, "Rank Badge", ResetBadge);
             listing.CheckboxLabeled(
                 "Show rank badge on portraits",
                 ref Settings.ShowRankBadge,
@@ -205,15 +218,41 @@ namespace RocketsRanks
             listing.GapLine();
 
             // Weapon icon
-            SubHeader(listing, "Weapon Icon");
+            SubHeader(listing, "Weapon Icon", ResetWeaponIcon);
+
+            var vanillaWeaponOff = Prefs.ShowWeaponsUnderPortraitMode == ShowWeaponsUnderPortraitMode.Never;
+            if (vanillaWeaponOff)
+            {
+                GUI.color = new Color(0.95f, 0.75f, 0.35f);
+                listing.Label("Enable \"Show weapons under portrait\" in vanilla Options to see this icon.");
+                GUI.color = Color.white;
+            }
+
+            var prevColor = GUI.color;
+            if (vanillaWeaponOff) GUI.color = new Color(0.6f, 0.6f, 0.6f);
             listing.Label($"Offset X: {Settings.WeaponOffsetX:F0}px");
-            Settings.WeaponOffsetX = listing.Slider(Settings.WeaponOffsetX, -64f, 64f);
+            Settings.WeaponOffsetX = listing.Slider(Settings.WeaponOffsetX, -128f, 128f);
             listing.Label($"Offset Y: {Settings.WeaponOffsetY:F0}px");
-            Settings.WeaponOffsetY = listing.Slider(Settings.WeaponOffsetY, -64f, 64f);
+            Settings.WeaponOffsetY = listing.Slider(Settings.WeaponOffsetY, -128f, 128f);
             listing.Label($"Scale: {Settings.WeaponScale:F2}x");
             Settings.WeaponScale = listing.Slider(Settings.WeaponScale, 0.1f, 3.0f);
+            GUI.color = prevColor;
 
             listing.End();
+        }
+
+        private static void ResetBadge()
+        {
+            Settings.BadgeSize = 46f;
+            Settings.BadgeOffsetX = 4f;
+            Settings.BadgeOffsetY = 4f;
+        }
+
+        private static void ResetWeaponIcon()
+        {
+            Settings.WeaponOffsetX = 0f;
+            Settings.WeaponOffsetY = 0f;
+            Settings.WeaponScale = 1f;
         }
 
         private static void DrawDebugTab(Rect rect)
@@ -277,11 +316,21 @@ namespace RocketsRanks
             Widgets.EndScrollView();
         }
 
-        private static void SubHeader(Listing_Standard listing, string text)
+        private static void SubHeader(Listing_Standard listing, string text, System.Action onReset = null)
         {
+            const float rowHeight = 28f;
+            var row = listing.GetRect(rowHeight);
             Text.Font = GameFont.Medium;
-            listing.Label(text);
+            Widgets.Label(row, text);
             Text.Font = GameFont.Small;
+            if (onReset != null)
+            {
+                const float btnW = 70f;
+                const float btnH = 22f;
+                var btnRect = new Rect(row.xMax - btnW, row.y + (rowHeight - btnH) / 2f, btnW, btnH);
+                if (Widgets.ButtonText(btnRect, "Reset"))
+                    onReset();
+            }
             listing.Gap(4f);
         }
     }
