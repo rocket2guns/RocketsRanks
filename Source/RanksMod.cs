@@ -48,11 +48,16 @@ namespace RocketsRanks
             var inner = contentRect.ContractedBy(12f);
             switch (currentTab)
             {
-                case SettingsTab.Packs:    DrawPacksTab(inner); break;
-                case SettingsTab.Labels:   DrawLabelsTab(inner); break;
-                case SettingsTab.Bar:      DrawBarTab(inner); break;
-                case SettingsTab.Ceremony: DrawCeremonyTab(inner); break;
-                case SettingsTab.Debug:    DrawDebugTab(inner); break;
+                case SettingsTab.Packs:    
+                    DrawPacksTab(inner); break;
+                case SettingsTab.Labels:   
+                    DrawLabelsTab(inner); break;
+                case SettingsTab.Bar:      
+                    DrawBarTab(inner); break;
+                case SettingsTab.Ceremony: 
+                    DrawCeremonyTab(inner); break;
+                case SettingsTab.Debug:    
+                    DrawDebugTab(inner); break;
             }
         }
 
@@ -100,9 +105,6 @@ namespace RocketsRanks
             var checkboxPos = new Vector2(row.x, row.y + (row.height - PACK_ROW_CHECKBOX_SIZE) / 2f);
             Widgets.Checkbox(checkboxPos, ref enabled, PACK_ROW_CHECKBOX_SIZE);
 
-            // Let clicks on the icon/label area also toggle, matching the
-            // old CheckboxLabeled behaviour. The checkbox rect is excluded
-            // so Widgets.Checkbox's own click handling doesn't double-fire.
             var afterCheckbox = new Rect(checkboxPos.x + PACK_ROW_CHECKBOX_SIZE, row.y,
                 row.width - PACK_ROW_CHECKBOX_SIZE, row.height);
             if (Widgets.ButtonInvisible(afterCheckbox, false))
