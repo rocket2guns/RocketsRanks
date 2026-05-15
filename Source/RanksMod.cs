@@ -26,7 +26,7 @@ namespace RocketsRanks
 
         public override string SettingsCategory() => "Rocket's Ranks";
 
-        private enum SettingsTab { Packs, Labels, Bar, Ceremony, Debug }
+        private enum SettingsTab { Packs, Labels, Bar, Ceremony, Salutes, Debug }
         private static SettingsTab currentTab = SettingsTab.Packs;
         private static readonly List<TabRecord> tabBuf = new();
 
@@ -40,6 +40,7 @@ namespace RocketsRanks
             tabBuf.Add(new TabRecord("Pawn Labels", () => currentTab = SettingsTab.Labels, currentTab is SettingsTab.Labels));
             tabBuf.Add(new TabRecord("Colonist Bar", () => currentTab = SettingsTab.Bar, currentTab is SettingsTab.Bar));
             tabBuf.Add(new TabRecord("Ceremony", () => currentTab = SettingsTab.Ceremony, currentTab is SettingsTab.Ceremony));
+            tabBuf.Add(new TabRecord("ROCKET_Settings_SalutesTab".Translate(), () => currentTab = SettingsTab.Salutes, currentTab is SettingsTab.Salutes));
             tabBuf.Add(new TabRecord("Debug", () => currentTab = SettingsTab.Debug, currentTab is SettingsTab.Debug));
 
             Widgets.DrawMenuSection(contentRect);
@@ -48,15 +49,17 @@ namespace RocketsRanks
             var inner = contentRect.ContractedBy(12f);
             switch (currentTab)
             {
-                case SettingsTab.Packs:    
+                case SettingsTab.Packs:
                     DrawPacksTab(inner); break;
-                case SettingsTab.Labels:   
+                case SettingsTab.Labels:
                     DrawLabelsTab(inner); break;
-                case SettingsTab.Bar:      
+                case SettingsTab.Bar:
                     DrawBarTab(inner); break;
-                case SettingsTab.Ceremony: 
+                case SettingsTab.Ceremony:
                     DrawCeremonyTab(inner); break;
-                case SettingsTab.Debug:    
+                case SettingsTab.Salutes:
+                    DrawSalutesTab(inner); break;
+                case SettingsTab.Debug:
                     DrawDebugTab(inner); break;
             }
         }
@@ -295,6 +298,43 @@ namespace RocketsRanks
             Settings.PromptForCitationDuringCeremony = true;
         }
 
+        private static void DrawSalutesTab(Rect rect)
+        {
+            var listing = new Listing_Standard();
+            listing.Begin(rect);
+            Text.Font = GameFont.Small;
+
+            GUI.color = new Color(0.7f, 0.7f, 0.7f);
+            listing.Label("ROCKET_Settings_SalutesIntro".Translate());
+            GUI.color = Color.white;
+            listing.Gap(8f);
+
+            SubHeader(listing, "ROCKET_Settings_SalutesHeader".Translate(), ResetSalutes);
+
+            listing.CheckboxLabeled(
+                "ROCKET_Settings_EnableSalutes".Translate(),
+                ref Settings.EnableSalutes,
+                "ROCKET_Settings_EnableSalutesTip".Translate()
+            );
+
+            if (Settings.EnableSalutes)
+            {
+                listing.CheckboxLabeled(
+                    "ROCKET_Settings_OfficersSaluteSeniors".Translate(),
+                    ref Settings.OfficersSaluteSeniors,
+                    "ROCKET_Settings_OfficersSaluteSeniorsTip".Translate()
+                );
+            }
+
+            listing.End();
+        }
+
+        private static void ResetSalutes()
+        {
+            Settings.EnableSalutes = true;
+            Settings.OfficersSaluteSeniors = true;
+        }
+
         private static void DrawDebugTab(Rect rect)
         {
             // Debug content can be tall when expanded — wrap in a scroll view.
@@ -396,6 +436,8 @@ namespace RocketsRanks
         public bool ShowBodyTypeDebug;
         public bool DefaultPromoteWithCeremony = true;
         public bool PromptForCitationDuringCeremony = true;
+        public bool EnableSalutes = true;
+        public bool OfficersSaluteSeniors = true;
         public HashSet<string> HiddenPacks = new();
         public RankBodyTypeSettings[] BodySettings = new RankBodyTypeSettings[(int)RankBodyType.Count];
 
@@ -424,6 +466,8 @@ namespace RocketsRanks
             Scribe_Values.Look(ref ShowBodyTypeDebug, "ShowBodyTypeDebug", false);
             Scribe_Values.Look(ref DefaultPromoteWithCeremony, "DefaultPromoteWithCeremony", true);
             Scribe_Values.Look(ref PromptForCitationDuringCeremony, "PromptForCitationDuringCeremony", true);
+            Scribe_Values.Look(ref EnableSalutes, "EnableSalutes", true);
+            Scribe_Values.Look(ref OfficersSaluteSeniors, "OfficersSaluteSeniors", true);
             Scribe_Collections.Look(ref HiddenPacks, "HiddenPacks", LookMode.Value);
             HiddenPacks ??= new HashSet<string>();
 

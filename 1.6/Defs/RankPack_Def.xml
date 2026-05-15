@@ -13,6 +13,7 @@
     <label>Officers (US)</label>
     <previewRank>Rank_Captain</previewRank>
     <description>The U.S. commissioned officer rank set bundled with Rocket's Ranks.</description>
+    <isOfficerPack>true</isOfficerPack>
   </RocketsRanks.RankPackDef>
 
 </Defs>

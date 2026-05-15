@@ -18,6 +18,12 @@ namespace RocketsRanks
         /// </summary>
         public RankDef previewRank;
 
+        /// <summary>
+        /// True if pawns in this pack are commissioned officers. Read by
+        /// InteractionWorker_Salute to decide who salutes whom.
+        /// </summary>
+        public bool isOfficerPack = false;
+
         [Unsaved] private Texture2D cachedPreviewIcon;
         [Unsaved] private bool previewIconResolved;
 

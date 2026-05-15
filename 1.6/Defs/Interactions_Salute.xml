@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+    <RulePackDef>
+        <defName>ROCKET_Salute_Rules</defName>
+        <rulePack>
+            <rulesStrings>
+                <li>r_logentry->[INITIATOR_nameDef] saluted [RECIPIENT_nameDef].</li>
+                <li>r_logentry->[INITIATOR_nameDef] snapped to attention and saluted [RECIPIENT_nameDef].</li>
+                <li>r_logentry->[INITIATOR_nameDef] rendered a crisp salute to [RECIPIENT_nameDef].</li>
+                <li>r_logentry->[INITIATOR_nameDef] gave [RECIPIENT_nameDef] a sharp salute.</li>
+            </rulesStrings>
+        </rulePack>
+    </RulePackDef>
+
+    <ThoughtDef>
+        <defName>ROCKET_SalutedSuperior_Thought</defName>
+        <durationDays>0.5</durationDays>
+        <stackLimit>3</stackLimit>
+        <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
+        <stages>
+            <li>
+                <label>honored my superior</label>
+                <description>I gave the proper courtesies to a senior officer. It feels good to keep the standards.</description>
+                <baseMoodEffect>1</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef>
+        <defName>ROCKET_SalutedByJunior_Thought</defName>
+        <durationDays>0.5</durationDays>
+        <stackLimit>3</stackLimit>
+        <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
+        <stages>
+            <li>
+                <label>honored by my troops</label>
+                <description>One of mine snapped me a proper salute. The rank still means something.</description>
+                <baseMoodEffect>1</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <InteractionDef>
+        <defName>ROCKET_Salute</defName>
+        <label>salute</label>
+        <workerClass>RocketsRanks.InteractionWorker_Salute</workerClass>
+        <symbol>Things/Mote/SpeechSymbols/Speech</symbol>
+        <initiatorThought>ROCKET_SalutedSuperior_Thought</initiatorThought>
+        <recipientThought>ROCKET_SalutedByJunior_Thought</recipientThought>
+        <logRulesInitiator>
+            <include>
+                <li>ROCKET_Salute_Rules</li>
+            </include>
+        </logRulesInitiator>
+    </InteractionDef>
+
+</Defs>

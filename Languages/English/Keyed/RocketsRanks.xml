@@ -98,4 +98,13 @@
   <ROCKET_OutcomeCitation_TooltipQualityNote>20% of ceremony quality.</ROCKET_OutcomeCitation_TooltipQualityNote>
   <ROCKET_OutcomeCitation_TooltipNone>No citation written. You will be prompted during the ceremony, or write one before for a 20% bonus.</ROCKET_OutcomeCitation_TooltipNone>
 
+  <!-- Salutes — settings tab -->
+  <ROCKET_Settings_SalutesTab>Salutes</ROCKET_Settings_SalutesTab>
+  <ROCKET_Settings_SalutesHeader>Salutes</ROCKET_Settings_SalutesHeader>
+  <ROCKET_Settings_SalutesIntro>When ranked colonists pass an officer they may salute, shown as a chat bubble with the officer's rank insignia. Civilians never salute.</ROCKET_Settings_SalutesIntro>
+  <ROCKET_Settings_EnableSalutes>Enable saluting</ROCKET_Settings_EnableSalutes>
+  <ROCKET_Settings_EnableSalutesTip>If enabled, enlisted colonists will occasionally salute officers as they pass by. The salute appears as a chat bubble showing the officer's rank icon, and gives both pawns a small mood bonus.</ROCKET_Settings_EnableSalutesTip>
+  <ROCKET_Settings_OfficersSaluteSeniors>Officers salute senior officers</ROCKET_Settings_OfficersSaluteSeniors>
+  <ROCKET_Settings_OfficersSaluteSeniorsTip>If enabled, junior officers will also salute officers who outrank them. Turn off if you only want enlisted-to-officer salutes.</ROCKET_Settings_OfficersSaluteSeniorsTip>
+
 </LanguageData>
