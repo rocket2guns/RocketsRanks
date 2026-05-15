@@ -39,4 +39,63 @@
   <ROCKET_HasBeenAssignedRankOf>{0} has been assigned the rank of {1}.</ROCKET_HasBeenAssignedRankOf>
   <ROCKET_HasBecomeACivilian>{0} has become a civilian.</ROCKET_HasBecomeACivilian>
 
+  <!-- Ceremony — quality tiers -->
+  <ROCKET_CeremonyQuality_Legendary>legendary</ROCKET_CeremonyQuality_Legendary>
+  <ROCKET_CeremonyQuality_Grand>grand</ROCKET_CeremonyQuality_Grand>
+  <ROCKET_CeremonyQuality_Decent>decent</ROCKET_CeremonyQuality_Decent>
+  <ROCKET_CeremonyQuality_Poor>poor</ROCKET_CeremonyQuality_Poor>
+
+  <!-- Ceremony — citation dialog -->
+  <ROCKET_CitationDialogHeader>Citation for {0}</ROCKET_CitationDialogHeader>
+  <ROCKET_CitationDialogSave>Save</ROCKET_CitationDialogSave>
+  <ROCKET_CitationDialogSkip>Skip</ROCKET_CitationDialogSkip>
+
+  <!-- Ceremony — start failures and labels -->
+  <ROCKET_CeremonyRequiresIdeology>Ceremonies require the Ideology DLC.</ROCKET_CeremonyRequiresIdeology>
+  <ROCKET_CeremonyAwardeeNeedsMap>Awardee must be on a map.</ROCKET_CeremonyAwardeeNeedsMap>
+  <ROCKET_CeremonyNeedsOtherColonist>No other free colonist available to present.</ROCKET_CeremonyNeedsOtherColonist>
+  <ROCKET_CeremonyLocationPickFailed>Could not pick a ceremony location.</ROCKET_CeremonyLocationPickFailed>
+  <ROCKET_CeremonyName>Promotion Ceremony</ROCKET_CeremonyName>
+  <ROCKET_CeremonyLocationLine>Will be held at: {0}.</ROCKET_CeremonyLocationLine>
+  <ROCKET_BeginCeremonyButton>Begin Ceremony</ROCKET_BeginCeremonyButton>
+
+  <!-- Ceremony — location labels -->
+  <ROCKET_LocationThroneRoom>the throne room</ROCKET_LocationThroneRoom>
+  <ROCKET_LocationLectern>the lectern</ROCKET_LocationLectern>
+  <ROCKET_LocationAwardeeCell>wherever the awardee is standing</ROCKET_LocationAwardeeCell>
+
+  <!-- Ceremony — promote dialog checkbox -->
+  <ROCKET_HoldCeremonyCheckbox>Hold promotion ceremony</ROCKET_HoldCeremonyCheckbox>
+  <ROCKET_HoldCeremonyTooltip>If enabled, opens the ritual planning dialog to schedule a formal promotion ceremony. Otherwise the rank is applied immediately.</ROCKET_HoldCeremonyTooltip>
+
+  <!-- Ceremony — bestowal stage -->
+  <ROCKET_BestowalBegunMsg>{0} begins the promotion of {1} to {2}.</ROCKET_BestowalBegunMsg>
+  <ROCKET_BestowalNewRankFallback>a new rank</ROCKET_BestowalNewRankFallback>
+
+  <!-- Ceremony — outcome preview -->
+  <ROCKET_OutcomeDesc_Preview>Promotion ceremony</ROCKET_OutcomeDesc_Preview>
+  <ROCKET_OutcomeLabel_Preview>Promotion</ROCKET_OutcomeLabel_Preview>
+  <ROCKET_OutcomePreview_RankFallback>civilian</ROCKET_OutcomePreview_RankFallback>
+  <ROCKET_OutcomePreview_AwardeeFallback>the awardee</ROCKET_OutcomePreview_AwardeeFallback>
+  <ROCKET_OutcomePreview_Tooltip>{0} will be promoted to {1}.</ROCKET_OutcomePreview_Tooltip>
+
+  <!-- Ceremony — outcome attendance -->
+  <ROCKET_OutcomeDesc_Attendance>Ceremony attendance</ROCKET_OutcomeDesc_Attendance>
+  <ROCKET_OutcomeLabel_Attendance>Attendance</ROCKET_OutcomeLabel_Attendance>
+  <ROCKET_OutcomeAttendance_Tooltip>Up to 40% of ceremony quality. More colonists means a more meaningful ceremony.</ROCKET_OutcomeAttendance_Tooltip>
+
+  <!-- Ceremony — outcome venue -->
+  <ROCKET_OutcomeDesc_Venue>Ceremony venue</ROCKET_OutcomeDesc_Venue>
+  <ROCKET_OutcomeLabel_Venue>Venue</ROCKET_OutcomeLabel_Venue>
+  <ROCKET_OutcomeVenue_Outdoors>Outdoors</ROCKET_OutcomeVenue_Outdoors>
+  <ROCKET_OutcomeVenue_Tooltip>Up to 40% of ceremony quality. Hold the ceremony in an impressive room for a better outcome.</ROCKET_OutcomeVenue_Tooltip>
+
+  <!-- Ceremony — outcome citation -->
+  <ROCKET_OutcomeDesc_Citation>Citation</ROCKET_OutcomeDesc_Citation>
+  <ROCKET_OutcomeLabel_Citation>Citation</ROCKET_OutcomeLabel_Citation>
+  <ROCKET_OutcomeCitation_Written>Written</ROCKET_OutcomeCitation_Written>
+  <ROCKET_OutcomeCitation_None>None</ROCKET_OutcomeCitation_None>
+  <ROCKET_OutcomeCitation_TooltipQualityNote>20% of ceremony quality.</ROCKET_OutcomeCitation_TooltipQualityNote>
+  <ROCKET_OutcomeCitation_TooltipNone>No citation written. You will be prompted during the ceremony, or write one before for a 20% bonus.</ROCKET_OutcomeCitation_TooltipNone>
+
 </LanguageData>

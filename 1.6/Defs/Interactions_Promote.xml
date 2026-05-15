@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <RulePackDef>
+        <defName>ROCKET_Speech_Promote_Rules</defName>
+        <rulePack>
+            <rulesStrings>
+                <li>r_logentry->[INITIATOR_nameDef] [speech_verb] [RECIPIENT_nameDef] and proclaimed their new rank.</li>
+                <li>r_logentry->[INITIATOR_nameDef] gave a [speech_adjective] speech promoting [RECIPIENT_nameDef] for [their_actions].</li>
+
+                <li>speech_verb->commended</li>
+                <li>speech_verb->saluted</li>
+                <li>speech_verb->honored</li>
+                <li>speech_verb->elevated</li>
+
+                <li>speech_adjective->rousing</li>
+                <li>speech_adjective->solemn</li>
+                <li>speech_adjective->proud</li>
+                <li>speech_adjective->stirring</li>
+
+                <li>their_actions->dedicated service to the colony</li>
+                <li>their_actions->loyalty in the face of adversity</li>
+                <li>their_actions->exemplary conduct</li>
+                <li>their_actions->bleeding for their fellow colonists</li>
+                <li>their_actions->standing firm against the odds</li>
+            </rulesStrings>
+        </rulePack>
+    </RulePackDef>
+
+    <InteractionDef>
+        <defName>ROCKET_Speech_Promote</defName>
+        <label>promotion speech</label>
+        <workerClass>InteractionWorker</workerClass>
+        <symbol>Things/Mote/SpeechSymbols/Speech</symbol>
+        <logRulesInitiator>
+            <include>
+                <li>ROCKET_Speech_Promote_Rules</li>
+            </include>
+        </logRulesInitiator>
+    </InteractionDef>
+
+    <TaleDef>
+        <defName>ROCKET_PromotedTale</defName>
+        <label>promotion ceremony</label>
+        <taleClass>Tale_DoublePawn</taleClass>
+        <type>Volatile</type>
+        <baseInterest>30.0</baseInterest>
+        <firstPawnSymbol>PRESENTER</firstPawnSymbol>
+        <secondPawnSymbol>AWARDEE</secondPawnSymbol>
+        <rulePack>
+            <rulesStrings>
+                <li>tale_noun->[PRESENTER_nameDef] promoting [AWARDEE_nameDef]</li>
+                <li>tale_noun->[AWARDEE_nameDef] being granted a new rank by [PRESENTER_nameDef]</li>
+                <li>tale_noun->the promotion of [AWARDEE_nameDef]</li>
+
+                <li>image->[PRESENTER_nameFull] is standing tall, proudly presenting new insignia to [AWARDEE_nameFull]. [circumstance_group]</li>
+                <li>image->[PRESENTER_nameFull] is saluting [AWARDEE_nameFull], who is wearing the marks of a newly bestowed rank. [circumstance_group]</li>
+                <li>image->[AWARDEE_nameFull] looks [AWARDEE_adjective] as they are promoted by [PRESENTER_nameDef]. [circumstance_group]</li>
+
+                <li>circumstance_phrase->The colony watches in silent respect.</li>
+                <li>circumstance_phrase->The new insignia gleams in the light.</li>
+                <li>circumstance_phrase->Spectators stand at attention.</li>
+
+                <li>desc_sentence->[AWARDEE_nameDef] looks deeply proud.</li>
+                <li>desc_sentence->[PRESENTER_nameDef] wears a solemn expression of authority.</li>
+            </rulesStrings>
+        </rulePack>
+    </TaleDef>
+</Defs>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <RitualOutcomeEffectDef>
+        <defName>ROCKET_PromoteOutcome</defName>
+        <description>The colonist is officially promoted to a new rank.</description>
+        <workerClass>RocketsRanks.RitualOutcomeEffectWorkerPromote</workerClass>
+        <comps>
+            <li Class="RocketsRanks.RitualOutcomeComp_PromotionPreview"/>
+            <li Class="RocketsRanks.RitualOutcomeComp_PromotionAttendance"/>
+            <li Class="RocketsRanks.RitualOutcomeComp_PromotionRoom"/>
+            <li Class="RocketsRanks.RitualOutcomeComp_PromotionCitation"/>
+        </comps>
+    </RitualOutcomeEffectDef>
+
+    <PreceptDef>
+        <defName>ROCKET_PromotionCeremonyPrecept</defName>
+        <issue>Ritual</issue>
+        <label>promotion ceremony</label>
+        <description>An official ceremony to bestow a new rank upon a colonist.</description>
+        <preceptClass>Precept_Ritual</preceptClass>
+        <ritualPatternBase>ROCKET_PromotionPattern</ritualPatternBase>
+        <visible>false</visible>
+        <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+    </PreceptDef>
+
+    <DutyDef>
+        <defName>ROCKET_SpeakOnCellPromote</defName>
+        <hook>HighPriority</hook>
+        <socialModeMax>Off</socialModeMax>
+        <ritualSpectateTarget>true</ritualSpectateTarget>
+        <thinkNode Class="ThinkNode_Priority">
+            <subNodes>
+                <li Class="JobGiver_GotoTravelDestination">
+                    <exactCell>true</exactCell>
+                    <locomotionUrgency>Jog</locomotionUrgency>
+                    <ritualTagOnArrival>Arrived</ritualTagOnArrival>
+                </li>
+                <li Class="ThinkNode_ConditionalAtDutyLocation">
+                    <subNodes>
+                        <li Class="RocketsRanks.JobGiver_PromotionSpeech">
+                            <soundDefMale>Speech_Leader_Male</soundDefMale>
+                            <soundDefFemale>Speech_Leader_Female</soundDefFemale>
+                        </li>
+                    </subNodes>
+                </li>
+            </subNodes>
+        </thinkNode>
+    </DutyDef>
+
+    <RitualBehaviorDef>
+        <defName>ROCKET_PromotionBehavior</defName>
+        <durationTicks>2500</durationTicks>
+        <spectatorsLabel>Spectators</spectatorsLabel>
+        <spectatorGerund>spectate</spectatorGerund>
+        <roles>
+            <li Class="RocketsRanks.RitualRole_Promoter">
+                <label>presenter</label>
+                <id>leader</id>
+                <required>True</required>
+                <maxCount>1</maxCount>
+                <countsAsParticipant>False</countsAsParticipant>
+                <allowChild>false</allowChild>
+                <mustBeAbleToReachTarget>True</mustBeAbleToReachTarget>
+            </li>
+            <li Class="RitualRoleColonist">
+                <id>awardee</id>
+                <label>Awardee</label>
+                <required>True</required>
+                <maxCount>1</maxCount>
+                <countsAsParticipant>False</countsAsParticipant>
+                <mustBeAbleToReachTarget>True</mustBeAbleToReachTarget>
+            </li>
+        </roles>
+        <stages>
+            <li>
+                <defaultDuty>Spectate</defaultDuty>
+                <allowedSpectateSidesOverride>Vertical</allowedSpectateSidesOverride>
+                <spectateDistanceOverride>1</spectateDistanceOverride>
+                <spectatorsRequired>false</spectatorsRequired>
+                <endTriggers>
+                    <li Class="StageEndTrigger_RolesArrived">
+                        <roleIds>
+                            <li>leader</li>
+                            <li>awardee</li>
+                        </roleIds>
+                    </li>
+                </endTriggers>
+                <roleBehaviors>
+                    <li>
+                        <roleId>leader</roleId>
+                        <dutyDef>ArriveToCell</dutyDef>
+                        <customPositions>
+                            <li Class="RitualPosition_BehindThingCenter"/>
+                        </customPositions>
+                    </li>
+                    <li>
+                        <roleId>awardee</roleId>
+                        <dutyDef>ArriveToCell</dutyDef>
+                        <customPositions>
+                            <li Class="RitualPosition_InFrontThingCenter"/>
+                        </customPositions>
+                    </li>
+                </roleBehaviors>
+                <preAction Class="RocketsRanks.RitualStageAction_StartPromotionBestowal"/>
+                <highlightRolePawns>
+                    <li>awardee</li>
+                    <li>leader</li>
+                </highlightRolePawns>
+            </li>
+            <li>
+                <defaultDuty>Spectate</defaultDuty>
+                <allowedSpectateSidesOverride>Vertical</allowedSpectateSidesOverride>
+                <spectateDistanceOverride>1</spectateDistanceOverride>
+                <spectatorsRequired>false</spectatorsRequired>
+                <endTriggers>
+                    <li Class="StageEndTrigger_DurationPercentage">
+                        <percentage>1</percentage>
+                    </li>
+                </endTriggers>
+                <roleBehaviors>
+                    <li>
+                        <roleId>leader</roleId>
+                        <dutyDef>ROCKET_SpeakOnCellPromote</dutyDef>
+                        <speakerInteraction>Speech_Leader</speakerInteraction>
+                        <customPositions>
+                            <li Class="RitualPosition_BesideThing"/>
+                        </customPositions>
+                    </li>
+                    <li>
+                        <roleId>awardee</roleId>
+                        <dutyDef>ArriveToCell</dutyDef>
+                        <customPositions>
+                            <li Class="RitualPosition_InFrontThingCenter"/>
+                        </customPositions>
+                    </li>
+                </roleBehaviors>
+                <visualEffectDef>Speech</visualEffectDef>
+            </li>
+        </stages>
+    </RitualBehaviorDef>
+
+    <RitualPatternDef>
+        <defName>ROCKET_PromotionPattern</defName>
+        <ritualBehavior>ROCKET_PromotionBehavior</ritualBehavior>
+        <ritualOutcomeEffect>ROCKET_PromoteOutcome</ritualOutcomeEffect>
+        <ritualExpectedDesc>A presenter will bestow a new rank upon a deserving colonist.</ritualExpectedDesc>
+    </RitualPatternDef>
+</Defs>

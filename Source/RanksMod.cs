@@ -26,7 +26,7 @@ namespace RocketsRanks
 
         public override string SettingsCategory() => "Rocket's Ranks";
 
-        private enum SettingsTab { Packs, Labels, Bar, Debug }
+        private enum SettingsTab { Packs, Labels, Bar, Ceremony, Debug }
         private static SettingsTab currentTab = SettingsTab.Packs;
         private static readonly List<TabRecord> tabBuf = new();
 
@@ -39,6 +39,7 @@ namespace RocketsRanks
             tabBuf.Add(new TabRecord("Rank Packs", () => currentTab = SettingsTab.Packs, currentTab is SettingsTab.Packs));
             tabBuf.Add(new TabRecord("Pawn Labels", () => currentTab = SettingsTab.Labels, currentTab is SettingsTab.Labels));
             tabBuf.Add(new TabRecord("Colonist Bar", () => currentTab = SettingsTab.Bar, currentTab is SettingsTab.Bar));
+            tabBuf.Add(new TabRecord("Ceremony", () => currentTab = SettingsTab.Ceremony, currentTab is SettingsTab.Ceremony));
             tabBuf.Add(new TabRecord("Debug", () => currentTab = SettingsTab.Debug, currentTab is SettingsTab.Debug));
 
             Widgets.DrawMenuSection(contentRect);
@@ -47,10 +48,11 @@ namespace RocketsRanks
             var inner = contentRect.ContractedBy(12f);
             switch (currentTab)
             {
-                case SettingsTab.Packs:  DrawPacksTab(inner); break;
-                case SettingsTab.Labels: DrawLabelsTab(inner); break;
-                case SettingsTab.Bar:    DrawBarTab(inner); break;
-                case SettingsTab.Debug:  DrawDebugTab(inner); break;
+                case SettingsTab.Packs:    DrawPacksTab(inner); break;
+                case SettingsTab.Labels:   DrawLabelsTab(inner); break;
+                case SettingsTab.Bar:      DrawBarTab(inner); break;
+                case SettingsTab.Ceremony: DrawCeremonyTab(inner); break;
+                case SettingsTab.Debug:    DrawDebugTab(inner); break;
             }
         }
 
@@ -255,6 +257,42 @@ namespace RocketsRanks
             Settings.WeaponScale = 1f;
         }
 
+        private static void DrawCeremonyTab(Rect rect)
+        {
+            var listing = new Listing_Standard();
+            listing.Begin(rect);
+            Text.Font = GameFont.Small;
+
+            if (!ModsConfig.IdeologyActive)
+            {
+                GUI.color = new Color(0.95f, 0.75f, 0.35f);
+                listing.Label("Promotion ceremonies require the Ideology DLC. These settings still save but have no effect without Ideology.");
+                GUI.color = Color.white;
+                listing.Gap(8f);
+            }
+
+            SubHeader(listing, "Promotion Ceremony", ResetCeremony);
+
+            listing.CheckboxLabeled(
+                "Default to ceremony in promote dialog",
+                ref Settings.DefaultPromoteWithCeremony,
+                "If enabled, the \"Hold promotion ceremony\" checkbox in the promote dialog is on by default. You can still untick it per-promotion."
+            );
+            listing.CheckboxLabeled(
+                "Prompt for citation during ceremony",
+                ref Settings.PromptForCitationDuringCeremony,
+                "If enabled, and you didn't write a citation in the promote dialog, a prompt will appear during the ceremony letting the presenter dictate one. A citation adds 20% to ceremony quality."
+            );
+
+            listing.End();
+        }
+
+        private static void ResetCeremony()
+        {
+            Settings.DefaultPromoteWithCeremony = true;
+            Settings.PromptForCitationDuringCeremony = true;
+        }
+
         private static void DrawDebugTab(Rect rect)
         {
             // Debug content can be tall when expanded — wrap in a scroll view.
@@ -354,6 +392,8 @@ namespace RocketsRanks
         public bool HideInMap;
         public bool HideRankWhenUndrafted;
         public bool ShowBodyTypeDebug;
+        public bool DefaultPromoteWithCeremony = true;
+        public bool PromptForCitationDuringCeremony = true;
         public HashSet<string> HiddenPacks = new();
         public RankBodyTypeSettings[] BodySettings = new RankBodyTypeSettings[(int)RankBodyType.Count];
 
@@ -380,6 +420,8 @@ namespace RocketsRanks
             Scribe_Values.Look(ref HideInMap, "HideInMap", false);
             Scribe_Values.Look(ref HideRankWhenUndrafted, "HideRankWhenUndrafted", false);
             Scribe_Values.Look(ref ShowBodyTypeDebug, "ShowBodyTypeDebug", false);
+            Scribe_Values.Look(ref DefaultPromoteWithCeremony, "DefaultPromoteWithCeremony", true);
+            Scribe_Values.Look(ref PromptForCitationDuringCeremony, "PromptForCitationDuringCeremony", true);
             Scribe_Collections.Look(ref HiddenPacks, "HiddenPacks", LookMode.Value);
             HiddenPacks ??= new HashSet<string>();
 

@@ -192,6 +192,8 @@ namespace RocketsRanks
             Text.Font = GameFont.Tiny;
             // Date line
             height += 18f;
+            if (record.presentedBy != null || record.ceremonyQuality >= 0)
+                height += 18f;
             // Citation
             if (!record.citation.NullOrEmpty())
             {
@@ -264,10 +266,25 @@ namespace RocketsRanks
                 var dateStr = GenDate.DateFullStringAt(
                     GenDate.TickGameToAbs(record.tick),
                     Find.WorldGrid.LongLatOf(tile));
-                Widgets.Label(new Rect(rect.x + 6f, curY, rect.width - 12f, 18f), dateStr);
+                Widgets.Label(new Rect(textX, curY, textWidth, 18f), dateStr);
             }
             GUI.color = Color.white;
             curY += 18f;
+
+            if (record.presentedBy != null || record.ceremonyQuality >= 0)
+            {
+                GUI.color = MutedColor;
+                string ceremonyText;
+                if (record.presentedBy != null && record.ceremonyQuality >= 0)
+                    ceremonyText = $"Presented by {record.presentedBy.LabelShort} ({CeremonyQuality.GetQualityLabel(record.ceremonyQuality)} ceremony)";
+                else if (record.presentedBy != null)
+                    ceremonyText = $"Presented by {record.presentedBy.LabelShort}";
+                else
+                    ceremonyText = $"{CeremonyQuality.GetQualityLabel(record.ceremonyQuality).CapitalizeFirst()} ceremony";
+                Widgets.Label(new Rect(textX, curY, textWidth, 18f), ceremonyText);
+                GUI.color = Color.white;
+                curY += 18f;
+            }
 
             // Citation
             if (!record.citation.NullOrEmpty())

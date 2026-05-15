@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <ThoughtDef>
+        <defName>ROCKET_PromotedByCeremony_Thought</defName>
+        <durationDays>15</durationDays>
+        <stages>
+            <li>
+                <label>poor promotion ceremony</label>
+                <description>I was given a new rank, but the ceremony was underwhelming. Barely anyone showed up.</description>
+                <baseMoodEffect>4</baseMoodEffect>
+            </li>
+            <li>
+                <label>promoted in ceremony</label>
+                <description>I was promoted in front of the colony. It was a decent ceremony.</description>
+                <baseMoodEffect>8</baseMoodEffect>
+            </li>
+            <li>
+                <label>grand promotion ceremony</label>
+                <description>I was promoted before the whole colony. It is an honor to bear this rank.</description>
+                <baseMoodEffect>14</baseMoodEffect>
+            </li>
+            <li>
+                <label>legendary promotion ceremony</label>
+                <description>The entire colony gathered to see me promoted. I will never forget this moment.</description>
+                <baseMoodEffect>20</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+
+    <ThoughtDef>
+        <defName>ROCKET_WitnessedPromotionCeremony_Thought</defName>
+        <durationDays>5</durationDays>
+        <stages>
+            <li>
+                <label>witnessed promotion ceremony</label>
+                <description>I watched one of our own be promoted to a new rank. It was a fine ceremony.</description>
+                <baseMoodEffect>3</baseMoodEffect>
+            </li>
+        </stages>
+    </ThoughtDef>
+</Defs>

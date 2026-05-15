@@ -10,6 +10,8 @@ namespace RocketsRanks
         public RankDef previousRank;
         public string citation;
         public int tick = -1;
+        public Pawn presentedBy;
+        public int ceremonyQuality = -1;
 
         public void ExposeData()
         {
@@ -17,6 +19,8 @@ namespace RocketsRanks
             Scribe_Defs.Look(ref previousRank, "previousRank");
             Scribe_Values.Look(ref citation, "citation");
             Scribe_Values.Look(ref tick, "tick", -1);
+            Scribe_References.Look(ref presentedBy, "presentedBy");
+            Scribe_Values.Look(ref ceremonyQuality, "ceremonyQuality", -1);
         }
     }
 
@@ -50,7 +54,7 @@ namespace RocketsRanks
             history ??= new List<PromotionRecord>();
         }
 
-        public void SetRank(RankDef newRank, string citation = null)
+        public void SetRank(RankDef newRank, string citation = null, Pawn presentedBy = null, int ceremonyQuality = -1)
         {
             var pawn = (Pawn)parent;
             var previousRank = currentRank;
@@ -63,7 +67,9 @@ namespace RocketsRanks
                 rank = newRank,
                 previousRank = previousRank,
                 citation = citation.NullOrEmpty() ? null : citation.Trim(),
-                tick = Find.TickManager.TicksGame
+                tick = Find.TickManager.TicksGame,
+                presentedBy = presentedBy,
+                ceremonyQuality = ceremonyQuality
             });
 
             RankApparelRefresh.RefreshApparelFor(pawn);

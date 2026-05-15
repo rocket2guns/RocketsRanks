@@ -18,6 +18,7 @@ namespace RocketsRanks
         private RankDef selectedRank;
         private string draft = "";
         private Vector2 rankScroll;
+        private bool useCeremony = RanksMod.Settings?.DefaultPromoteWithCeremony ?? true;
 
         private const int MAX_CITATION_LENGTH = 300;
         private const float PAWN_COLUMN_WIDTH = 160f;
@@ -107,7 +108,7 @@ namespace RocketsRanks
                 _ranksByPack[a][0].rankLevel.CompareTo(_ranksByPack[b][0].rankLevel);
         }
 
-        public override Vector2 InitialSize => new(780f, 510f);
+        public override Vector2 InitialSize => new(780f, 545f);
 
         public override void DoWindowContents(Rect inRect)
         {
@@ -240,26 +241,51 @@ namespace RocketsRanks
             Text.Anchor = TextAnchor.UpperLeft;
             GUI.color = Color.white;
 
-            // Buttons
             Text.Font = GameFont.Small;
-            var btnY = textRect.yMax + 24f;
-            var btnWidth = (rect.width - 10f) / 2f;
-
+            var ceremonyY = textRect.yMax + 22f;
             var currentRank = pawn.GetComp<CompRank>()?.currentRank;
             var canConfirm = selectedRank != currentRank;
+            var isDemotion = currentRank != null
+                             && (selectedRank == null || selectedRank.rankLevel < currentRank.rankLevel);
+            var willHoldCeremony = false;
+            if (ModsConfig.IdeologyActive && !isDemotion)
+            {
+                var ceremonyRect = new Rect(rect.x, ceremonyY, rect.width, 24f);
+                Widgets.CheckboxLabeled(ceremonyRect, "ROCKET_HoldCeremonyCheckbox".Translate(), ref useCeremony);
+                if (Mouse.IsOver(ceremonyRect))
+                    TooltipHandler.TipRegion(ceremonyRect, "ROCKET_HoldCeremonyTooltip".Translate());
+                willHoldCeremony = useCeremony;
+            }
+
+            // Buttons
+            var btnY = ceremonyY + 30f;
+            var btnWidth = (rect.width - 10f) / 2f;
+
+            var confirmLabel = willHoldCeremony && selectedRank != null
+                ? "ROCKET_BeginCeremonyButton".Translate().ToString()
+                : "ROCKET_ConfirmPromotion".Translate().ToString();
 
             if (canConfirm)
             {
-                if (Widgets.ButtonText(new Rect(rect.x, btnY, btnWidth, 35f), "ROCKET_ConfirmPromotion".Translate()))
+                if (Widgets.ButtonText(new Rect(rect.x, btnY, btnWidth, 35f), confirmLabel))
                 {
-                    ApplyPromotion();
-                    Close();
+                    if (willHoldCeremony && selectedRank != null && !isDemotion
+                        && PromotionCeremony.CanStart(pawn, out _))
+                    {
+                        PromotionCeremony.Start(pawn, selectedRank, draft);
+                        Close();
+                    }
+                    else
+                    {
+                        ApplyPromotion();
+                        Close();
+                    }
                 }
             }
             else
             {
                 GUI.color = Color.gray;
-                Widgets.ButtonText(new Rect(rect.x, btnY, btnWidth, 35f), "ROCKET_ConfirmPromotion".Translate());
+                Widgets.ButtonText(new Rect(rect.x, btnY, btnWidth, 35f), confirmLabel);
                 GUI.color = Color.white;
             }
 
