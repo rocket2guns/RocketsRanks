@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RocketsRanks
@@ -28,6 +29,8 @@ namespace RocketsRanks
     {
         public RankDef currentRank;
         public List<PromotionRecord> history = new();
+        public bool showTitleOnMap = false;
+        public Color titleOnMapColor = TitleColorPresets.Default;
         private Command_Action cachedGizmo;
 
         public Command_Action GetGizmo()
@@ -51,6 +54,8 @@ namespace RocketsRanks
         {
             Scribe_Defs.Look(ref currentRank, "currentRank");
             Scribe_Collections.Look(ref history, "history", LookMode.Deep);
+            Scribe_Values.Look(ref showTitleOnMap, "showTitleOnMap", false);
+            Scribe_Values.Look(ref titleOnMapColor, "titleOnMapColor", TitleColorPresets.Default);
             history ??= new List<PromotionRecord>();
         }
 

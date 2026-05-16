@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -42,11 +41,17 @@ namespace RocketsRanks
 
     public class ITab_PawnRanks : ITab
     {
+        private enum SubTab { History, Settings }
+
         private Vector2 _scrollPosition;
+        private static SubTab currentSubTab = SubTab.History;
+        private static readonly List<TabRecord> tabBuf = new();
+
         private const float PADDING = 10f;
         private const float TAB_WIDTH = 400f;
         private const float TAB_HEIGHT = 480f;
         private const float RECORD_ROW_HEIGHT = 60f;
+        private const float SUB_TAB_BAR_HEIGHT = 32f;
 
         private static readonly Color GoldColor = new(0.9f, 0.85f, 0.4f);
         private static readonly Color GreenColor = new(0.4f, 0.9f, 0.4f);
@@ -84,8 +89,30 @@ namespace RocketsRanks
             if (comp == null) return;
 
             var rect = new Rect(0f, 0f, size.x, size.y).ContractedBy(PADDING);
-            var curY = rect.y;
+            var curY = DrawHeader(rect, rect.y, comp, pawn);
 
+            var subTabContentRect = new Rect(rect.x, curY + SUB_TAB_BAR_HEIGHT, rect.width, rect.yMax - curY - SUB_TAB_BAR_HEIGHT);
+            Widgets.DrawMenuSection(subTabContentRect);
+            DrawSubTabBar(subTabContentRect);
+
+            var innerContentRect = subTabContentRect.ContractedBy(8f);
+            switch (currentSubTab)
+            {
+                case SubTab.History:
+                    DrawHistorySubTab(innerContentRect, comp, pawn);
+                    break;
+                case SubTab.Settings:
+                    DrawSettingsSubTab(innerContentRect, comp);
+                    break;
+            }
+
+            Text.Font = GameFont.Small;
+            Text.Anchor = TextAnchor.UpperLeft;
+            GUI.color = Color.white;
+        }
+
+        private float DrawHeader(Rect rect, float curY, CompRank comp, Pawn pawn)
+        {
             // Rank icon, centered
             if (comp.currentRank?.Icon != null)
             {
@@ -131,45 +158,115 @@ namespace RocketsRanks
             GUI.color = Color.white;
             curY += 8f;
 
-            // History header
-            Text.Font = GameFont.Small;
-            Text.Anchor = TextAnchor.MiddleLeft;
-            Widgets.Label(new Rect(rect.x, curY, rect.width, 24f), "ROCKET_PromotionHistory".Translate());
-            curY += 28f;
+            return curY;
+        }
 
-            // History list
+        private void DrawSubTabBar(Rect contentRect)
+        {
+            tabBuf.Clear();
+            tabBuf.Add(new TabRecord(
+                "ROCKET_PromotionHistory".Translate(),
+                () => currentSubTab = SubTab.History,
+                currentSubTab == SubTab.History));
+            tabBuf.Add(new TabRecord(
+                "ROCKET_RanksTab_SettingsSubTab".Translate(),
+                () => currentSubTab = SubTab.Settings,
+                currentSubTab == SubTab.Settings));
+            TabDrawer.DrawTabs(contentRect, tabBuf);
+        }
+
+        private void DrawHistorySubTab(Rect rect, CompRank comp, Pawn pawn)
+        {
             if (comp.history.Count == 0)
             {
                 Text.Font = GameFont.Tiny;
+                Text.Anchor = TextAnchor.UpperLeft;
                 GUI.color = Color.gray;
-                Widgets.Label(new Rect(rect.x, curY, rect.width, 24f), "ROCKET_NoPromotionRecords".Translate());
+                Widgets.Label(new Rect(rect.x, rect.y + 4f, rect.width, 24f), "ROCKET_NoPromotionRecords".Translate());
                 GUI.color = Color.white;
-            }
-            else
-            {
-                var listRect = new Rect(rect.x, curY, rect.width, rect.yMax - curY);
-                DrawHistoryList(listRect, comp.history, pawn);
+                return;
             }
 
+            DrawHistoryList(rect, comp.history, pawn);
+        }
+
+        private void DrawSettingsSubTab(Rect rect, CompRank comp)
+        {
+            Widgets.BeginGroup(rect);
+            var curY = 4f;
             Text.Font = GameFont.Small;
             Text.Anchor = TextAnchor.UpperLeft;
+
+            Widgets.ListSeparator(ref curY, rect.width, "ROCKET_Settings_MapDisplayHeader".Translate());
+            curY += 4f;
+
+            const float rowHeight = 24f;
+            var checkboxRect = new Rect(0f, curY, rect.width, rowHeight);
+            var showTitle = comp.showTitleOnMap;
+            Widgets.CheckboxLabeled(checkboxRect, "ROCKET_Settings_ShowTitleOnMap".Translate(), ref showTitle);
+            if (Mouse.IsOver(checkboxRect))
+                TooltipHandler.TipRegion(checkboxRect, "ROCKET_Settings_ShowTitleOnMapTip".Translate());
+            comp.showTitleOnMap = showTitle;
+            curY += rowHeight + 4f;
+
+            var enabled = comp.showTitleOnMap;
+            var rowRect = new Rect(0f, curY, rect.width, rowHeight);
+            GUI.color = enabled ? Color.white : MutedColor;
+            Text.Anchor = TextAnchor.MiddleLeft;
+            Widgets.Label(rowRect, "ROCKET_Settings_TitleColor".Translate());
+            Text.Anchor = TextAnchor.UpperLeft;
             GUI.color = Color.white;
+
+            const float swatchSize = 24f;
+            var swatchRect = new Rect(rowRect.xMax - swatchSize, curY, swatchSize, swatchSize);
+            var swatchColor = enabled
+                ? comp.titleOnMapColor
+                : new Color(comp.titleOnMapColor.r * 0.5f, comp.titleOnMapColor.g * 0.5f, comp.titleOnMapColor.b * 0.5f);
+            Widgets.DrawBoxSolid(swatchRect, swatchColor);
+            GUI.color = enabled ? Color.white : MutedColor;
+            Widgets.DrawBox(swatchRect, 1);
+            GUI.color = Color.white;
+
+            if (enabled)
+            {
+                if (Mouse.IsOver(swatchRect))
+                    Widgets.DrawHighlight(swatchRect);
+                if (Widgets.ButtonInvisible(swatchRect))
+                    OpenColorFloatMenu(comp);
+            }
+
+            Widgets.EndGroup();
+        }
+
+        private static void OpenColorFloatMenu(CompRank comp)
+        {
+            var options = new List<FloatMenuOption>(TitleColorPresets.All.Length);
+            foreach (var preset in TitleColorPresets.All)
+            {
+                var capturedColor = preset.color;
+                options.Add(new FloatMenuOption(
+                    preset.LabelKey.Translate(),
+                    () => comp.titleOnMapColor = capturedColor,
+                    BaseContent.WhiteTex,
+                    capturedColor));
+            }
+            Find.WindowStack.Add(new FloatMenu(options));
         }
 
         private void DrawHistoryList(Rect listRect, List<PromotionRecord> history, Pawn pawn)
         {
             var viewWidth = listRect.width - 16f;
             var totalHeight = 0f;
-            foreach (var record in history.AsEnumerable().Reverse())
-                totalHeight += GetRecordHeight(record, viewWidth) + 6f;
+            for (var i = history.Count - 1; i >= 0; i--)
+                totalHeight += GetRecordHeight(history[i], viewWidth) + 6f;
 
             var viewRect = new Rect(0f, 0f, viewWidth, totalHeight);
             Widgets.BeginScrollView(listRect, ref _scrollPosition, viewRect);
 
             var curY = 0f;
-            // Show newest first
-            foreach (var record in history.AsEnumerable().Reverse())
+            for (var i = history.Count - 1; i >= 0; i--)
             {
+                var record = history[i];
                 var rowHeight = GetRecordHeight(record, viewWidth);
                 var rowRect = new Rect(0f, curY, viewWidth, rowHeight);
 
@@ -187,14 +284,11 @@ namespace RocketsRanks
         {
             var height = 4f;
             Text.Font = GameFont.Small;
-            // Rank label line
             height += 22f;
             Text.Font = GameFont.Tiny;
-            // Date line
             height += 18f;
             if (record.presentedBy != null || record.ceremonyQuality >= 0)
                 height += 18f;
-            // Citation
             if (!record.citation.NullOrEmpty())
             {
                 var citHeight = Text.CalcHeight($"\"{record.citation}\"", width - 20f);
@@ -210,7 +304,6 @@ namespace RocketsRanks
             var textX = rect.x + 6f;
             var textWidth = rect.width - 12f;
 
-            // Rank icon inline
             var iconSize = 20f;
             if (record.rank?.Icon != null)
             {
@@ -220,7 +313,6 @@ namespace RocketsRanks
                 textWidth = rect.width - 12f - iconSize - 4f;
             }
 
-            // Rank change line
             Text.Font = GameFont.Small;
             Text.Anchor = TextAnchor.MiddleLeft;
 
@@ -257,7 +349,6 @@ namespace RocketsRanks
             GUI.color = Color.white;
             curY += 22f;
 
-            // Date
             Text.Font = GameFont.Tiny;
             GUI.color = MutedColor;
             if (record.tick >= 0)
@@ -286,7 +377,6 @@ namespace RocketsRanks
                 curY += 18f;
             }
 
-            // Citation
             if (!record.citation.NullOrEmpty())
             {
                 GUI.color = GoldColor;

@@ -168,7 +168,23 @@ namespace RocketsRanks
                 Settings.MapIconOffsetY = listing.Slider(Settings.MapIconOffsetY, -16f, 16f);
             }
 
+            listing.Gap(10f);
+            listing.GapLine();
+
+            SubHeader(listing, "ROCKET_Settings_RankedTitlesHeader".Translate(), ResetRankedTitles);
+            GUI.color = new Color(0.7f, 0.7f, 0.7f);
+            listing.Label("ROCKET_Settings_RankedTitlesIntro".Translate());
+            GUI.color = Color.white;
+            listing.Gap(4f);
+            listing.Label("ROCKET_Settings_RankedTitleOffsetY".Translate(Settings.RankedTitleOffsetY.ToString("F0")));
+            Settings.RankedTitleOffsetY = Mathf.Round(listing.Slider(Settings.RankedTitleOffsetY, -12f, 12f));
+
             listing.End();
+        }
+
+        private static void ResetRankedTitles()
+        {
+            Settings.RankedTitleOffsetY = 0f;
         }
 
         private static void ResetMapIcon()
@@ -426,6 +442,7 @@ namespace RocketsRanks
         public float MapIconSize = 16f;
         public float MapIconOffsetX = 0f;
         public float MapIconOffsetY = -3f;
+        public float RankedTitleOffsetY = 0f;
         public float WeaponOffsetX = 0f;
         public float WeaponOffsetY = 0f;
         public float WeaponScale = 1f;
@@ -459,6 +476,7 @@ namespace RocketsRanks
             Scribe_Values.Look(ref WeaponScale, "WeaponScale", 1f);
             Scribe_Values.Look(ref MapIconOffsetX, "MapIconOffsetX", 0f);
             Scribe_Values.Look(ref MapIconOffsetY, "MapIconOffsetY", -3f);
+            Scribe_Values.Look(ref RankedTitleOffsetY, "RankedTitleOffsetY", 0f);
             Scribe_Values.Look(ref HideCryptosleep, "HideCryptosleep", false);
             Scribe_Values.Look(ref HideOffMap, "HideOffMap", false);
             Scribe_Values.Look(ref HideInMap, "HideInMap", false);

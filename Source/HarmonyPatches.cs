@@ -198,6 +198,42 @@ namespace RocketsRanks
         }
     }
 
+    [HarmonyPatch(typeof(PawnUIOverlay), nameof(PawnUIOverlay.DrawPawnGUIOverlay))]
+    public static class Patch_PawnUIOverlay_TitleText
+    {
+        private static readonly AccessTools.FieldRef<PawnUIOverlay, Pawn> PawnRef =
+            AccessTools.FieldRefAccess<PawnUIOverlay, Pawn>("pawn");
+
+        private static float _tinyLineHeight;
+
+        public static void Postfix(PawnUIOverlay __instance)
+        {
+            var pawn = PawnRef(__instance);
+            if (pawn is not { Spawned: true }) return;
+
+            if (Find.CameraDriver.CurrentZoom > CameraZoomRange.Middle) return;
+            if (!pawn.IsColonistPlayerControlled) return;
+            if (RanksMod.Settings.HideRankWhenUndrafted && !pawn.Drafted) return;
+
+            var comp = pawn.GetComp<CompRank>();
+            if (comp == null || !comp.showTitleOnMap || comp.currentRank == null) return;
+
+            var title = pawn.story?.TitleCap;
+            if (title.NullOrEmpty()) return;
+
+            if (_tinyLineHeight <= 0f)
+            {
+                Text.Font = GameFont.Tiny;
+                _tinyLineHeight = Text.LineHeight;
+            }
+
+            var pos = GenMapUI.LabelDrawPosFor(pawn, -0.6f);
+            var titlePos = new Vector2(pos.x, pos.y + _tinyLineHeight - 3f + RanksMod.Settings.RankedTitleOffsetY);
+
+            GenMapUI.DrawThingLabel(titlePos, title, comp.titleOnMapColor);
+        }
+    }
+
     /// <summary>
     /// Hard block: prevent any code path from equipping rank-restricted apparel
     /// if the pawn doesn't hold the required rank. Only shows a message for

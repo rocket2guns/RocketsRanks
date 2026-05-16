@@ -22,11 +22,33 @@
   <ROCKET_RanksTab>Ranks</ROCKET_RanksTab>
   <ROCKET_NoRank>No Rank</ROCKET_NoRank>
   <ROCKET_PromotionHistory>Promotion History</ROCKET_PromotionHistory>
+  <ROCKET_RanksTab_SettingsSubTab>Settings</ROCKET_RanksTab_SettingsSubTab>
   <ROCKET_StrippedOfRank>Stripped of Rank</ROCKET_StrippedOfRank>
   <ROCKET_PromotedTo>Promoted to {0}</ROCKET_PromotedTo>
   <ROCKET_DemotedTo>Demoted to {0}</ROCKET_DemotedTo>
   <ROCKET_RankChangedTo>Changed to {0}</ROCKET_RankChangedTo>
   <ROCKET_NoPromotionRecords>No promotion records.</ROCKET_NoPromotionRecords>
+
+  <!-- ITab - Settings sub-tab -->
+  <ROCKET_Settings_MapDisplayHeader>Map display</ROCKET_Settings_MapDisplayHeader>
+  <ROCKET_Settings_ShowTitleOnMap>Show title under name on map</ROCKET_Settings_ShowTitleOnMap>
+  <ROCKET_Settings_ShowTitleOnMapTip>If enabled, this pawn's backstory title (e.g. "Mercenary") will appear in coloured text directly below their name on the map. Hidden when the pawn has no rank, and respects the global "hide rank when not drafted" setting.</ROCKET_Settings_ShowTitleOnMapTip>
+  <ROCKET_Settings_TitleColor>Title colour</ROCKET_Settings_TitleColor>
+
+  <!-- Mod settings - Ranked Titles (Pawn Labels tab) -->
+  <ROCKET_Settings_RankedTitlesHeader>Ranked Titles</ROCKET_Settings_RankedTitlesHeader>
+  <ROCKET_Settings_RankedTitlesIntro>Global offset for the backstory title line drawn under ranked pawns' names on the map. Enable per-pawn from the Settings sub-tab in the Ranks tab.</ROCKET_Settings_RankedTitlesIntro>
+  <ROCKET_Settings_RankedTitleOffsetY>Title offset Y: {0}px</ROCKET_Settings_RankedTitleOffsetY>
+
+  <!-- Title colour preset names -->
+  <ROCKET_TitleColor_Gold>Gold</ROCKET_TitleColor_Gold>
+  <ROCKET_TitleColor_White>White</ROCKET_TitleColor_White>
+  <ROCKET_TitleColor_Red>Red</ROCKET_TitleColor_Red>
+  <ROCKET_TitleColor_Green>Green</ROCKET_TitleColor_Green>
+  <ROCKET_TitleColor_Blue>Blue</ROCKET_TitleColor_Blue>
+  <ROCKET_TitleColor_Purple>Purple</ROCKET_TitleColor_Purple>
+  <ROCKET_TitleColor_Cyan>Cyan</ROCKET_TitleColor_Cyan>
+  <ROCKET_TitleColor_Orange>Orange</ROCKET_TitleColor_Orange>
   
   <!-- Inspect tab -->
   <ROCKET_InspectRankRequirement>Requires the rank of {0} to wear</ROCKET_InspectRankRequirement>
