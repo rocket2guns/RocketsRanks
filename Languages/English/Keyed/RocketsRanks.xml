@@ -31,14 +31,20 @@
 
   <!-- ITab - Settings sub-tab -->
   <ROCKET_Settings_MapDisplayHeader>Map display</ROCKET_Settings_MapDisplayHeader>
-  <ROCKET_Settings_ShowTitleOnMap>Show title under name on map</ROCKET_Settings_ShowTitleOnMap>
-  <ROCKET_Settings_ShowTitleOnMapTip>If enabled, this pawn's backstory title (e.g. "Mercenary") will appear in coloured text directly below their name on the map. Hidden when the pawn has no rank, and respects the global "hide rank when not drafted" setting.</ROCKET_Settings_ShowTitleOnMapTip>
+  <ROCKET_Settings_ShowTitleOnMap>Show title under name</ROCKET_Settings_ShowTitleOnMap>
+  <ROCKET_Settings_ShowTitleOnMapTip>If enabled, this pawn's backstory title (e.g. "Mercenary") will appear in coloured text directly below their name on the map. Also surfaces in the colonist bar if the global "Show title under name in colonist bar" setting is enabled. Hidden when the pawn has no rank, and respects the global "hide rank when not drafted" setting.</ROCKET_Settings_ShowTitleOnMapTip>
   <ROCKET_Settings_TitleColor>Title colour</ROCKET_Settings_TitleColor>
 
   <!-- Mod settings - Ranked Titles (Pawn Labels tab) -->
   <ROCKET_Settings_RankedTitlesHeader>Ranked Titles</ROCKET_Settings_RankedTitlesHeader>
   <ROCKET_Settings_RankedTitlesIntro>Global offset for the backstory title line drawn under ranked pawns' names on the map. Enable per-pawn from the Settings sub-tab in the Ranks tab.</ROCKET_Settings_RankedTitlesIntro>
   <ROCKET_Settings_RankedTitleOffsetY>Title offset Y: {0}px</ROCKET_Settings_RankedTitleOffsetY>
+
+  <!-- Mod settings - Title under name (Colonist Bar tab) -->
+  <ROCKET_Settings_BarTitlesHeader>Title under name</ROCKET_Settings_BarTitlesHeader>
+  <ROCKET_Settings_ShowTitleOnBar>Show title under name in colonist bar</ROCKET_Settings_ShowTitleOnBar>
+  <ROCKET_Settings_ShowTitleOnBarTip>If enabled, ranked pawns who have opted into "Show title under name" in their Ranks tab will also have their title shown beneath their colonist bar entry. Respects the global "hide rank when not drafted" setting.</ROCKET_Settings_ShowTitleOnBarTip>
+  <ROCKET_Settings_BarTitleOffsetY>Bar title offset Y: {0}px</ROCKET_Settings_BarTitleOffsetY>
 
   <!-- Title colour preset names -->
   <ROCKET_TitleColor_Gold>Gold</ROCKET_TitleColor_Gold>

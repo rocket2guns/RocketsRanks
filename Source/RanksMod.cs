@@ -196,8 +196,12 @@ namespace RocketsRanks
 
         private static void DrawBarTab(Rect rect)
         {
+            const float viewHeight = 640f;
+            var viewRect = new Rect(0f, 0f, rect.width - 16f, viewHeight);
+            Widgets.BeginScrollView(rect, ref Settings.barTabScroll, viewRect);
+
             var listing = new Listing_Standard();
-            listing.Begin(rect);
+            listing.Begin(viewRect);
             Text.Font = GameFont.Small;
 
             // Visibility filters
@@ -261,7 +265,29 @@ namespace RocketsRanks
             Settings.WeaponScale = listing.Slider(Settings.WeaponScale, 0.1f, 3.0f);
             GUI.color = prevColor;
 
+            listing.Gap(10f);
+            listing.GapLine();
+
+            SubHeader(listing, "ROCKET_Settings_BarTitlesHeader".Translate(), ResetBarTitles);
+            listing.CheckboxLabeled(
+                "ROCKET_Settings_ShowTitleOnBar".Translate(),
+                ref Settings.ShowTitleOnColonistBar,
+                "ROCKET_Settings_ShowTitleOnBarTip".Translate()
+            );
+            if (Settings.ShowTitleOnColonistBar)
+            {
+                listing.Label("ROCKET_Settings_BarTitleOffsetY".Translate(Settings.ColonistBarTitleOffsetY.ToString("F0")));
+                Settings.ColonistBarTitleOffsetY = Mathf.Round(listing.Slider(Settings.ColonistBarTitleOffsetY, -12f, 12f));
+            }
+
             listing.End();
+            Widgets.EndScrollView();
+        }
+
+        private static void ResetBarTitles()
+        {
+            Settings.ShowTitleOnColonistBar = false;
+            Settings.ColonistBarTitleOffsetY = 0f;
         }
 
         private static void ResetBadge()
@@ -438,6 +464,8 @@ namespace RocketsRanks
         public float BadgeSize = 46f;
         public float BadgeOffsetX = 4f;
         public float BadgeOffsetY = 4f;
+        public bool ShowTitleOnColonistBar = false;
+        public float ColonistBarTitleOffsetY = 0f;
         public bool ShowRankOnMap = true;
         public float MapIconSize = 16f;
         public float MapIconOffsetX = 0f;
@@ -460,6 +488,7 @@ namespace RocketsRanks
 
         // UI state (not saved)
         public Vector2 settingsScroll;
+        public Vector2 barTabScroll;
 
         public override void ExposeData()
         {
@@ -469,6 +498,8 @@ namespace RocketsRanks
             Scribe_Values.Look(ref BadgeSize, "BadgeSize", 46f);
             Scribe_Values.Look(ref BadgeOffsetX, "BadgeOffsetX", 4f);
             Scribe_Values.Look(ref BadgeOffsetY, "BadgeOffsetY", 4f);
+            Scribe_Values.Look(ref ShowTitleOnColonistBar, "ShowTitleOnColonistBar", false);
+            Scribe_Values.Look(ref ColonistBarTitleOffsetY, "ColonistBarTitleOffsetY", 0f);
             Scribe_Values.Look(ref ShowRankOnMap, "ShowRankOnMap", true);
             Scribe_Values.Look(ref MapIconSize, "MapIconSize", 16f);
             Scribe_Values.Look(ref WeaponOffsetX, "WeaponOffsetX", 0f);

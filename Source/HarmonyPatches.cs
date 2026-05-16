@@ -56,7 +56,36 @@ namespace RocketsRanks
                 size, size), rank.Icon);
         }
     }
-    
+
+    [HarmonyPatch(typeof(ColonistBarColonistDrawer), nameof(ColonistBarColonistDrawer.DrawColonist))]
+    public static class Patch_DrawColonist_TitleText
+    {
+        private static float _tinyLineHeight;
+
+        public static void Postfix(Rect rect, Pawn colonist)
+        {
+            if (!RanksMod.Settings.ShowTitleOnColonistBar) return;
+            if (RanksMod.Settings.HideRankWhenUndrafted && !colonist.Drafted) return;
+
+            var comp = colonist.GetComp<CompRank>();
+            if (comp == null || !comp.showTitleOnMap || comp.currentRank == null) return;
+
+            var title = colonist.story?.TitleCap;
+            if (title.NullOrEmpty()) return;
+
+            if (_tinyLineHeight <= 0f)
+            {
+                Text.Font = GameFont.Tiny;
+                _tinyLineHeight = Text.LineHeight;
+            }
+
+            var pos = new Vector2(
+                rect.center.x,
+                rect.yMax + _tinyLineHeight - 3f + RanksMod.Settings.ColonistBarTitleOffsetY);
+            GenMapUI.DrawThingLabel(pos, title, comp.titleOnMapColor);
+        }
+    }
+
     [HarmonyPatch(typeof(ColonistBar), nameof(ColonistBar.ColonistBarOnGUI))]
     public static class Patch_ColonistBar_WeaponIcon
     {
